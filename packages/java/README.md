@@ -59,6 +59,77 @@ class CheckoutTest {
 }
 ```
 
+## Use it with Cucumber (Gherkin) + Selenium
+
+Keep the Gherkin table small: put the **category** in the Examples, and let the
+library supply the values. (A feature file can't hold invisible characters,
+line breaks or leading/trailing spaces anyway — those live safely in Java.)
+
+**`search.feature`**
+
+```gherkin
+Feature: Entity search is robust against fragile inputs
+
+  Scenario Outline: Entity Name field survives inputs from "<Category>"
+    Given the user is on the search page
+    Then the "Entity Name" field stays robust against fragile inputs in category "<Category>"
+
+    Examples:
+      | Category |
+      | aml      |
+      | sec      |
+      | inv      |
+```
+
+**`SearchSteps.java`**
+
+```java
+import io.cucumber.java.en.Then;
+import io.github.gencdeveloper.fragileinputs.FragileInputs;
+import io.github.gencdeveloper.fragileinputs.Input;
+import org.openqa.selenium.By;
+import java.util.ArrayList;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class SearchSteps {
+
+    @Then("the {string} field stays robust against fragile inputs in category {string}")
+    public void fieldStaysRobust(String fieldLabel, String category) throws InterruptedException {
+        List<String> issues = new ArrayList<>();
+
+        for (Input in : FragileInputs.getInputsByCategory(category)) {   // e.g. "aml" -> 21 inputs
+            try {
+                driver.findElement(By.cssSelector("input[placeholder='" + fieldLabel + "']")).clear();
+                driver.findElement(By.cssSelector("input[placeholder='" + fieldLabel + "']")).sendKeys(in.value);
+                driver.findElement(By.id("search")).click();
+
+                // minimum bar: the app must not crash or 500
+                boolean errored = !driver.findElements(By.cssSelector("mat-error, .server-error")).isEmpty();
+                if (errored) {
+                    issues.add(in.id + " | " + in.title + " | " + in.breaks);
+                }
+            } catch (AssertionError | Exception e) {
+                issues.add(in.id + " | " + in.title + " | " + e.getClass().getSimpleName());
+            } finally {
+                driver.findElement(By.id("clear")).click();
+                Thread.sleep(250);
+            }
+        }
+
+        if (!issues.isEmpty()) {
+            fail(issues.size() + " fragile inputs mishandled in '" + fieldLabel + "':\n - "
+                    + String.join("\n - ", issues));
+        }
+    }
+}
+```
+
+The failure message reports each input's `id`, `title` and `breaks`, so a red
+test turns straight into a filed bug. Swap the selectors and the pass/fail check
+for your own page objects. For a security category, "no results" is often the
+*correct* behavior — assert that the app handled it, not that a row came back.
+
 ## API
 
 ```java
