@@ -22,7 +22,7 @@ No Sonatype account needed — JitPack builds the package straight from GitHub.
 <dependency>
   <groupId>com.github.gencdeveloper</groupId>
   <artifactId>fragile-inputs</artifactId>
-  <version>v1.0.0</version>
+  <version>v1.0.1</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ No Sonatype account needed — JitPack builds the package straight from GitHub.
 
 ```groovy
 repositories { maven { url 'https://jitpack.io' } }
-dependencies { testImplementation 'com.github.gencdeveloper:fragile-inputs:v1.0.0' }
+dependencies { testImplementation 'com.github.gencdeveloper:fragile-inputs:v1.0.1' }
 ```
 
 ## Use it (JUnit 5 + Selenium)

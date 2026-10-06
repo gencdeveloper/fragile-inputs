@@ -1,6 +1,6 @@
 {
   "name": "fragile-inputs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Edge-case input strings for QA/SDET testing — 486 annotated values that break forms, search, databases, exports and assistive tech, across 21 industries plus accessibility.",
   "keywords": ["qa", "sdet", "testing", "test-data", "edge-cases", "fuzzing", "unicode", "boundary-testing", "accessibility", "a11y", "naughty-strings", "playwright", "cypress", "localization"],
   "homepage": "https://github.com/gencdeveloper/fragile-inputs#readme",

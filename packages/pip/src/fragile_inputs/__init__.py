@@ -26,7 +26,7 @@ __all__ = [
     "resolve", "Input", "Category", "Group",
 ]
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 def _load() -> dict:

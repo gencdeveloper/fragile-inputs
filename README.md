@@ -96,7 +96,7 @@ Add the JitPack repository, then the dependency (no Sonatype account needed):
 <dependency>
   <groupId>com.github.gencdeveloper</groupId>
   <artifactId>fragile-inputs</artifactId>
-  <version>v1.0.0</version>
+  <version>v1.0.1</version>
 </dependency>
 ```
 

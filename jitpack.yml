@@ -1,4 +1,4 @@
 jdk:
   - openjdk17
 install:
-  - mvn install -DskipTests -B
+  - mvn install -DskipTests -B -s settings.xml

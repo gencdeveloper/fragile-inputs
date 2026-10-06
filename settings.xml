@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Routes Maven Central through Google's GCS mirror so CI builds (e.g. JitPack)
+     don't hit HTTP 429 rate limits from repo.maven.apache.org. -->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
+  <mirrors>
+    <mirror>
+      <id>central-gcs</id>
+      <name>Maven Central via Google Cloud Storage</name>
+      <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+  </mirrors>
+</settings>

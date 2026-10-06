@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fragile-inputs"
-version = "1.0.0"
+version = "1.0.1"
 description = "Edge-case input strings for QA/SDET testing — 486 annotated values that break forms, search, databases, exports and assistive tech, across 21 industries plus accessibility."
 readme = "README.md"
 requires-python = ">=3.8"

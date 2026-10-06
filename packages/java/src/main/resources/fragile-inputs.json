@@ -1,6 +1,6 @@
 {
   "name": "fragile-inputs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A QA/SDET field guide of edge-case inputs that break forms, search, databases, exports and assistive tech — annotated with what each one tests, what it breaks, and the correct behavior.",
   "homepage": "https://github.com/gencdeveloper/fragile-inputs",
   "license": "MIT",
