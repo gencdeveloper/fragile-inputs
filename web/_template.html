@@ -1,0 +1,367 @@
+<title>Fragile Inputs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: "looks identical" specimen hero, sticky search + category chips, grouped card grids; each card = value, byte metrics, code points, explanation */
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --sunken:#E3E8EE; --fg:#16202B; --muted:#5A6878; --line:#D3DAE2;
+  --accent:#2648C7; --danger:#B4321C; --danger-soft:#FBE6E1; --ok:#1F7A4D; --token:#7A4E00; --token-bg:#FFF1CC;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --f-body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10161D; --surface:#18212B; --sunken:#0C1117; --fg:#E6ECF2; --muted:#93A1B1; --line:#2A3542;
+  --accent:#8EA6FF; --danger:#FF9A85; --danger-soft:#3A1C16; --ok:#6FD3A0; --token:#FFD27A; --token-bg:#3A2E10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10161D; --surface:#18212B; --sunken:#0C1117; --fg:#E6ECF2; --muted:#93A1B1; --line:#2A3542;
+  --accent:#8EA6FF; --danger:#FF9A85; --danger-soft:#3A1C16; --ok:#6FD3A0; --token:#FFD27A; --token-bg:#3A2E10; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 96px}
+.wrap{max-width:1180px;margin:0 auto}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.theme-toggle{position:absolute;top:14px;right:16px;z-index:6;display:inline-flex;align-items:center;gap:7px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:6px 13px 6px 11px;font-size:12.5px;font-weight:600;font-family:var(--f-mono);letter-spacing:.02em}
+.theme-toggle:hover{border-color:var(--accent)}
+.tt-ico{width:14px;height:14px;border-radius:50%;background:conic-gradient(var(--fg) 0 50%, var(--line) 50% 100%);border:1px solid var(--fg);box-sizing:border-box}
+:root[data-theme="dark"] .tt-ico, :root:not([data-theme="light"]) .tt-ico{}
+.theme-toggle[data-mode="light"] .tt-ico{background:var(--token);border-color:var(--token)}
+.theme-toggle[data-mode="dark"] .tt-ico{background:var(--bg);border-color:var(--fg);box-shadow:inset -3px -3px 0 0 var(--fg)}
+.bmc{position:absolute;top:14px;right:122px;z-index:6;display:inline-flex;align-items:center;gap:6px;background:#FFDD00;color:#0D0C0B;border:1px solid #E5C700;border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:700;font-family:var(--f-body);text-decoration:none;white-space:nowrap}
+.bmc:hover{filter:brightness(1.03)}
+.bmc svg{width:15px;height:15px}
+@media (max-width:560px){.bmc span{display:none}.bmc{right:118px;padding:6px 9px}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:end;padding-block:40px 28px}
+.hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2.4rem,5.4vw,3.8rem);line-height:1;letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance}
+.hero p{margin:0;color:var(--muted);max-width:54ch}
+.hero .count{margin-top:14px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted);letter-spacing:.02em}
+.glyphs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.glyph-head{grid-column:1/-1;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.glyph{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;color:var(--fg);display:grid;grid-template-columns:auto auto 1fr;gap:4px 12px;align-items:center;text-align:left}
+.glyph:hover{border-color:var(--accent)}
+.glyph b{font-family:var(--f-display);font-weight:600;font-size:2.2rem;line-height:1;min-width:1.1em;text-align:center}
+.glyph b.fake{color:var(--danger)}
+.glyph .lbl{grid-column:1/-1;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.glyph .lbl code{font-family:var(--f-mono);font-size:11px;color:var(--accent)}
+.glyph .eq{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.glyph-note{grid-column:1/-1;font-size:12.5px;color:var(--muted);margin:2px 0 0}
+
+/* toolbar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.search{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:0 12px}
+.search input{flex:1;min-width:0;border:0;background:transparent;color:var(--fg);font:inherit;padding:10px 0;outline:none}
+.search svg{flex:none;color:var(--muted)}
+.chips{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow-y:auto}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:70px}
+.chip-all{font-weight:600}
+.group{padding-top:40px;border-bottom:2px solid var(--fg);padding-bottom:10px}
+.group h2{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:-.01em;margin:0}
+.group p{margin:4px 0 0;color:var(--muted);max-width:72ch;font-size:14px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:4px 11px;font-size:13px}
+.chip small{font-family:var(--f-mono);color:var(--muted);margin-left:4px;font-size:11px}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.7}
+
+/* sections */
+section.cat{padding-top:28px}
+section.cat > h2{font-family:var(--f-display);font-weight:600;font-size:1.35rem;margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+section.cat > h2 small{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(--muted)}
+section.cat > p{margin:4px 0 14px;color:var(--muted);font-size:14px;max-width:72ch}
+.warn{background:var(--danger-soft);color:var(--danger);border-radius:6px;padding:8px 12px;font-size:13.5px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px}
+
+/* card */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.card header{display:flex;gap:10px;align-items:center}
+.card header input{width:16px;height:16px;accent-color:var(--accent);flex:none;margin:0}
+.card h3{font-size:15px;font-weight:600;margin:0;flex:1;min-width:0}
+.pill{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--danger-soft);color:var(--danger);white-space:nowrap}
+.pill.wcag{background:var(--sunken);color:var(--accent);font-family:var(--f-mono);letter-spacing:0;text-transform:none}
+.val{display:flex;gap:8px;align-items:stretch;background:var(--sunken);border-radius:6px;padding:4px 4px 4px 12px}
+.val .text{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding-block:6px;gap:4px}
+.val code{font-family:var(--f-mono);font-size:15px;overflow-wrap:anywhere;white-space:pre-wrap;max-height:9em;overflow:auto;unicode-bidi:plaintext}
+.val .raw{font-size:11px;color:var(--muted);font-family:var(--f-body)}
+.val code.empty{color:var(--muted);font-style:italic}
+.tok{font-family:var(--f-mono);font-size:10.5px;background:var(--token-bg);color:var(--token);border-radius:3px;padding:1px 3px;margin:0 1px;vertical-align:1px;white-space:nowrap}
+.copy{flex:none;border:0;border-radius:4px;background:var(--accent);color:var(--surface);padding:0 12px;font-size:13px;font-weight:600}
+.copy:hover{filter:brightness(1.1)}
+.metrics{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.metrics b{color:var(--fg);font-weight:600}
+.metrics .diff b{color:var(--danger)}
+.cps{display:flex;flex-wrap:wrap;gap:4px}
+.cps code{font-family:var(--f-mono);font-size:10.5px;padding:1px 5px;border:1px solid var(--line);border-radius:3px;color:var(--muted)}
+dl{margin:0;display:grid;gap:6px;font-size:13.5px}
+dt{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+dd{margin:0 0 2px}
+dd.ex{color:var(--ok)}
+
+/* generator */
+.gen{grid-column:1/-1;background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:16px;display:grid;gap:12px}
+.gen h3{margin:0;font-family:var(--f-display);font-weight:600;font-size:1.1rem}
+.gen p{margin:0;color:var(--muted);font-size:13.5px;max-width:80ch}
+.gen-row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.gen label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.gen input[type=number]{width:120px;font:inherit;font-family:var(--f-mono);padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:5px;padding:6px 10px;font-family:var(--f-mono);font-size:13px;min-width:38px}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.gen .out{background:var(--sunken);border-radius:6px;padding:10px 12px;font-family:var(--f-mono);font-size:12.5px;overflow-wrap:anywhere;max-height:5.5em;overflow:hidden;color:var(--muted)}
+.gen .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gen .copy{padding:8px 14px}
+
+.empty-state{padding:48px 0;text-align:center;color:var(--muted)}
+
+/* selection bar */
+.selbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--fg);color:var(--bg);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:14px}
+.selbar button{border:1px solid currentColor;background:transparent;color:inherit;border-radius:5px;padding:5px 11px;font-size:13px}
+.selbar button.primary{background:var(--bg);color:var(--fg);border-color:var(--bg)}
+.toast{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);background:var(--accent);color:var(--surface);padding:8px 14px;border-radius:6px;font-size:13.5px;z-index:20;max-width:calc(100% - 32px)}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:grid;gap:6px}
+.sr{position:absolute;left:-9999px}
+
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:20px;padding-block:28px 20px}}
+@media (prefers-reduced-motion:no-preference){.card,.chip,.glyph{transition:border-color .15s, background .15s}}
+</style>
+
+<div class="wrap">
+  <a class="bmc" href="https://buymeacoffee.com/yunusemreozudogru" target="_blank" rel="noopener" aria-label="Buy me a coffee">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg><span>Buy me a coffee</span>
+  </a>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Theme: Auto">
+    <span class="tt-ico" id="ttIco" aria-hidden="true"></span><span id="ttLbl">Auto</span>
+  </button>
+  <div class="hero">
+    <div>
+      <h1>Fragile Inputs</h1>
+      <p>A field guide to the strings that break forms, search, databases and exports. Every card shows the value, what it tests, what it breaks and what correct behavior looks like. Copy it, paste it, write down what happened.</p>
+      <div class="count" id="count"></div>
+    </div>
+    <div class="glyphs" id="glyphs">
+      <p class="glyph-head">Look identical. Aren't.</p>
+      <p class="glyph-note">Click a pair to copy the impostor on the right. Paste it into your login or search field.</p>
+    </div>
+  </div>
+
+  <div class="bar">
+    <label class="search" for="q">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span class="sr">Search</span>
+      <input id="q" type="search" placeholder="Search: zip code, emoji, trim, timezone, xss…" autocomplete="off">
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="Category"></div>
+  </div>
+
+  <main id="main"></main>
+  <div class="empty-state" id="none" hidden>No inputs match that search. Try a broader word like "date" or "unicode".</div>
+
+  <footer>
+    <span>Use the Security inputs only on systems you are authorized to test.</span>
+    <span>Search ignores case and accents, so "cafe" also finds "Café" and "istanbul" finds "İSTANBUL".</span>
+    <span>Open source (MIT) · <a href="https://github.com/gencdeveloper/fragile-inputs" target="_blank" rel="noopener" style="color:var(--accent)">GitHub</a> · also on npm & PyPI as <code style="font-family:var(--f-mono)">fragile-inputs</code> · <a href="https://buymeacoffee.com/yunusemreozudogru" target="_blank" rel="noopener" style="color:var(--accent)">support this project</a></span>
+  </footer>
+</div>
+
+<div class="selbar" id="selbar" hidden>
+  <span id="selcount"></span>
+  <button class="primary" id="cpvals">Copy values as array</button>
+  <button id="cpjson">Copy JSON</button>
+  <button id="cpcsv">Copy CSV</button>
+  <button id="selall">Select visible</button>
+  <button id="selclear">Clear</button>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<textarea id="clip" class="sr" aria-hidden="true" tabindex="-1"></textarea>
+
+<script>
+/*__FI_ADAPTER__*/
+
+/* ---------- helpers ---------- */
+const seg = (typeof Intl!=="undefined" && Intl.Segmenter) ? new Intl.Segmenter("en",{granularity:"grapheme"}) : null;
+const enc = new TextEncoder();
+function metrics(s){ return {js:s.length, cp:[...s].length, gr: seg ? [...seg.segment(s)].length : [...s].length, b: enc.encode(s).length}; }
+const INV = {"\u200B":"ZWSP","\u200C":"ZWNJ","\u200D":"ZWJ","\u2060":"WJ","\u00A0":"NBSP","\uFEFF":"BOM","\u00AD":"SHY","\u202E":"RLO","\u202D":"LRO","\u3164":"HF","\u2028":"LSEP","\u3000":"IDSP","\u000B":"VT","\u202F":"NNBSP","\u200E":"LRM","\uFE0F":"VS16","\u202B":"RLE","\r":"CR","\n":"↵ LF","\t":"→ TAB"};
+function revealNodes(s, spaces){
+  const frag=document.createDocumentFragment(); let buf="";
+  const flush=()=>{ if(buf){frag.appendChild(document.createTextNode(buf)); buf="";} };
+  for(const ch of s){
+    const cpv=ch.codePointAt(0);
+    const name = INV[ch] || (cpv>=0xE0000 && cpv<=0xE007F ? "TAG" : null) || (spaces && ch===" " ? "\u00B7" : null);
+    if(name){ flush(); const t=document.createElement("span"); t.className="tok"; t.textContent=name; frag.appendChild(t); if(ch==="\n") frag.appendChild(document.createTextNode("\n")); }
+    else buf+=ch;
+  }
+  flush(); return frag;
+}
+const norm = s => s.normalize("NFKD").replace(/\p{M}/gu,"").toLowerCase();
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+let toastTimer;
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.hidden=true,1800); }
+function fallbackCopy(text){ const ta=document.getElementById("clip"); ta.value=text; ta.select(); let ok=false; try{ ok=document.execCommand("copy"); }catch(e){} return ok; }
+function copy(text, label){
+  const msg = label || (text==="" ? "Copied an empty value" : "Copied");
+  const fail = "Clipboard is blocked here. Select the value and copy it manually.";
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast(msg)).catch(()=>toast(fallbackCopy(text)?msg:fail));
+  } else toast(fallbackCopy(text)?msg:fail);
+}
+
+/* ---------- hero pairs ---------- */
+const PAIRS=[["a","а","U+0061","U+0430","Latin a vs Cyrillic а"],["é","é","U+00E9","U+0065 U+0301","Composed vs decomposed"],["K","K","U+004B","U+212A","Letter K vs Kelvin sign"],["I","Ⅰ","U+0049","U+2160","Letter I vs Roman numeral"]];
+const note=document.querySelector(".glyph-note");
+PAIRS.forEach(([real,fake,cr,cf,lbl])=>{
+  const b=el("button","glyph"); b.type="button"; b.setAttribute("aria-label","Copy impostor: "+lbl);
+  const r=el("b",null,real), eq=el("span","eq","≠"), f=el("b","fake",fake);
+  const l=el("span","lbl"); l.append(el("span",null,lbl)); const cc=el("code",null,cr+" / "+cf); l.append(cc);
+  b.append(r,eq,f,l); b.addEventListener("click",()=>copy(fake,"Copied the impostor ("+cf+")"));
+  document.getElementById("glyphs").insertBefore(b,note);
+});
+
+/* ---------- cards ---------- */
+const selected=new Set(); const cardEls=[];
+function metricRow(m){
+  const mt=el("div","metrics");
+  const item=(lbl,n,diff)=>{ const s=el("span",diff?"diff":null); s.append(lbl+" "); s.append(el("b",null,String(n))); return s; };
+  mt.append(item("visible",m.gr), item("JS length",m.js,m.js!==m.gr), item("code points",m.cp,m.cp!==m.gr), item("UTF-8",m.b+" B",m.b!==m.gr));
+  return mt;
+}
+function buildCard(d,i){
+  const a=el("article","card"); a.dataset.i=i;
+  const h=el("header"); const cb=el("input"); cb.type="checkbox"; cb.id="sel-"+i; cb.setAttribute("aria-label","Select "+d.t);
+  cb.addEventListener("change",()=>{ cb.checked?selected.add(i):selected.delete(i); a.classList.toggle("sel",cb.checked); updateSel(); });
+  const h3=el("h3"); const lab=el("label",null,d.t); lab.htmlFor=cb.id; h3.append(lab);
+  h.append(cb,h3); if(d.c==="sec") h.append(el("span","pill","security")); if(d.w) h.append(el("span","pill wcag",d.w.replace("WCAG ","")));
+  a.append(h);
+
+  const val=el("div","val"); const tx=el("div","text"); const code=el("code");
+  if(d.v===""){ code.classList.add("empty"); code.textContent="(empty value)"; tx.append(code); }
+  else if(d.rv){
+    code.append(revealNodes(d.v,d.sp)); tx.append(code);
+    if(d.v.includes("\u202E")){ const raw=el("div","raw"); raw.append("How it displays: "); const r=el("code",null,d.v); r.style.fontSize="13px"; raw.append(r); tx.append(raw); }
+    else tx.append(el("div","raw","Yellow tags mark invisible characters. The copied value contains the real ones."));
+  } else { code.textContent=d.v; code.setAttribute("dir","auto"); tx.append(code); }
+  const btn=el("button","copy","Copy"); btn.type="button"; btn.addEventListener("click",()=>copy(d.v));
+  val.append(tx,btn); a.append(val);
+  a.append(metricRow(metrics(d.v)));
+
+  if(d.v!==""){
+    const cps=el("div","cps"); const arr=[...d.v];
+    arr.slice(0,9).forEach(ch=>cps.append(el("code",null,"U+"+ch.codePointAt(0).toString(16).toUpperCase().padStart(4,"0"))));
+    if(arr.length>9) cps.append(el("code",null,"+"+(arr.length-9)));
+    a.append(cps);
+  }
+  const dl=el("dl");
+  dl.append(el("dt",null,"Tests"),el("dd",null,d.test),el("dt",null,"Breaks"),el("dd",null,d.br),el("dt",null,"Expected"),el("dd","ex",d.ex));
+  a.append(dl);
+  a._search=norm([d.t,d.v,d.test,d.br,d.ex,d.w||"",CATS.find(c=>c.id===d.c).name].join(" "));
+  cardEls[i]=a; return a;
+}
+
+/* ---------- generator ---------- */
+function buildGen(){
+  const g=el("div","gen"); g.id="gen";
+  g.append(el("h3",null,"Length generator"), el("p",null,"Build a string of an exact visible length for boundary tests. Switch to an accented letter, a CJK character or an emoji and watch JS length and byte count drift apart. Databases and APIs usually count one of those, not what the user sees."));
+  const row=el("div","gen-row");
+  const nl=el("label",null,"Visible characters"); const n=el("input"); n.type="number"; n.id="gen-n"; n.min=0; n.max=100000; n.value=256; nl.append(n);
+  const ul=el("label",null,"Character"); const us=el("div","seg"); us.setAttribute("role","group");
+  const UNITS=[["a","a"],["é","é"],["中","中"],["😀","😀"],["👨\u200D👩\u200D👧\u200D👦","👨\u200D👩\u200D👧\u200D👦"],["0-9","0123456789"]];
+  let unit=UNITS[0][1];
+  UNITS.forEach(([l,v],k)=>{ const b=el("button",null,l); b.type="button"; b.setAttribute("aria-pressed",k===0?"true":"false");
+    b.addEventListener("click",()=>{ unit=v; us.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); render(); }); us.append(b); });
+  ul.append(us);
+  const pl=el("label",null,"Common limits"); const ps=el("div","seg");
+  [50,100,255,256,1000,4096,65536].forEach(v=>{ const b=el("button",null,String(v)); b.type="button"; b.addEventListener("click",()=>{n.value=v; render();}); ps.append(b); });
+  pl.append(ps);
+  row.append(nl,ul,pl); g.append(row);
+  const out=el("div","out"); const act=el("div","actions"); const cbtn=el("button","copy","Copy generated text"); cbtn.type="button";
+  const mwrap=el("div"); act.append(cbtn,mwrap); g.append(out,act);
+  let current="";
+  function render(){
+    const N=Math.max(0,Math.min(100000,parseInt(n.value,10)||0));
+    if(unit==="0123456789"){ let s=""; for(let k=0;k<N;k++) s+=String((k+1)%10); current=s; } else current=unit.repeat(N);
+    out.textContent = current.length ? ([...current].slice(0,160).join("")+(N>160?" …":"")) : "(empty)";
+    mwrap.textContent=""; const m=metrics(current); const row=metricRow(m); row.querySelectorAll("span")[2].remove(); mwrap.append(row);
+  }
+  n.addEventListener("input",render);
+  cbtn.addEventListener("click",()=>copy(current, metrics(current).gr+" characters copied"));
+  render(); return g;
+}
+
+/* ---------- layout & filter ---------- */
+const main=document.getElementById("main"); const sections={}; const groupEls={};
+GROUPS.forEach(g=>{
+  const gh=el("div","group"); gh.id="group-"+g.id; gh.append(el("h2",null,g.name), el("p",null,g.desc)); main.append(gh); groupEls[g.id]=gh;
+  CATS.filter(c=>c.g===g.id).forEach(c=>{
+    const s=el("section","cat"); s.id=c.id;
+    const h=el("h2",null,c.name); const cnt=el("small"); h.append(cnt); s.append(h, el("p",null,c.desc));
+    if(c.warn) s.append(el("div","warn",c.warn));
+    const grid=el("div","grid"); s.append(grid);
+    if(c.id==="len") grid.append(buildGen());
+    D.forEach((d,i)=>{ if(d.c===c.id) grid.append(buildCard(d,i)); });
+    sections[c.id]={el:s,cnt,g:c.g}; main.append(s);
+  });
+});
+const nInd=CATS.filter(c=>c.g==="ind").length, nA=D.filter(d=>CATS.find(c=>c.id===d.c).g==="a11y").length;
+document.getElementById("count").textContent=(D.length-nA)+" inputs \u00B7 "+nA+" accessibility checks \u00B7 "+CATS.length+" categories";
+
+let active="all";
+try{ const s=localStorage.getItem("fi-cat"); if(s && (s==="all"||sections[s]||GROUPS.some(g=>s==="g:"+g.id))) active=s; }catch(e){}
+const chips=document.getElementById("chips");
+function chip(row,id,label,n,cls){ const b=el("button","chip"+(cls?" "+cls:""),label); b.type="button"; b.dataset.id=id; b.append(el("small",null,String(n))); b.setAttribute("aria-pressed",id===active?"true":"false");
+  b.addEventListener("click",()=>{ active=id; chips.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset.id===id?"true":"false")); try{localStorage.setItem("fi-cat",id)}catch(e){} apply(); }); row.append(b); }
+const rowAll=el("div","chip-row"); chips.append(rowAll); chip(rowAll,"all","Everything",D.length);
+GROUPS.forEach(g=>{
+  const row=el("div","chip-row"); row.append(el("span","chip-label",g.short)); chips.append(row);
+  const cats=CATS.filter(c=>c.g===g.id);
+  chip(row,"g:"+g.id,"All",D.filter(d=>cats.some(c=>c.id===d.c)).length,"chip-all");
+  cats.forEach(c=>chip(row,c.id,c.name,D.filter(d=>d.c===c.id).length));
+});
+
+const q=document.getElementById("q");
+function apply(){
+  const term=norm(q.value.trim()); let total=0;
+  CATS.forEach(c=>{
+    const sec=sections[c.id]; let n=0;
+    D.forEach((d,i)=>{ if(d.c!==c.id) return; const show=!term||cardEls[i]._search.includes(term); cardEls[i].hidden=!show; if(show) n++; });
+    const gen = c.id==="len" ? document.getElementById("gen") : null;
+    if(gen) gen.hidden=!!term;
+    const visible=(active==="all"||active===c.id||active==="g:"+c.g) && (n>0 || (gen && !term));
+    sec.el.hidden=!visible; sec.cnt.textContent=n+(n===1?" input":" inputs"); if(visible) total+=n;
+  });
+  GROUPS.forEach(g=>{ groupEls[g.id].hidden = !CATS.some(c=>c.g===g.id && !sections[c.id].el.hidden); });
+  document.getElementById("none").hidden = total>0 || !term;
+}
+q.addEventListener("input",apply); apply();
+
+/* ---------- selection & export ---------- */
+function updateSel(){ document.getElementById("selbar").hidden=selected.size===0; document.getElementById("selcount").textContent=selected.size+" selected"; }
+function rows(){ return [...selected].sort((a,b)=>a-b).map(i=>{ const d=D[i]; return {category:CATS.find(c=>c.id===d.c).name, title:d.t, value:d.v, expected:d.ex}; }); }
+document.getElementById("cpvals").addEventListener("click",()=>copy(JSON.stringify(rows().map(r=>r.value),null,2), selected.size+" values copied as an array"));
+document.getElementById("cpjson").addEventListener("click",()=>copy(JSON.stringify(rows(),null,2), selected.size+" inputs copied as JSON"));
+document.getElementById("cpcsv").addEventListener("click",()=>{
+  const esc=v=>{ let s=String(v); if(/^[=+\-@\t\r]/.test(s)) s="'"+s; return '"'+s.replace(/"/g,'""')+'"'; };
+  const lines=["category,title,value,expected"].concat(rows().map(r=>[r.category,r.title,r.value,r.expected].map(esc).join(",")));
+  copy(lines.join("\n"), selected.size+" inputs copied as CSV");
+});
+document.getElementById("selall").addEventListener("click",()=>{ cardEls.forEach((a,i)=>{ if(!a.hidden && !a.closest("section").hidden){ selected.add(i); a.classList.add("sel"); a.querySelector("input").checked=true; } }); updateSel(); });
+document.getElementById("selclear").addEventListener("click",()=>{ selected.clear(); cardEls.forEach(a=>{ a.classList.remove("sel"); a.querySelector("input").checked=false; }); updateSel(); });
+
+/* ---------- theme toggle (Auto / Light / Dark) ---------- */
+(function(){
+  const root=document.documentElement, btn=document.getElementById("themeToggle"), lbl=document.getElementById("ttLbl");
+  const modes=["auto","light","dark"], names={auto:"Auto",light:"Light",dark:"Dark"};
+  let mode="auto";
+  try{ const sv=localStorage.getItem("fi-theme"); if(sv && modes.includes(sv)) mode=sv; }catch(e){}
+  function paint(){
+    if(mode==="auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme",mode);
+    lbl.textContent=names[mode]; btn.dataset.mode=mode; btn.setAttribute("aria-label","Theme: "+names[mode]);
+  }
+  btn.addEventListener("click",()=>{ mode=modes[(modes.indexOf(mode)+1)%modes.length]; try{localStorage.setItem("fi-theme",mode)}catch(e){} paint(); });
+  paint();
+})();
+</script>

@@ -1,0 +1,5283 @@
+{
+  "name": "fragile-inputs",
+  "version": "1.0.0",
+  "description": "A QA/SDET field guide of edge-case inputs that break forms, search, databases, exports and assistive tech — annotated with what each one tests, what it breaks, and the correct behavior.",
+  "homepage": "https://github.com/gencdeveloper/fragile-inputs",
+  "license": "MIT",
+  "funding": "https://buymeacoffee.com/yunusemreozudogru",
+  "updated": "2026-10-06",
+  "counts": {
+    "inputs": 486,
+    "categories": 42,
+    "groups": 3
+  },
+  "groups": [
+    {
+      "id": "gen",
+      "name": "General inputs",
+      "description": "Edge cases every text field, form and API should survive."
+    },
+    {
+      "id": "ind",
+      "name": "Industry inputs",
+      "description": "Inputs specific to regulated and transactional products. Rules and thresholds vary by jurisdiction; confirm them against your own requirements."
+    },
+    {
+      "id": "a11y",
+      "name": "Accessibility checks",
+      "description": "Text, settings and console snippets for testing with assistive technology and user preferences. Each card names the WCAG 2.2 success criterion it relates to. Automated scanners catch only part of these; most need a person, a keyboard and a screen reader."
+    }
+  ],
+  "categories": [
+    {
+      "id": "len",
+      "group": "gen",
+      "name": "Length & whitespace",
+      "description": "Empty values, trimming, line breaks and length limits. Use the generator for exact boundary lengths."
+    },
+    {
+      "id": "name",
+      "group": "gen",
+      "name": "Names",
+      "description": "Real people have names your form did not expect. Each of these belongs to someone."
+    },
+    {
+      "id": "addr",
+      "group": "gen",
+      "name": "Addresses & phone",
+      "description": "US postal and phone formats that strict validation rejects or quietly corrupts."
+    },
+    {
+      "id": "email",
+      "group": "gen",
+      "name": "Email",
+      "description": "Valid addresses that naive regexes reject, and invalid ones they accept."
+    },
+    {
+      "id": "num",
+      "group": "gen",
+      "name": "Numbers & currency",
+      "description": "Parsing, precision, overflow and formats copied from spreadsheets or other locales."
+    },
+    {
+      "id": "date",
+      "group": "gen",
+      "name": "Dates & time",
+      "description": "Impossible dates, daylight saving gaps, time zones and ambiguous formats."
+    },
+    {
+      "id": "case",
+      "group": "gen",
+      "name": "Case & locale",
+      "description": "Uppercasing and lowercasing are not reversible and depend on the user's language."
+    },
+    {
+      "id": "inv",
+      "group": "gen",
+      "name": "Invisible characters",
+      "description": "Characters that take no visible space but change the data. They arrive through copy and paste."
+    },
+    {
+      "id": "norm",
+      "group": "gen",
+      "name": "Lookalikes & normalization",
+      "description": "Different code points that render the same. They defeat equality checks, search and uniqueness rules."
+    },
+    {
+      "id": "emo",
+      "group": "gen",
+      "name": "Emoji & graphemes",
+      "description": "One visible character made of several code points. Breaks length limits and truncation."
+    },
+    {
+      "id": "bidi",
+      "group": "gen",
+      "name": "Scripts & direction",
+      "description": "Right-to-left languages, mixed direction and non-Latin writing systems."
+    },
+    {
+      "id": "magic",
+      "group": "gen",
+      "name": "Reserved words",
+      "description": "Ordinary text that a system mistakes for a value, a keyword or a property."
+    },
+    {
+      "id": "file",
+      "group": "gen",
+      "name": "File names",
+      "description": "Upload and download names that confuse operating systems, servers and users."
+    },
+    {
+      "id": "pass",
+      "group": "gen",
+      "name": "Passwords",
+      "description": "Inputs that expose hashing limits, trimming and normalization in authentication."
+    },
+    {
+      "id": "sec",
+      "group": "gen",
+      "name": "Security",
+      "description": "Basic probes that show whether input is ever interpreted as code.",
+      "warning": "Use these only on systems you are authorized to test."
+    },
+    {
+      "id": "fin",
+      "group": "ind",
+      "name": "Fintech & payments",
+      "description": "Money movement: rounding, currencies, bank and card numbers, limits and cutoffs."
+    },
+    {
+      "id": "aml",
+      "group": "ind",
+      "name": "AML & sanctions screening",
+      "description": "Name-matching and threshold inputs for KYC, sanctions and transaction monitoring.",
+      "warning": "Names here are fictional. Pair each variant with a matching entry in your own test watchlist, or swap in a real list entry from your test data."
+    },
+    {
+      "id": "gamb",
+      "group": "ind",
+      "name": "Gambling & lottery",
+      "description": "Age gates, stakes, odds, ticket numbers, geofencing and responsible gambling limits."
+    },
+    {
+      "id": "health",
+      "group": "ind",
+      "name": "Healthcare",
+      "description": "Doses, units, patient identity and clinical codes. Small input mistakes here become safety incidents."
+    },
+    {
+      "id": "shop",
+      "group": "ind",
+      "name": "E-commerce",
+      "description": "Quantities, coupons, totals, tax and shipping rules at checkout."
+    },
+    {
+      "id": "travel",
+      "group": "ind",
+      "name": "Travel & aviation",
+      "description": "Bookings, passenger names, airport and flight codes, time zones and travel documents."
+    },
+    {
+      "id": "hr",
+      "group": "ind",
+      "name": "HR & payroll",
+      "description": "Tax IDs, timesheets around daylight saving, overtime and pay dates."
+    },
+    {
+      "id": "auto",
+      "group": "ind",
+      "name": "Automotive & mobility",
+      "description": "VINs, plates, odometers, EV data and trip records."
+    },
+    {
+      "id": "tel",
+      "group": "ind",
+      "name": "Telecom",
+      "description": "Phone numbers, SIM and device identifiers, SMS encoding and dialing rules."
+    },
+    {
+      "id": "log",
+      "group": "ind",
+      "name": "Logistics & shipping",
+      "description": "Tracking numbers, containers, air waybills, customs codes and delivery windows."
+    },
+    {
+      "id": "ins",
+      "group": "ind",
+      "name": "Insurance",
+      "description": "Policies, claims, coverage limits, beneficiaries and age rating."
+    },
+    {
+      "id": "gov",
+      "group": "ind",
+      "name": "Government & public services",
+      "description": "Identity documents, national IDs, placeholder data and addresses for people without one."
+    },
+    {
+      "id": "util",
+      "group": "ind",
+      "name": "Energy & utilities",
+      "description": "Meter reads, rollovers, net metering, tariffs and billing periods."
+    },
+    {
+      "id": "re",
+      "group": "ind",
+      "name": "Real estate & property",
+      "description": "Parcel numbers, legal descriptions, units, areas and listing data."
+    },
+    {
+      "id": "legal",
+      "group": "ind",
+      "name": "Legal & compliance",
+      "description": "Citations, docket numbers, deadlines, signatures and redaction."
+    },
+    {
+      "id": "edu",
+      "group": "ind",
+      "name": "Education",
+      "description": "Student records, course codes, grades and GPA math."
+    },
+    {
+      "id": "pharma",
+      "group": "ind",
+      "name": "Pharma & life sciences",
+      "description": "Drug codes, lot numbers, units, scientific notation and chemistry strings."
+    },
+    {
+      "id": "mfg",
+      "group": "ind",
+      "name": "Manufacturing",
+      "description": "Part and serial numbers, barcodes, tolerances, date codes and units of measure."
+    },
+    {
+      "id": "cons",
+      "group": "ind",
+      "name": "Construction & engineering",
+      "description": "Dimensions, symbols, fractions, survey notation and drawing numbers."
+    },
+    {
+      "id": "media",
+      "group": "ind",
+      "name": "Media & content",
+      "description": "Titles, artist names, timecodes, subtitles and catalog codes."
+    },
+    {
+      "id": "cyber",
+      "group": "ind",
+      "name": "Cybersecurity & networking",
+      "description": "IP addresses, domains, hashes and identifiers that parse in surprising ways."
+    },
+    {
+      "id": "sr",
+      "group": "a11y",
+      "name": "Screen reader content",
+      "description": "Text that sounds wrong when read aloud. Test with VoiceOver (Cmd+F5 on macOS), NVDA (free, Windows) or TalkBack (Android)."
+    },
+    {
+      "id": "zoom",
+      "group": "a11y",
+      "name": "Zoom, reflow & spacing",
+      "description": "Browser zoom, narrow viewports and user text settings. Values here are settings or snippets to apply."
+    },
+    {
+      "id": "kbd",
+      "group": "a11y",
+      "name": "Keyboard & focus",
+      "description": "Complete the task without a mouse. Snippets run in the browser console."
+    },
+    {
+      "id": "form",
+      "group": "a11y",
+      "name": "Forms & errors",
+      "description": "Labels, error messages, time limits and announcements."
+    },
+    {
+      "id": "vis",
+      "group": "a11y",
+      "name": "Color, motion & display",
+      "description": "Contrast boundaries and system preferences. Ratios are computed with the WCAG relative luminance formula."
+    },
+    {
+      "id": "img",
+      "group": "a11y",
+      "name": "Images & language",
+      "description": "Text alternatives, images of text and language attributes."
+    }
+  ],
+  "inputs": [
+    {
+      "id": "fi-001",
+      "group": "gen",
+      "category": "len",
+      "title": "Empty value",
+      "value": "",
+      "tests": "Required field validation.",
+      "breaks": "Empty string and null are handled differently; empty records show up as blank rows.",
+      "expected": "A clear validation message on required fields."
+    },
+    {
+      "id": "fi-002",
+      "group": "gen",
+      "category": "len",
+      "title": "Spaces only",
+      "value": "     ",
+      "tests": "Trim before validation.",
+      "breaks": "Counts as filled in; a record with a blank-looking name is saved.",
+      "expected": "Treated as empty.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-003",
+      "group": "gen",
+      "category": "len",
+      "title": "Leading and trailing spaces",
+      "value": "  jane.doe@example.com  ",
+      "tests": "Pasted values with stray spaces.",
+      "breaks": "Login fails, or the same email registers twice.",
+      "expected": "Trimmed before saving and comparing.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-004",
+      "group": "gen",
+      "category": "len",
+      "title": "Line break in a single-line field",
+      "value": "line one\nline two",
+      "tests": "Multi-line text pasted into an input.",
+      "breaks": "CSV exports shift rows; logs and email subjects break.",
+      "expected": "Line breaks removed or rejected.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-005",
+      "group": "gen",
+      "category": "len",
+      "title": "Windows line ending",
+      "value": "line one\r\nline two",
+      "tests": "CRLF from Windows clients or files.",
+      "breaks": "A stray \\r survives trimming on some platforms and breaks equality checks and headers.",
+      "expected": "Normalized to a single line ending.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-006",
+      "group": "gen",
+      "category": "len",
+      "title": "Tab character",
+      "value": "first\tlast",
+      "tests": "A cell copied from a spreadsheet.",
+      "breaks": "Pasting splits across fields; TSV exports gain a column.",
+      "expected": "Converted to a space or rejected.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-007",
+      "group": "gen",
+      "category": "len",
+      "title": "Single character",
+      "value": "a",
+      "tests": "Minimum length boundary.",
+      "breaks": "Search with one character can return the whole table or time out.",
+      "expected": "Minimum length enforced or search handles it efficiently."
+    },
+    {
+      "id": "fi-008",
+      "group": "gen",
+      "category": "name",
+      "title": "Apostrophe",
+      "value": "O'Brien",
+      "tests": "Quote characters in names.",
+      "breaks": "SQL errors or escape artifacts such as O\\'Brien.",
+      "expected": "Saved and displayed exactly as typed."
+    },
+    {
+      "id": "fi-009",
+      "group": "gen",
+      "category": "name",
+      "title": "Hyphenated names",
+      "value": "Mary-Kate Smith-Jones",
+      "tests": "Hyphens in first and last name.",
+      "breaks": "Validation that allows letters only rejects a common name.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-010",
+      "group": "gen",
+      "category": "name",
+      "title": "Surname Null",
+      "value": "Null",
+      "tests": "A real surname that means nothing to a database.",
+      "breaks": "Some systems store it as a missing value; the record disappears or errors.",
+      "expected": "Stored as ordinary text."
+    },
+    {
+      "id": "fi-011",
+      "group": "gen",
+      "category": "name",
+      "title": "Single name",
+      "value": "Sukarno",
+      "tests": "People without a surname.",
+      "breaks": "A required last name field locks them out.",
+      "expected": "Accepted, or a clear alternative offered."
+    },
+    {
+      "id": "fi-012",
+      "group": "gen",
+      "category": "name",
+      "title": "Very long surname",
+      "value": "Wolfeschlegelsteinhausenbergerdorff",
+      "tests": "A long word without spaces.",
+      "breaks": "Truncated in fixed-width columns; overflows cards and tables.",
+      "expected": "Wraps or truncates cleanly with the full value stored."
+    },
+    {
+      "id": "fi-013",
+      "group": "gen",
+      "category": "name",
+      "title": "Lowercase particle",
+      "value": "Maria de la Cruz",
+      "tests": "Name particles and auto-capitalization.",
+      "breaks": "Auto title-case turns it into De La Cruz; splitting on the first space puts 'de la Cruz' in the wrong field.",
+      "expected": "Case preserved as typed."
+    },
+    {
+      "id": "fi-014",
+      "group": "gen",
+      "category": "name",
+      "title": "Mixed case surname",
+      "value": "McDonald",
+      "tests": "Auto-capitalization rules.",
+      "breaks": "Normalizing case produces Mcdonald.",
+      "expected": "Case preserved as typed."
+    },
+    {
+      "id": "fi-015",
+      "group": "gen",
+      "category": "name",
+      "title": "Generational suffix",
+      "value": "Robert Smith III",
+      "tests": "Suffixes like Jr., Sr., III.",
+      "breaks": "Parsing puts III in the last name; sorting and matching fail.",
+      "expected": "Suffix handled or a separate field offered."
+    },
+    {
+      "id": "fi-016",
+      "group": "gen",
+      "category": "name",
+      "title": "Accented name",
+      "value": "José Muñoz",
+      "tests": "Non-ASCII letters in common US names.",
+      "breaks": "Wrong encoding shows JosÃ© MuÃ±oz; some validators reject it.",
+      "expected": "Preserved through save, display, export and email."
+    },
+    {
+      "id": "fi-017",
+      "group": "gen",
+      "category": "name",
+      "title": "Family name first",
+      "value": "王秀英",
+      "tests": "CJK names, family name first, no spaces.",
+      "breaks": "First/last split fails; greetings read 'Dear 英'.",
+      "expected": "Accepted; a single full-name field avoids wrong assumptions."
+    },
+    {
+      "id": "fi-018",
+      "group": "gen",
+      "category": "addr",
+      "title": "ZIP code with leading zero",
+      "value": "02134",
+      "tests": "Boston-area ZIPs start with 0.",
+      "breaks": "Stored as a number it becomes 2134; spreadsheets drop the zero too.",
+      "expected": "Stored and exported as text."
+    },
+    {
+      "id": "fi-019",
+      "group": "gen",
+      "category": "addr",
+      "title": "ZIP+4",
+      "value": "02134-1234",
+      "tests": "Nine-digit ZIP code.",
+      "breaks": "Five-digit-only validation rejects it; numeric parsing subtracts.",
+      "expected": "Accepted or trimmed to five digits by rule."
+    },
+    {
+      "id": "fi-020",
+      "group": "gen",
+      "category": "addr",
+      "title": "PO Box",
+      "value": "PO Box 1234",
+      "tests": "Mailing address without a street.",
+      "breaks": "Street-number validation rejects it; some carriers cannot deliver.",
+      "expected": "Accepted, or a clear message where PO Boxes are not allowed."
+    },
+    {
+      "id": "fi-021",
+      "group": "gen",
+      "category": "addr",
+      "title": "Military address",
+      "value": "PSC 1234, Box 5678, APO AE 09204",
+      "tests": "APO/FPO/DPO addresses.",
+      "breaks": "No city or state match; address autocomplete fails.",
+      "expected": "APO, FPO, DPO and AA, AE, AP accepted."
+    },
+    {
+      "id": "fi-022",
+      "group": "gen",
+      "category": "addr",
+      "title": "Apartment with symbol",
+      "value": "123 Main St Apt #4B",
+      "tests": "Unit numbers and the # sign.",
+      "breaks": "The # is treated as a URL fragment and the unit disappears.",
+      "expected": "Full line saved, including #4B."
+    },
+    {
+      "id": "fi-023",
+      "group": "gen",
+      "category": "addr",
+      "title": "Fractional street number",
+      "value": "1234 1/2 Elm St",
+      "tests": "Half addresses.",
+      "breaks": "The slash fails validation or is parsed as a date.",
+      "expected": "Accepted as written."
+    },
+    {
+      "id": "fi-024",
+      "group": "gen",
+      "category": "addr",
+      "title": "US territory",
+      "value": "150 Calle A, San Juan, PR 00926",
+      "tests": "Puerto Rico and other territories.",
+      "breaks": "State dropdowns list 50 states only; PR is rejected.",
+      "expected": "Territories (PR, GU, VI, AS, MP) supported."
+    },
+    {
+      "id": "fi-025",
+      "group": "gen",
+      "category": "addr",
+      "title": "Phone with punctuation",
+      "value": "(212) 555-0147",
+      "tests": "Common US phone formatting.",
+      "breaks": "Parentheses and dashes fail digit-only validation; duplicates slip past uniqueness checks.",
+      "expected": "Normalized to +12125550147."
+    },
+    {
+      "id": "fi-026",
+      "group": "gen",
+      "category": "addr",
+      "title": "Phone with extension",
+      "value": "212-555-0147 ext. 23",
+      "tests": "Business numbers with extensions.",
+      "breaks": "Rejected, or the extension is merged into the number.",
+      "expected": "Extension kept separately."
+    },
+    {
+      "id": "fi-027",
+      "group": "gen",
+      "category": "addr",
+      "title": "International phone",
+      "value": "+44 20 7946 0958",
+      "tests": "Non-US numbers in a US form.",
+      "breaks": "Ten-digit validation rejects valid customers abroad.",
+      "expected": "Accepted in E.164 format."
+    },
+    {
+      "id": "fi-028",
+      "group": "gen",
+      "category": "addr",
+      "title": "Vanity number",
+      "value": "1-800-GO-TESTS",
+      "tests": "Letters in phone numbers.",
+      "breaks": "Letters stripped, leaving an incomplete number.",
+      "expected": "Rejected with a clear message or converted to digits."
+    },
+    {
+      "id": "fi-029",
+      "group": "gen",
+      "category": "email",
+      "title": "Plus addressing",
+      "value": "jane.doe+qa@example.com",
+      "tests": "Sub-addressing used by Gmail and others.",
+      "breaks": "The + is rejected or encoded as a space in URLs.",
+      "expected": "Accepted and stored exactly."
+    },
+    {
+      "id": "fi-030",
+      "group": "gen",
+      "category": "email",
+      "title": "Uppercase email",
+      "value": "JANE.DOE@EXAMPLE.COM",
+      "tests": "Case-insensitive matching.",
+      "breaks": "The same person registers twice; login fails.",
+      "expected": "Domain compared case-insensitively; duplicates prevented."
+    },
+    {
+      "id": "fi-031",
+      "group": "gen",
+      "category": "email",
+      "title": "Long top-level domain",
+      "value": "jane@example.photography",
+      "tests": "Modern TLDs.",
+      "breaks": "Regexes that cap the TLD at 2 to 4 letters reject it.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-032",
+      "group": "gen",
+      "category": "email",
+      "title": "International domain",
+      "value": "josé@exämple.com",
+      "tests": "Internationalized email (EAI/IDN).",
+      "breaks": "Rejected by simple regexes, or accepted but undeliverable.",
+      "expected": "Either supported end to end or rejected with a clear message."
+    },
+    {
+      "id": "fi-033",
+      "group": "gen",
+      "category": "email",
+      "title": "Quoted local part",
+      "value": "\"john smith\"@example.com",
+      "tests": "Rare but valid syntax.",
+      "breaks": "Quotes break HTML attributes or CSV columns when displayed.",
+      "expected": "Rejected with a clear message or handled safely."
+    },
+    {
+      "id": "fi-034",
+      "group": "gen",
+      "category": "email",
+      "title": "Consecutive dots",
+      "value": "jane..doe@example.com",
+      "tests": "Invalid address that loose regexes accept.",
+      "breaks": "Saved, then every email to it bounces.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-035",
+      "group": "gen",
+      "category": "email",
+      "title": "Trailing dot",
+      "value": "jane@example.com.",
+      "tests": "Fully qualified domain with a final dot.",
+      "breaks": "Treated as a different address from jane@example.com.",
+      "expected": "Rejected or normalized."
+    },
+    {
+      "id": "fi-036",
+      "group": "gen",
+      "category": "email",
+      "title": "Subdomain",
+      "value": "jane@mail.corp.example.com",
+      "tests": "Multi-level domains.",
+      "breaks": "Validation that allows only one dot after @ rejects it.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-037",
+      "group": "gen",
+      "category": "num",
+      "title": "Currency symbol and commas",
+      "value": "$1,234.56",
+      "tests": "Amounts pasted from documents.",
+      "breaks": "Parsing returns NaN or 1; the payment fails or charges $1.",
+      "expected": "Parsed as 1234.56 or rejected with a clear format hint."
+    },
+    {
+      "id": "fi-038",
+      "group": "gen",
+      "category": "num",
+      "title": "European decimal format",
+      "value": "1.234,56",
+      "tests": "Amounts from users in other locales.",
+      "breaks": "parseFloat returns 1.234; the amount is a thousand times smaller.",
+      "expected": "Interpreted by the user's locale or rejected with a format hint."
+    },
+    {
+      "id": "fi-039",
+      "group": "gen",
+      "category": "num",
+      "title": "Accounting negative",
+      "value": "(1,234.00)",
+      "tests": "Negative numbers in parentheses.",
+      "breaks": "Parsed as positive or rejected.",
+      "expected": "Read as -1234.00 or rejected."
+    },
+    {
+      "id": "fi-040",
+      "group": "gen",
+      "category": "num",
+      "title": "Unicode minus sign",
+      "value": "−5",
+      "tests": "The minus sign from word processors (U+2212).",
+      "breaks": "Looks like -5 but Number() returns NaN.",
+      "expected": "Treated as -5 or rejected with a message."
+    },
+    {
+      "id": "fi-041",
+      "group": "gen",
+      "category": "num",
+      "title": "Negative zero",
+      "value": "-0",
+      "tests": "Signed zero.",
+      "breaks": "Totals display -$0.00; some comparisons fail.",
+      "expected": "Displayed as 0."
+    },
+    {
+      "id": "fi-042",
+      "group": "gen",
+      "category": "num",
+      "title": "Scientific notation",
+      "value": "1e3",
+      "tests": "What a number field accepts.",
+      "breaks": "Browser number inputs accept it as 1000 while the backend rejects it, or the reverse.",
+      "expected": "Client and server apply the same rule."
+    },
+    {
+      "id": "fi-043",
+      "group": "gen",
+      "category": "num",
+      "title": "Leading zeros",
+      "value": "007",
+      "tests": "Codes that look like numbers.",
+      "breaks": "Converted to 7; IDs and account codes lose data.",
+      "expected": "Code-like fields stored as text."
+    },
+    {
+      "id": "fi-044",
+      "group": "gen",
+      "category": "num",
+      "title": "32-bit overflow",
+      "value": "2147483648",
+      "tests": "One past the int32 maximum.",
+      "breaks": "Wraps to -2147483648 or fails to save in INT columns.",
+      "expected": "Range error with a clear message, or stored correctly."
+    },
+    {
+      "id": "fi-045",
+      "group": "gen",
+      "category": "num",
+      "title": "Beyond safe integer",
+      "value": "9007199254740993",
+      "tests": "Large IDs in JavaScript.",
+      "breaks": "Rounded to 9007199254740992; the ID points to another record.",
+      "expected": "Large IDs transported as strings."
+    },
+    {
+      "id": "fi-046",
+      "group": "gen",
+      "category": "num",
+      "title": "Floating point total",
+      "value": "0.1",
+      "tests": "Enter 0.1 and 0.2 as two line items and check the total.",
+      "breaks": "Total shows 0.30000000000000004.",
+      "expected": "Money calculated in cents or decimals; total shows 0.30."
+    },
+    {
+      "id": "fi-047",
+      "group": "gen",
+      "category": "num",
+      "title": "Arabic-Indic digits",
+      "value": "١٢٣",
+      "tests": "Digits from Arabic keyboards.",
+      "breaks": "Rejected as non-numeric, or stored and never matched.",
+      "expected": "Converted to 123 or rejected with a message."
+    },
+    {
+      "id": "fi-048",
+      "group": "gen",
+      "category": "num",
+      "title": "Fullwidth digits",
+      "value": "１２３４５",
+      "tests": "Digits from Japanese and Chinese input methods.",
+      "breaks": "Looks numeric but fails parsing; ZIP and phone fields reject it.",
+      "expected": "Normalized (NFKC) to 12345."
+    },
+    {
+      "id": "fi-049",
+      "group": "gen",
+      "category": "date",
+      "title": "Feb 29 in a common year",
+      "value": "02/29/2023",
+      "tests": "Impossible date.",
+      "breaks": "Some libraries silently roll it to March 1.",
+      "expected": "Invalid date error."
+    },
+    {
+      "id": "fi-050",
+      "group": "gen",
+      "category": "date",
+      "title": "Leap day",
+      "value": "02/29/2024",
+      "tests": "Valid Feb 29.",
+      "breaks": "Hand-written validation rejects it; yearly renewals skip three years.",
+      "expected": "Accepted; anniversaries handled by rule."
+    },
+    {
+      "id": "fi-051",
+      "group": "gen",
+      "category": "date",
+      "title": "April 31",
+      "value": "04/31/2026",
+      "tests": "Day 31 in a 30-day month.",
+      "breaks": "Rolls to May 1 or is saved as is.",
+      "expected": "Invalid date error."
+    },
+    {
+      "id": "fi-052",
+      "group": "gen",
+      "category": "date",
+      "title": "Day/month ambiguity",
+      "value": "03/04/2026",
+      "tests": "Dates read differently by region.",
+      "breaks": "March 4 in the US, April 3 in Europe.",
+      "expected": "Format shown in the label, or a date picker used."
+    },
+    {
+      "id": "fi-053",
+      "group": "gen",
+      "category": "date",
+      "title": "Spring-forward gap",
+      "value": "2026-03-08 02:30",
+      "tests": "A US local time that does not exist (clocks jump from 2:00 to 3:00).",
+      "breaks": "Reminders shift by an hour or never fire.",
+      "expected": "Warning shown, or consistently moved to 3:30."
+    },
+    {
+      "id": "fi-054",
+      "group": "gen",
+      "category": "date",
+      "title": "Fall-back overlap",
+      "value": "2026-11-01 01:30",
+      "tests": "A US local time that happens twice.",
+      "breaks": "Events are booked in the wrong hour; durations come out negative.",
+      "expected": "Time zone offset stored; the user can tell which 1:30."
+    },
+    {
+      "id": "fi-055",
+      "group": "gen",
+      "category": "date",
+      "title": "Date shift across time zones",
+      "value": "2026-12-31T23:30:00-08:00",
+      "tests": "Late evening in Los Angeles is already next year in UTC.",
+      "breaks": "Stored as January 1, 2027; reports land in the wrong year.",
+      "expected": "Displayed in the user's time zone as December 31."
+    },
+    {
+      "id": "fi-056",
+      "group": "gen",
+      "category": "date",
+      "title": "Year 2038",
+      "value": "2038-01-19 03:14:08",
+      "tests": "One second past the 32-bit Unix time limit.",
+      "breaks": "Older systems wrap to 1901.",
+      "expected": "Stored and displayed correctly."
+    },
+    {
+      "id": "fi-057",
+      "group": "gen",
+      "category": "date",
+      "title": "Two-digit year",
+      "value": "12/31/49",
+      "tests": "Century pivot rules.",
+      "breaks": "Read as 2049 by some libraries, 1949 by others; 50 often flips century.",
+      "expected": "Four-digit year required or the rule documented."
+    },
+    {
+      "id": "fi-058",
+      "group": "gen",
+      "category": "date",
+      "title": "Excel's Feb 29, 1900",
+      "value": "1900-02-29",
+      "tests": "A date that only exists in spreadsheets.",
+      "breaks": "Excel imports carry it; your parser rejects it or shifts dates by one day.",
+      "expected": "Invalid date error; imported dates match the source."
+    },
+    {
+      "id": "fi-059",
+      "group": "gen",
+      "category": "case",
+      "title": "Turkish capital İ",
+      "value": "İSTANBUL",
+      "tests": "Lowercasing outside the Turkish locale.",
+      "breaks": "toLowerCase() returns i̇stanbul (i plus a combining dot); a search for 'istanbul' misses it.",
+      "expected": "Case-insensitive search matches istanbul."
+    },
+    {
+      "id": "fi-060",
+      "group": "gen",
+      "category": "case",
+      "title": "Turkish dotless ı",
+      "value": "ılık",
+      "tests": "Round trip through uppercase.",
+      "breaks": "Uppercase gives ILIK, lowercase then gives ilik; the word changes.",
+      "expected": "Original value stored; case applied only for display."
+    },
+    {
+      "id": "fi-061",
+      "group": "gen",
+      "category": "case",
+      "title": "Keyword on a Turkish system",
+      "value": "file",
+      "tests": "Uppercasing identifiers with the user's locale.",
+      "breaks": "On a machine set to Turkish, 'file'.toUpperCase() is FİLE and no longer equals FILE; enum and header checks fail silently.",
+      "expected": "Identifiers compared without locale. Run the app once with the OS language set to Turkish."
+    },
+    {
+      "id": "fi-062",
+      "group": "gen",
+      "category": "case",
+      "title": "German sharp s",
+      "value": "Straße",
+      "tests": "Uppercase changes length.",
+      "breaks": "Uppercases to STRASSE (6 to 7 letters) and lowercases back to strasse, which no longer equals Straße.",
+      "expected": "Comparison uses case folding; length limits applied to the stored value."
+    },
+    {
+      "id": "fi-063",
+      "group": "gen",
+      "category": "case",
+      "title": "Greek final sigma",
+      "value": "ΟΔΟΣ",
+      "tests": "Context-dependent lowercase.",
+      "breaks": "Correct lowercase ends in ς; many libraries produce σ, so search fails.",
+      "expected": "Matches 'οδος' in case-insensitive search."
+    },
+    {
+      "id": "fi-064",
+      "group": "gen",
+      "category": "case",
+      "title": "Ligature",
+      "value": "ﬁle",
+      "tests": "The single character ﬁ (U+FB01).",
+      "breaks": "Looks like 'file' but does not match it; uppercasing turns 3 characters into 4.",
+      "expected": "Search normalizes with NFKC and finds it."
+    },
+    {
+      "id": "fi-065",
+      "group": "gen",
+      "category": "inv",
+      "title": "Zero-width space",
+      "value": "admin​",
+      "tests": "Uniqueness with an invisible character.",
+      "breaks": "A second username that looks exactly like admin can be created.",
+      "expected": "Invisible characters removed or rejected.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-066",
+      "group": "gen",
+      "category": "inv",
+      "title": "Non-breaking space",
+      "value": "John Smith",
+      "tests": "Space copied from Word or a web page.",
+      "breaks": "split(' ') and some regexes do not treat it as a space; first/last parsing and search fail.",
+      "expected": "Handled like a normal space.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-067",
+      "group": "gen",
+      "category": "inv",
+      "title": "Byte order mark",
+      "value": "﻿12345",
+      "tests": "Invisible prefix from CSV files.",
+      "breaks": "Number parsing fails and ID lookups find nothing, with no visible cause.",
+      "expected": "Leading BOM stripped; same result as 12345.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-068",
+      "group": "gen",
+      "category": "inv",
+      "title": "Soft hyphen",
+      "value": "pass­word",
+      "tests": "Hidden formatting character from pasted text.",
+      "breaks": "A value that looks correct is rejected in code and password fields.",
+      "expected": "Stripped, or the user warned.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-069",
+      "group": "gen",
+      "category": "inv",
+      "title": "Word joiner",
+      "value": "ORDER⁠-1001",
+      "tests": "Invisible character inside an ID.",
+      "breaks": "Order lookup fails for an ID that looks right.",
+      "expected": "Stripped from identifiers.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-070",
+      "group": "gen",
+      "category": "inv",
+      "title": "Hangul filler",
+      "value": "ㅤ",
+      "tests": "A character that renders blank but is not whitespace.",
+      "breaks": "Passes 'not blank' checks and creates users with invisible names.",
+      "expected": "Rejected in names and usernames.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-071",
+      "group": "gen",
+      "category": "inv",
+      "title": "Line separator",
+      "value": "Hello World",
+      "tests": "U+2028 inside text that ends up in JSON or scripts.",
+      "breaks": "Breaks older JavaScript parsers and inline JSON; some UIs show an unexpected line break.",
+      "expected": "Escaped in output or normalized.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-072",
+      "group": "gen",
+      "category": "inv",
+      "title": "Lone zero-width joiner",
+      "value": "test‍user",
+      "tests": "ZWJ outside of an emoji.",
+      "breaks": "Bypasses blocklists; 'testuser' and this value look identical.",
+      "expected": "Stripped outside emoji sequences.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-073",
+      "group": "gen",
+      "category": "norm",
+      "title": "Cyrillic lookalike",
+      "value": "аpple.com",
+      "tests": "Homoglyph (U+0430 instead of a).",
+      "breaks": "Fake accounts and domains that look exactly like the real one.",
+      "expected": "Mixed-script usernames and domains rejected or flagged."
+    },
+    {
+      "id": "fi-074",
+      "group": "gen",
+      "category": "norm",
+      "title": "Decomposed accent",
+      "value": "Café",
+      "tests": "e followed by a combining accent.",
+      "breaks": "Looks like Café but does not equal it; files from macOS often arrive this way.",
+      "expected": "Normalized to NFC before saving; matches Café."
+    },
+    {
+      "id": "fi-075",
+      "group": "gen",
+      "category": "norm",
+      "title": "Kelvin sign",
+      "value": "K",
+      "tests": "K (U+212A) versus the letter K.",
+      "breaks": "Lowercases to the letter k, so case-insensitive matching produces surprises.",
+      "expected": "Normalized with NFKC in identifiers."
+    },
+    {
+      "id": "fi-076",
+      "group": "gen",
+      "category": "norm",
+      "title": "Angstrom sign",
+      "value": "Å",
+      "tests": "Å (U+212B) versus Å (U+00C5).",
+      "breaks": "Two visually identical strings that never match.",
+      "expected": "Equal after normalization."
+    },
+    {
+      "id": "fi-077",
+      "group": "gen",
+      "category": "norm",
+      "title": "Math bold letters",
+      "value": "𝐁𝐨𝐥𝐝",
+      "tests": "Styled text copied from social media.",
+      "breaks": "Profanity filters and search do not recognize the word; screen readers read it badly.",
+      "expected": "Normalized with NFKC to 'Bold' where search matters."
+    },
+    {
+      "id": "fi-078",
+      "group": "gen",
+      "category": "norm",
+      "title": "Superscript digit",
+      "value": "x²",
+      "tests": "Superscripts in measurements.",
+      "breaks": "Treated as the digit 2 by some normalizers and as a non-digit by others.",
+      "expected": "Consistent handling across search and validation."
+    },
+    {
+      "id": "fi-079",
+      "group": "gen",
+      "category": "norm",
+      "title": "Roman numeral character",
+      "value": "Ⅻ",
+      "tests": "Ⅻ as one character (U+216B).",
+      "breaks": "Length is 1 but NFKC turns it into XII (3 letters).",
+      "expected": "Length limits checked after normalization."
+    },
+    {
+      "id": "fi-080",
+      "group": "gen",
+      "category": "emo",
+      "title": "Family emoji",
+      "value": "👨‍👩‍👧‍👦",
+      "tests": "Length of a joined emoji.",
+      "breaks": "One visible character has a JavaScript length of 11; limits and truncation split it.",
+      "expected": "Limits count visible characters; truncation never splits an emoji."
+    },
+    {
+      "id": "fi-081",
+      "group": "gen",
+      "category": "emo",
+      "title": "Flag",
+      "value": "🇺🇸",
+      "tests": "Two regional indicator letters.",
+      "breaks": "Truncated or reversed, it becomes another flag or loose letters.",
+      "expected": "Handled as one character."
+    },
+    {
+      "id": "fi-082",
+      "group": "gen",
+      "category": "emo",
+      "title": "Skin tone",
+      "value": "👍🏽",
+      "tests": "Emoji plus modifier.",
+      "breaks": "Split in the middle, it shows a yellow thumb and a color swatch.",
+      "expected": "Handled as one character."
+    },
+    {
+      "id": "fi-083",
+      "group": "gen",
+      "category": "emo",
+      "title": "Keycap",
+      "value": "1️⃣",
+      "tests": "Digit plus variation selector plus keycap.",
+      "breaks": "Starts with the digit 1, so numeric validation may accept it.",
+      "expected": "Rejected in numeric fields."
+    },
+    {
+      "id": "fi-084",
+      "group": "gen",
+      "category": "emo",
+      "title": "Text vs emoji heart",
+      "value": "❤️",
+      "tests": "Same symbol with and without U+FE0F.",
+      "breaks": "❤ and ❤️ look alike but do not match in search or reactions.",
+      "expected": "Matched consistently."
+    },
+    {
+      "id": "fi-085",
+      "group": "gen",
+      "category": "emo",
+      "title": "Emoji in text",
+      "value": "Ship it 🚀 by Friday ✅",
+      "tests": "4-byte characters in ordinary text.",
+      "breaks": "MySQL tables using utf8 instead of utf8mb4 reject the row or store ????.",
+      "expected": "Saved and shown exactly."
+    },
+    {
+      "id": "fi-086",
+      "group": "gen",
+      "category": "emo",
+      "title": "Zalgo text",
+      "value": "T̶͒́̌è̵͐͆s̷͖̤̈t̴͙̣̃",
+      "tests": "Excessive combining marks.",
+      "breaks": "Overflows line height and draws over neighboring rows.",
+      "expected": "Layout contains it; marks per character capped if needed."
+    },
+    {
+      "id": "fi-087",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Arabic",
+      "value": "مرحبا بالعالم",
+      "tests": "Right-to-left text.",
+      "breaks": "Alignment, cursor and punctuation end up on the wrong side.",
+      "expected": "Displayed in its own direction and searchable."
+    },
+    {
+      "id": "fi-088",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Mixed direction",
+      "value": "Order 123 مرحبا 456",
+      "tests": "Left-to-right and right-to-left together.",
+      "breaks": "Numbers and words render in an unexpected order.",
+      "expected": "Readable; stored value unchanged."
+    },
+    {
+      "id": "fi-089",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Hebrew with brackets",
+      "value": "(שלום) 42",
+      "tests": "Mirrored characters.",
+      "breaks": "Brackets render reversed and the number moves.",
+      "expected": "Rendered correctly."
+    },
+    {
+      "id": "fi-090",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Right-to-left override",
+      "value": "invoice‮gpj.exe",
+      "tests": "Direction control character in a file name.",
+      "breaks": "Displays as invoiceexe.jpg but is actually an .exe file.",
+      "expected": "Direction controls rejected in file names.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-091",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Japanese",
+      "value": "東京テスト",
+      "tests": "Wide (CJK) characters.",
+      "breaks": "Missing fonts show boxes; width and truncation math is wrong.",
+      "expected": "Displayed and searchable."
+    },
+    {
+      "id": "fi-092",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Devanagari",
+      "value": "नमस्ते",
+      "tests": "Script with combining syllables.",
+      "breaks": "Six code points form four visible characters; per-code-point truncation breaks syllables.",
+      "expected": "Truncation respects grapheme boundaries."
+    },
+    {
+      "id": "fi-093",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Thai",
+      "value": "สวัสดีครับ",
+      "tests": "A language written without spaces between words.",
+      "breaks": "Word-based search and line wrapping fail.",
+      "expected": "Wraps cleanly; search finds substrings."
+    },
+    {
+      "id": "fi-094",
+      "group": "gen",
+      "category": "magic",
+      "title": "The string null",
+      "value": "null",
+      "tests": "Text equal to a null keyword.",
+      "breaks": "Saved as a missing value or displayed as empty.",
+      "expected": "Stored and shown as the text null."
+    },
+    {
+      "id": "fi-095",
+      "group": "gen",
+      "category": "magic",
+      "title": "The string undefined",
+      "value": "undefined",
+      "tests": "JavaScript keyword as input.",
+      "breaks": "Indistinguishable from a missing value in templates and logs.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-096",
+      "group": "gen",
+      "category": "magic",
+      "title": "Boolean words",
+      "value": "false",
+      "tests": "Text that parses as a boolean.",
+      "breaks": "YAML, CSV importers and loose comparisons turn it into a boolean; a company named False disappears.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-097",
+      "group": "gen",
+      "category": "magic",
+      "title": "NaN and Infinity",
+      "value": "NaN",
+      "tests": "Special numeric names.",
+      "breaks": "Number fields accept it; totals turn into NaN.",
+      "expected": "Rejected in numeric fields."
+    },
+    {
+      "id": "fi-098",
+      "group": "gen",
+      "category": "magic",
+      "title": "Python None",
+      "value": "None",
+      "tests": "Keyword from Python backends.",
+      "breaks": "Treated as null by some serializers.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-099",
+      "group": "gen",
+      "category": "magic",
+      "title": "Object as text",
+      "value": "[object Object]",
+      "tests": "What a JS bug saves to the database.",
+      "breaks": "If your UI already shows this, an object was converted to text somewhere.",
+      "expected": "Stored as typed; the app never produces it on its own."
+    },
+    {
+      "id": "fi-100",
+      "group": "gen",
+      "category": "magic",
+      "title": "Prototype key",
+      "value": "__proto__",
+      "tests": "Property names used as map keys (tags, usernames).",
+      "breaks": "Using it as an object key changes the object's prototype; values vanish or leak.",
+      "expected": "Stored as a normal key; Map or null-prototype objects used."
+    },
+    {
+      "id": "fi-101",
+      "group": "gen",
+      "category": "magic",
+      "title": "Norway problem",
+      "value": "NO",
+      "tests": "Country codes in YAML configs and imports.",
+      "breaks": "YAML 1.1 reads NO as false; Norway becomes a boolean.",
+      "expected": "Stored as the text NO."
+    },
+    {
+      "id": "fi-102",
+      "group": "gen",
+      "category": "file",
+      "title": "Windows reserved name",
+      "value": "CON.txt",
+      "tests": "Device names (CON, PRN, AUX, NUL, COM1).",
+      "breaks": "Windows users cannot save or open the downloaded file.",
+      "expected": "Renamed on download or rejected on upload."
+    },
+    {
+      "id": "fi-103",
+      "group": "gen",
+      "category": "file",
+      "title": "Double extension",
+      "value": "report.pdf.exe",
+      "tests": "Hidden real extension.",
+      "breaks": "With extensions hidden, users see report.pdf and run an executable.",
+      "expected": "Type checked by content; executables blocked."
+    },
+    {
+      "id": "fi-104",
+      "group": "gen",
+      "category": "file",
+      "title": "Spaces and parentheses",
+      "value": "résumé final (2).docx",
+      "tests": "Ordinary messy file name.",
+      "breaks": "Broken download links, encoding errors and 404s on spaces.",
+      "expected": "Downloads with the same name."
+    },
+    {
+      "id": "fi-105",
+      "group": "gen",
+      "category": "file",
+      "title": "Hidden dotfile",
+      "value": ".htaccess",
+      "tests": "Names that start with a dot.",
+      "breaks": "May overwrite server config or vanish from listings.",
+      "expected": "Renamed or rejected."
+    },
+    {
+      "id": "fi-106",
+      "group": "gen",
+      "category": "file",
+      "title": "Slashes in name",
+      "value": "Q3/Q4 results\\final.pdf",
+      "tests": "Path separators inside a name.",
+      "breaks": "Creates folders or fails to save.",
+      "expected": "Separators replaced."
+    },
+    {
+      "id": "fi-107",
+      "group": "gen",
+      "category": "file",
+      "title": "Trailing dot or space",
+      "value": "notes.txt. ",
+      "tests": "Names Windows silently changes.",
+      "breaks": "Windows strips the ending; two names map to one file.",
+      "expected": "Trimmed on upload.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-108",
+      "group": "gen",
+      "category": "file",
+      "title": "Null byte trick",
+      "value": "photo.jpg%00.php",
+      "tests": "Encoded null byte in a file name.",
+      "breaks": "Old stacks truncate at the null and save photo.jpg as .php.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-109",
+      "group": "gen",
+      "category": "file",
+      "title": "Very long name",
+      "value": "quarterly-financial-report-for-the-board-of-directors-including-appendices-and-supporting-schedules-for-fiscal-year-2026-final-version-approved-by-legal-and-compliance-after-review-of-all-material-changes-and-corrections-v12.pdf",
+      "tests": "Names near the 255-byte limit.",
+      "breaks": "Upload fails on some filesystems; the name is cut mid-extension.",
+      "expected": "Truncated while keeping the extension."
+    },
+    {
+      "id": "fi-110",
+      "group": "gen",
+      "category": "pass",
+      "title": "73-byte password",
+      "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!",
+      "tests": "bcrypt ignores everything after 72 bytes.",
+      "breaks": "Any password sharing the first 72 bytes logs in.",
+      "expected": "Max length enforced, or the password pre-hashed."
+    },
+    {
+      "id": "fi-111",
+      "group": "gen",
+      "category": "pass",
+      "title": "Leading and trailing spaces",
+      "value": "  hunter2  ",
+      "tests": "Whether passwords get trimmed.",
+      "breaks": "Trimmed at signup but not at login (or the reverse) and the user is locked out.",
+      "expected": "Same rule at signup, login and reset.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-112",
+      "group": "gen",
+      "category": "pass",
+      "title": "Emoji password",
+      "value": "🔑correct horse🐎",
+      "tests": "Non-ASCII passwords.",
+      "breaks": "Rejected, or hashed differently on mobile and web.",
+      "expected": "Accepted and works on every client."
+    },
+    {
+      "id": "fi-113",
+      "group": "gen",
+      "category": "pass",
+      "title": "Accented password",
+      "value": "Pässwörd!",
+      "tests": "Normalization at login (type it on macOS and Windows).",
+      "breaks": "Some keyboards produce decomposed characters; the same password fails on another device.",
+      "expected": "Normalized (NFC or NFKC) before hashing."
+    },
+    {
+      "id": "fi-114",
+      "group": "gen",
+      "category": "pass",
+      "title": "Trailing newline",
+      "value": "Secret123\n",
+      "tests": "Password pasted from a file or password manager.",
+      "breaks": "Works on one form and fails on another.",
+      "expected": "Consistent handling everywhere.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-115",
+      "group": "gen",
+      "category": "sec",
+      "title": "SQL injection",
+      "value": "' OR '1'='1",
+      "tests": "Whether input becomes part of a query.",
+      "breaks": "If queries are built by concatenation, every row returns or login is bypassed.",
+      "expected": "Treated as plain text; parameterized queries used."
+    },
+    {
+      "id": "fi-116",
+      "group": "gen",
+      "category": "sec",
+      "title": "Script tag",
+      "value": "<script>alert(1)</script>",
+      "tests": "Stored XSS.",
+      "breaks": "An alert appears when the saved value is viewed.",
+      "expected": "Shown as text, never executed."
+    },
+    {
+      "id": "fi-117",
+      "group": "gen",
+      "category": "sec",
+      "title": "Event handler",
+      "value": "<img src=x onerror=alert(1)>",
+      "tests": "Filters that only block script tags.",
+      "breaks": "Executes when HTML is not escaped.",
+      "expected": "Shown as text, never executed."
+    },
+    {
+      "id": "fi-118",
+      "group": "gen",
+      "category": "sec",
+      "title": "SVG payload",
+      "value": "<svg onload=alert(1)>",
+      "tests": "SVG and rich-text contexts.",
+      "breaks": "Executes in markdown or rich-text renderers that allow SVG.",
+      "expected": "Shown as text, never executed."
+    },
+    {
+      "id": "fi-119",
+      "group": "gen",
+      "category": "sec",
+      "title": "JavaScript URL",
+      "value": "javascript:alert(1)",
+      "tests": "Website and profile link fields.",
+      "breaks": "Clicking the saved link runs code.",
+      "expected": "Only http and https links allowed."
+    },
+    {
+      "id": "fi-120",
+      "group": "gen",
+      "category": "sec",
+      "title": "Path traversal",
+      "value": "../../etc/passwd",
+      "tests": "File name and download parameters.",
+      "breaks": "Files outside the intended folder become reachable.",
+      "expected": "Rejected or resolved within the allowed folder."
+    },
+    {
+      "id": "fi-121",
+      "group": "gen",
+      "category": "sec",
+      "title": "Template expression",
+      "value": "{{7*7}}",
+      "tests": "Server or client template injection.",
+      "breaks": "If the page shows 49, input is evaluated as an expression.",
+      "expected": "Shown literally as {{7*7}}."
+    },
+    {
+      "id": "fi-122",
+      "group": "gen",
+      "category": "sec",
+      "title": "Spreadsheet formula",
+      "value": "=1+1",
+      "tests": "CSV and Excel export injection.",
+      "breaks": "If the exported cell shows 2 in Excel, formulas execute.",
+      "expected": "Cells starting with = + - @ escaped on export."
+    },
+    {
+      "id": "fi-123",
+      "group": "gen",
+      "category": "sec",
+      "title": "Header injection",
+      "value": "test%0d%0aSet-Cookie: x=1",
+      "tests": "Encoded line break in redirect or header values.",
+      "breaks": "Adds headers to the response.",
+      "expected": "Line breaks rejected or encoded."
+    },
+    {
+      "id": "fi-124",
+      "group": "gen",
+      "category": "sec",
+      "title": "JSON breakout",
+      "value": "\"},\"admin\":true,\"x\":{\"",
+      "tests": "Input concatenated into JSON strings.",
+      "breaks": "Adds fields to the payload when JSON is built by hand.",
+      "expected": "Serialized as a plain string."
+    },
+    {
+      "id": "fi-125",
+      "group": "gen",
+      "category": "sec",
+      "title": "NoSQL operator",
+      "value": "{\"$ne\": null}",
+      "tests": "JSON bodies passed straight into MongoDB queries.",
+      "breaks": "Matches every document; login is bypassed.",
+      "expected": "Rejected as a non-string value."
+    },
+    {
+      "id": "fi-126",
+      "group": "ind",
+      "category": "fin",
+      "title": "Half-cent rounding",
+      "value": "10.005",
+      "tests": "Amounts with more decimals than the currency allows.",
+      "breaks": "In binary floating point 10.005 is stored as 10.00499..., so it rounds to 10.00 instead of 10.01. Fees and totals drift by a cent.",
+      "expected": "Decimal math with a documented rounding mode (half-up or banker's)."
+    },
+    {
+      "id": "fi-127",
+      "group": "ind",
+      "category": "fin",
+      "title": "Zero amount",
+      "value": "0.00",
+      "tests": "Zero-value payments and transfers.",
+      "breaks": "Creates empty ledger entries or accidentally triggers a card verification flow.",
+      "expected": "Rejected, or handled as an explicit $0 authorization."
+    },
+    {
+      "id": "fi-128",
+      "group": "ind",
+      "category": "fin",
+      "title": "Negative transfer",
+      "value": "-50.00",
+      "tests": "Sign of the transfer amount.",
+      "breaks": "A negative amount reverses direction and pulls money into the sender's account.",
+      "expected": "Rejected on the server, not only in the UI."
+    },
+    {
+      "id": "fi-129",
+      "group": "ind",
+      "category": "fin",
+      "title": "Amount past column size",
+      "value": "1000000000000.00",
+      "tests": "Upper bound of amount fields.",
+      "breaks": "Overflows DECIMAL(12,2) columns or exceeds limits with a generic error.",
+      "expected": "Limit enforced with a message naming the maximum."
+    },
+    {
+      "id": "fi-130",
+      "group": "ind",
+      "category": "fin",
+      "title": "Yen with decimals",
+      "value": "JPY 1000.5",
+      "tests": "Zero-decimal currencies.",
+      "breaks": "Yen has no minor unit. APIs expecting minor units charge 100,050 or reject the payment.",
+      "expected": "Decimal places taken from the currency's ISO 4217 definition."
+    },
+    {
+      "id": "fi-131",
+      "group": "ind",
+      "category": "fin",
+      "title": "Three-decimal currency",
+      "value": "KWD 1.234",
+      "tests": "Kuwaiti dinar uses three decimals.",
+      "breaks": "Truncated to 1.23 when every currency is assumed to have two.",
+      "expected": "Stored and displayed with three decimals."
+    },
+    {
+      "id": "fi-132",
+      "group": "ind",
+      "category": "fin",
+      "title": "Routing number checksum",
+      "value": "123456789",
+      "tests": "ABA routing number check digit.",
+      "breaks": "Looks valid but fails the checksum; the ACH payment returns days later.",
+      "expected": "Rejected immediately with a clear message."
+    },
+    {
+      "id": "fi-133",
+      "group": "ind",
+      "category": "fin",
+      "title": "Routing number with leading zero",
+      "value": "011000015",
+      "tests": "A valid ABA number that starts with 0.",
+      "breaks": "Stored as a number it becomes 11000015 and fails.",
+      "expected": "Accepted and stored as text."
+    },
+    {
+      "id": "fi-134",
+      "group": "ind",
+      "category": "fin",
+      "title": "Luhn-invalid card",
+      "value": "4242 4242 4242 4241",
+      "tests": "Card number check digit.",
+      "breaks": "Sent to the processor and declined late, sometimes retried.",
+      "expected": "Rejected before submission."
+    },
+    {
+      "id": "fi-135",
+      "group": "ind",
+      "category": "fin",
+      "title": "Card expiring this month",
+      "value": "10/26",
+      "tests": "Cards are valid through the last day of the expiry month.",
+      "breaks": "Off-by-one logic rejects a card that still works.",
+      "expected": "Accepted until the month ends.",
+      "dynamic": {
+        "kind": "card-expiry",
+        "monthOffset": 0,
+        "format": "MM/YY"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-136",
+      "group": "ind",
+      "category": "fin",
+      "title": "Card expired last month",
+      "value": "09/26",
+      "tests": "Expiry one month in the past.",
+      "breaks": "Accepted and declined at capture, after the order is confirmed.",
+      "expected": "Rejected with a card-expired message.",
+      "dynamic": {
+        "kind": "card-expiry",
+        "monthOffset": -1,
+        "format": "MM/YY"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-137",
+      "group": "ind",
+      "category": "fin",
+      "title": "IBAN with spaces",
+      "value": "GB82 WEST 1234 5698 7654 32",
+      "tests": "Formatting and the mod-97 check.",
+      "breaks": "Spaces rejected, or stored with spaces so lookups fail; lowercase entry fails.",
+      "expected": "Spaces removed, uppercased, checksum validated."
+    },
+    {
+      "id": "fi-138",
+      "group": "ind",
+      "category": "fin",
+      "title": "Year-end cutoff",
+      "value": "2026-12-31 17:00 ET",
+      "tests": "Payment submitted at the cutoff on the last business day of the year.",
+      "breaks": "Posted to the wrong date; statements, interest and tax forms disagree.",
+      "expected": "Cutoff applied in the bank's time zone with the documented boundary."
+    },
+    {
+      "id": "fi-139",
+      "group": "ind",
+      "category": "aml",
+      "title": "Transliteration variant",
+      "value": "Muhammad Alrashid",
+      "tests": "Fuzzy match against a list entry 'Mohammed Al-Rashid'.",
+      "breaks": "Exact or token matching misses the hit.",
+      "expected": "Matched above the configured similarity threshold."
+    },
+    {
+      "id": "fi-140",
+      "group": "ind",
+      "category": "aml",
+      "title": "Reversed name order",
+      "value": "AL-RASHID, Mohammed",
+      "tests": "Surname first with a comma.",
+      "breaks": "Order-sensitive matching scores it low.",
+      "expected": "Matched regardless of order, case and comma."
+    },
+    {
+      "id": "fi-141",
+      "group": "ind",
+      "category": "aml",
+      "title": "Initial only",
+      "value": "M. Al-Rashid",
+      "tests": "Given name reduced to an initial.",
+      "breaks": "No hit, or the alert is suppressed as a weak match.",
+      "expected": "Generates a reviewable alert per the matching policy."
+    },
+    {
+      "id": "fi-142",
+      "group": "ind",
+      "category": "aml",
+      "title": "Titles and honorifics",
+      "value": "Sheikh Dr. Mohammed Al-Rashid",
+      "tests": "Prefixes added to a listed name.",
+      "breaks": "Extra tokens push the score under the threshold.",
+      "expected": "Titles stripped before matching."
+    },
+    {
+      "id": "fi-143",
+      "group": "ind",
+      "category": "aml",
+      "title": "Native script name",
+      "value": "محمد الرشيد",
+      "tests": "Arabic-script input against Latin-script lists.",
+      "breaks": "Latin-only matching returns 'no match' silently.",
+      "expected": "Matched via transliteration, or routed to manual review."
+    },
+    {
+      "id": "fi-144",
+      "group": "ind",
+      "category": "aml",
+      "title": "Cyrillic name",
+      "value": "Сергей Иванов",
+      "tests": "Against list spellings Sergei Ivanov and Sergey Ivanov.",
+      "breaks": "Script mismatch means no comparison happens.",
+      "expected": "Matched to both Latin spellings."
+    },
+    {
+      "id": "fi-145",
+      "group": "ind",
+      "category": "aml",
+      "title": "Umlaut spelling",
+      "value": "Mueller",
+      "tests": "Against Müller and Muller.",
+      "breaks": "ü, ue and u treated as unrelated letters.",
+      "expected": "All three spellings match."
+    },
+    {
+      "id": "fi-146",
+      "group": "ind",
+      "category": "aml",
+      "title": "Legal suffix noise",
+      "value": "ACME TRADING L.L.C.",
+      "tests": "Against entity entry 'Acme Trading LLC'.",
+      "breaks": "Punctuation and suffix variants (LLC, Ltd, GmbH, S.A.) break matching.",
+      "expected": "Suffixes and punctuation normalized before matching."
+    },
+    {
+      "id": "fi-147",
+      "group": "ind",
+      "category": "aml",
+      "title": "Nickname in quotes",
+      "value": "Ivan \"The Fox\" Petrov",
+      "tests": "Aliases embedded in a name.",
+      "breaks": "Quotes break CSV list imports; alias tokens lower the score.",
+      "expected": "Imported intact; matched to the primary name and the alias."
+    },
+    {
+      "id": "fi-148",
+      "group": "ind",
+      "category": "aml",
+      "title": "Very common name",
+      "value": "John Smith",
+      "tests": "False-positive volume.",
+      "breaks": "Hundreds of alerts flood the review queue.",
+      "expected": "Secondary identifiers (DOB, country, ID) used to clear false positives."
+    },
+    {
+      "id": "fi-149",
+      "group": "ind",
+      "category": "aml",
+      "title": "Year-only birth date",
+      "value": "1975",
+      "tests": "Partial dates on list entries or customer records.",
+      "breaks": "Full-date comparison treats it as a mismatch and drops the hit.",
+      "expected": "Compared on the parts that exist."
+    },
+    {
+      "id": "fi-150",
+      "group": "ind",
+      "category": "aml",
+      "title": "Just under the CTR threshold",
+      "value": "9,999.00",
+      "tests": "Cash amounts just below the $10,000 Currency Transaction Report threshold.",
+      "breaks": "Single-transaction rules miss repeated near-threshold deposits (structuring).",
+      "expected": "Daily aggregation and near-threshold patterns raise alerts."
+    },
+    {
+      "id": "fi-151",
+      "group": "ind",
+      "category": "aml",
+      "title": "Exactly at the threshold",
+      "value": "10,000.00",
+      "tests": "Boundary of a reporting rule (greater than vs greater or equal).",
+      "breaks": "An off-by-one comparison skips the report.",
+      "expected": "Rule fires exactly as documented."
+    },
+    {
+      "id": "fi-152",
+      "group": "ind",
+      "category": "aml",
+      "title": "High-risk country code",
+      "value": "kp",
+      "tests": "Lowercase ISO code (North Korea) in a country field.",
+      "breaks": "Case-sensitive or outdated code lists skip the rule.",
+      "expected": "Flagged regardless of case."
+    },
+    {
+      "id": "fi-153",
+      "group": "ind",
+      "category": "aml",
+      "title": "Vessel IMO number",
+      "value": "IMO 9321483",
+      "tests": "Ship identifiers in trade-finance screening.",
+      "breaks": "Prefix and spacing break lookups; the check digit is never validated.",
+      "expected": "Normalized to seven digits with the check digit validated."
+    },
+    {
+      "id": "fi-154",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Turns 21 tomorrow",
+      "value": "2005-10-07",
+      "tests": "Age gate boundary (21+ in most US states for online gambling).",
+      "breaks": "Age from year subtraction lets the player in a day early.",
+      "expected": "Rejected today, accepted tomorrow.",
+      "dynamic": {
+        "kind": "offset-date",
+        "years": -21,
+        "days": 1,
+        "format": "YYYY-MM-DD"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-155",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Turns 21 today",
+      "value": "2005-10-06",
+      "tests": "Birthday on the day of registration.",
+      "breaks": "Time zone math rejects the player until UTC midnight.",
+      "expected": "Accepted in the player's local date.",
+      "dynamic": {
+        "kind": "offset-date",
+        "years": -21,
+        "days": 0,
+        "format": "YYYY-MM-DD"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-156",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Leap-day birthday",
+      "value": "2004-02-29",
+      "tests": "Legal age in common years: Feb 28 or Mar 1?",
+      "breaks": "Different services disagree, so a player is accepted on one and rejected on another.",
+      "expected": "Follows the documented rule for the jurisdiction."
+    },
+    {
+      "id": "fi-157",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Duplicate numbers",
+      "value": "7, 7, 12, 23, 34",
+      "tests": "Repeated picks on a ticket.",
+      "breaks": "Ticket accepted with impossible numbers.",
+      "expected": "Rejected before purchase."
+    },
+    {
+      "id": "fi-158",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Number out of range",
+      "value": "70",
+      "tests": "Outside the game's range (Powerball white balls are 1 to 69).",
+      "breaks": "Accepted and the ticket can never win, or the draw crashes.",
+      "expected": "Rejected with the valid range shown."
+    },
+    {
+      "id": "fi-159",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Too few numbers",
+      "value": "5, 12, 23, 34",
+      "tests": "Incomplete pick.",
+      "breaks": "Ticket priced and sold incomplete.",
+      "expected": "Rejected; quick pick offered."
+    },
+    {
+      "id": "fi-160",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Fractional stake",
+      "value": "0.001",
+      "tests": "Smallest bet unit.",
+      "breaks": "Accepted and rounded to zero: free bets and ledger drift.",
+      "expected": "Minimum stake enforced in currency units."
+    },
+    {
+      "id": "fi-161",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Negative stake",
+      "value": "-10",
+      "tests": "Sign of the wager.",
+      "breaks": "Credits the balance instead of debiting it.",
+      "expected": "Rejected on the server."
+    },
+    {
+      "id": "fi-162",
+      "group": "ind",
+      "category": "gamb",
+      "title": "American odds",
+      "value": "-110",
+      "tests": "Odds formats: American (-110), decimal (2.50), fractional (3/2).",
+      "breaks": "The minus sign is read as a negative payout; fractional odds are parsed as dates.",
+      "expected": "Payout correct for every format."
+    },
+    {
+      "id": "fi-163",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Address in a non-licensed state",
+      "value": "Salt Lake City, UT 84101",
+      "tests": "Geofencing with an address in Utah, where gambling is not legal.",
+      "breaks": "Address checks pass while device location is not enforced.",
+      "expected": "Blocked based on verified location, not address alone."
+    },
+    {
+      "id": "fi-164",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Self-excluded player re-registers",
+      "value": "jane.doe+1@example.com",
+      "tests": "Self-exclusion matching.",
+      "breaks": "A new or plus-addressed email bypasses the exclusion list.",
+      "expected": "Matched on identity (name, DOB, SSN last four), not email alone."
+    },
+    {
+      "id": "fi-165",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Win at a tax reporting threshold",
+      "value": "1200.00",
+      "tests": "Winnings exactly at a reporting threshold. Confirm the current IRS W-2G rule for the game type.",
+      "breaks": "A greater-than vs greater-or-equal mistake skips or over-issues tax forms.",
+      "expected": "Form generated exactly per the documented rule."
+    },
+    {
+      "id": "fi-166",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Deposit one cent over the limit",
+      "value": "500.01",
+      "tests": "Responsible gambling deposit limit set to $500.",
+      "breaks": "Rounding lets the deposit through.",
+      "expected": "Rejected with the remaining limit shown."
+    },
+    {
+      "id": "fi-167",
+      "group": "ind",
+      "category": "health",
+      "title": "Naked decimal dose",
+      "value": ".5 mg",
+      "tests": "Dose without a leading zero.",
+      "breaks": "Read as 5 mg: a tenfold dosing error.",
+      "expected": "Rejected or displayed as 0.5 mg."
+    },
+    {
+      "id": "fi-168",
+      "group": "ind",
+      "category": "health",
+      "title": "Trailing zero dose",
+      "value": "5.0 mg",
+      "tests": "Dose with a trailing zero.",
+      "breaks": "The dot is missed and it is read as 50 mg.",
+      "expected": "Displayed as 5 mg."
+    },
+    {
+      "id": "fi-169",
+      "group": "ind",
+      "category": "health",
+      "title": "Born today",
+      "value": "2026-10-06",
+      "tests": "Newborn registration.",
+      "breaks": "Age 0 fails validation; age-based calculations divide by zero.",
+      "expected": "Accepted; age shown in days.",
+      "dynamic": {
+        "kind": "offset-date",
+        "format": "YYYY-MM-DD"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-170",
+      "group": "ind",
+      "category": "health",
+      "title": "Supercentenarian",
+      "value": "1906-01-01",
+      "tests": "Age over 120.",
+      "breaks": "Rejected as impossible, or the year is parsed as 2006.",
+      "expected": "Accepted, possibly with a confirmation."
+    },
+    {
+      "id": "fi-171",
+      "group": "ind",
+      "category": "health",
+      "title": "Pounds in a kilogram field",
+      "value": "150 lb",
+      "tests": "Mixed units.",
+      "breaks": "Recorded as 150 kg; weight-based doses more than double.",
+      "expected": "Unit required and converted."
+    },
+    {
+      "id": "fi-172",
+      "group": "ind",
+      "category": "health",
+      "title": "Medical record number",
+      "value": "000482193",
+      "tests": "MRNs with leading zeros.",
+      "breaks": "Stored as a number; the patient lookup fails or hits another chart.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-173",
+      "group": "ind",
+      "category": "health",
+      "title": "ICD-10 code",
+      "value": "S72.001A",
+      "tests": "Dot and seventh character.",
+      "breaks": "The dot is removed or the seventh character truncated; the claim is denied.",
+      "expected": "Stored and transmitted exactly."
+    },
+    {
+      "id": "fi-174",
+      "group": "ind",
+      "category": "health",
+      "title": "NPI check digit",
+      "value": "1234567893",
+      "tests": "10-digit National Provider Identifier with Luhn check (CMS's published example).",
+      "breaks": "Invalid NPIs are saved; claims are denied weeks later.",
+      "expected": "Validated on entry."
+    },
+    {
+      "id": "fi-175",
+      "group": "ind",
+      "category": "health",
+      "title": "Unnamed newborn twin",
+      "value": "Baby Boy Smith Twin A",
+      "tests": "Temporary newborn names.",
+      "breaks": "Twins with the same DOB and surname get merged.",
+      "expected": "Kept as separate patients."
+    },
+    {
+      "id": "fi-176",
+      "group": "ind",
+      "category": "shop",
+      "title": "Zero quantity",
+      "value": "0",
+      "tests": "Cart line with no items.",
+      "breaks": "A $0 line item ships, or unit price math divides by zero.",
+      "expected": "Line removed or rejected."
+    },
+    {
+      "id": "fi-177",
+      "group": "ind",
+      "category": "shop",
+      "title": "Negative quantity",
+      "value": "-1",
+      "tests": "Quantity sign.",
+      "breaks": "A negative line total reduces the order price.",
+      "expected": "Rejected on the server."
+    },
+    {
+      "id": "fi-178",
+      "group": "ind",
+      "category": "shop",
+      "title": "Fractional quantity",
+      "value": "1.5",
+      "tests": "Items sold by the unit.",
+      "breaks": "Half a T-shirt ordered; inventory turns fractional.",
+      "expected": "Whole numbers only, except items sold by weight."
+    },
+    {
+      "id": "fi-179",
+      "group": "ind",
+      "category": "shop",
+      "title": "Huge quantity",
+      "value": "1000000",
+      "tests": "Upper bound on quantity.",
+      "breaks": "Inventory goes negative; the total exceeds payment limits.",
+      "expected": "Max per order enforced with a message."
+    },
+    {
+      "id": "fi-180",
+      "group": "ind",
+      "category": "shop",
+      "title": "Coupon with spaces and case",
+      "value": " save10 ",
+      "tests": "Pasted coupon codes.",
+      "breaks": "Valid code rejected as invalid.",
+      "expected": "Trimmed and matched case-insensitively.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-181",
+      "group": "ind",
+      "category": "shop",
+      "title": "Same coupon twice",
+      "value": "SAVE10,SAVE10",
+      "tests": "Coupon stacking.",
+      "breaks": "Discount applied twice.",
+      "expected": "One use per order."
+    },
+    {
+      "id": "fi-182",
+      "group": "ind",
+      "category": "shop",
+      "title": "Discount above the total",
+      "value": "SAVE120",
+      "tests": "A $120 coupon on a $100 cart.",
+      "breaks": "Negative total; refunds or store credit created.",
+      "expected": "Total floors at $0.00."
+    },
+    {
+      "id": "fi-183",
+      "group": "ind",
+      "category": "shop",
+      "title": "No-sales-tax state",
+      "value": "Dover, DE 19901",
+      "tests": "Delaware has no sales tax.",
+      "breaks": "Default tax rate charged.",
+      "expected": "$0 sales tax."
+    },
+    {
+      "id": "fi-184",
+      "group": "ind",
+      "category": "shop",
+      "title": "Non-contiguous state",
+      "value": "Anchorage, AK 99501",
+      "tests": "Shipping to Alaska and Hawaii.",
+      "breaks": "Ground shipping quoted at contiguous-US rates and times.",
+      "expected": "Correct carriers, rates and delivery dates."
+    },
+    {
+      "id": "fi-185",
+      "group": "ind",
+      "category": "travel",
+      "title": "Arrive before you depart",
+      "value": "SYD 2026-10-07 21:00 → HNL 2026-10-07 09:40",
+      "tests": "Crossing the International Date Line eastbound.",
+      "breaks": "Validation rejects arrival earlier than departure; duration shows negative.",
+      "expected": "Accepted; duration computed in UTC."
+    },
+    {
+      "id": "fi-186",
+      "group": "ind",
+      "category": "travel",
+      "title": "City code",
+      "value": "NYC",
+      "tests": "Metropolitan codes that cover several airports.",
+      "breaks": "No airport found.",
+      "expected": "JFK, LGA and EWR searched."
+    },
+    {
+      "id": "fi-187",
+      "group": "ind",
+      "category": "travel",
+      "title": "Passport expiring soon",
+      "value": "2027-03-06",
+      "tests": "Many countries require six months of passport validity.",
+      "breaks": "Booking succeeds and the traveler is denied boarding.",
+      "expected": "Warning shown for international trips.",
+      "dynamic": {
+        "kind": "offset-date",
+        "months": 5,
+        "format": "YYYY-MM-DD"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-188",
+      "group": "ind",
+      "category": "travel",
+      "title": "Infant turns 2 mid-trip",
+      "value": "2024-10-09",
+      "tests": "Lap infant fare for a child who turns 2 before the return flight.",
+      "breaks": "Return leg booked as a lap infant after age 2.",
+      "expected": "Seat required for legs after the birthday.",
+      "dynamic": {
+        "kind": "offset-date",
+        "years": -2,
+        "days": 3,
+        "format": "YYYY-MM-DD"
+      },
+      "valueIsSnapshot": true
+    },
+    {
+      "id": "fi-189",
+      "group": "ind",
+      "category": "travel",
+      "title": "Confusable booking code",
+      "value": "O0I1L5",
+      "tests": "Characters people mix up when typing a PNR.",
+      "breaks": "Lookup fails when a user types 0 for O.",
+      "expected": "Ambiguous characters excluded or matched leniently."
+    },
+    {
+      "id": "fi-190",
+      "group": "ind",
+      "category": "travel",
+      "title": "Zero-night stay",
+      "value": "Check-in 2026-11-01, check-out 2026-11-01",
+      "tests": "Same check-in and check-out date.",
+      "breaks": "A $0 reservation holds a room.",
+      "expected": "Rejected, unless day-use rooms are offered."
+    },
+    {
+      "id": "fi-191",
+      "group": "ind",
+      "category": "travel",
+      "title": "Long passenger name",
+      "value": "Christopher Alexander Montgomery-Wolfeschlegel",
+      "tests": "Airline name fields have character limits.",
+      "breaks": "Truncated differently on the ticket and passport; check-in fails.",
+      "expected": "Truncated per airline rules and warned."
+    },
+    {
+      "id": "fi-192",
+      "group": "ind",
+      "category": "hr",
+      "title": "SSN with area 000",
+      "value": "000-12-3456",
+      "tests": "Never-issued SSN area.",
+      "breaks": "Accepted; tax filings are rejected later.",
+      "expected": "Rejected on entry."
+    },
+    {
+      "id": "fi-193",
+      "group": "ind",
+      "category": "hr",
+      "title": "SSN starting with 666",
+      "value": "666-12-3456",
+      "tests": "Another never-issued area.",
+      "breaks": "Accepted by format-only checks.",
+      "expected": "Rejected on entry."
+    },
+    {
+      "id": "fi-194",
+      "group": "ind",
+      "category": "hr",
+      "title": "ITIN in an SSN field",
+      "value": "912-70-1234",
+      "tests": "Individual Taxpayer ID format (9XX-7X-XXXX).",
+      "breaks": "Rejected where valid for tax, or accepted where SSN is required.",
+      "expected": "Handled per the field's purpose."
+    },
+    {
+      "id": "fi-195",
+      "group": "ind",
+      "category": "hr",
+      "title": "25-hour workday",
+      "value": "2026-11-01 00:00 to 2026-11-02 00:00",
+      "tests": "Overnight shift across the fall-back change.",
+      "breaks": "Timesheet records 24 hours; one hour goes unpaid.",
+      "expected": "Actual elapsed time (25 hours) paid."
+    },
+    {
+      "id": "fi-196",
+      "group": "ind",
+      "category": "hr",
+      "title": "23-hour workday",
+      "value": "2026-03-08 00:00 to 2026-03-09 00:00",
+      "tests": "Shift across the spring-forward change.",
+      "breaks": "Paid for 24 hours instead of 23.",
+      "expected": "Actual elapsed time paid."
+    },
+    {
+      "id": "fi-197",
+      "group": "ind",
+      "category": "hr",
+      "title": "Just over 40 hours",
+      "value": "40.01",
+      "tests": "Weekly overtime boundary (FLSA).",
+      "breaks": "Rounding hides the overtime minute.",
+      "expected": "Overtime applied per the documented rounding rule."
+    },
+    {
+      "id": "fi-198",
+      "group": "ind",
+      "category": "hr",
+      "title": "Payday on a holiday",
+      "value": "2026-12-25",
+      "tests": "Scheduled pay date on a bank holiday.",
+      "breaks": "Direct deposit fails or lands late.",
+      "expected": "Moved to the previous business day per policy."
+    },
+    {
+      "id": "fi-199",
+      "group": "ind",
+      "category": "hr",
+      "title": "Hired on Feb 29",
+      "value": "2028-02-29",
+      "tests": "Anniversary-based accruals and benefits.",
+      "breaks": "Anniversary skipped in common years.",
+      "expected": "Follows the documented rule (Feb 28 or Mar 1)."
+    },
+    {
+      "id": "fi-200",
+      "group": "gen",
+      "category": "len",
+      "title": "Exactly 255 characters",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "tests": "The maximum of a VARCHAR(255) field.",
+      "breaks": "Off-by-one validation rejects the maximum, or the database truncates silently.",
+      "expected": "255 accepted; 256 rejected with a message."
+    },
+    {
+      "id": "fi-201",
+      "group": "gen",
+      "category": "len",
+      "title": "Repeated spaces between words",
+      "value": "John      Smith",
+      "tests": "Internal whitespace.",
+      "breaks": "Duplicate detection and search treat it as a different name.",
+      "expected": "Collapsed to one space or matched leniently.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-202",
+      "group": "gen",
+      "category": "len",
+      "title": "Ideographic space",
+      "value": "John　Smith",
+      "tests": "Full-width space from CJK keyboards.",
+      "breaks": "ASCII-only trim and split leave it in place.",
+      "expected": "Treated as a normal space.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-203",
+      "group": "gen",
+      "category": "len",
+      "title": "Vertical tab",
+      "value": "line\u000bbreak",
+      "tests": "Control character pasted from old documents.",
+      "breaks": "Invalid in XML 1.0; XML and some PDF exports fail to generate.",
+      "expected": "Stripped or rejected.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-204",
+      "group": "gen",
+      "category": "len",
+      "title": "Punctuation only",
+      "value": "...",
+      "tests": "Titles that become URL slugs.",
+      "breaks": "Slug generation produces an empty URL or a 404 page.",
+      "expected": "Rejected or a fallback slug generated."
+    },
+    {
+      "id": "fi-205",
+      "group": "gen",
+      "category": "name",
+      "title": "Two-letter surname",
+      "value": "Ng",
+      "tests": "Minimum length rules on names.",
+      "breaks": "A three-character minimum rejects a common surname.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-206",
+      "group": "gen",
+      "category": "name",
+      "title": "Single-letter surname",
+      "value": "Anna O",
+      "tests": "One-letter last names exist.",
+      "breaks": "Rejected as an initial or as incomplete.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-207",
+      "group": "gen",
+      "category": "name",
+      "title": "Hawaiian okina",
+      "value": "Keʻala Kahananui",
+      "tests": "The ʻokina (U+02BB), common in Hawaii.",
+      "breaks": "Rejected as an invalid character or replaced with a question mark.",
+      "expected": "Accepted and preserved."
+    },
+    {
+      "id": "fi-208",
+      "group": "gen",
+      "category": "name",
+      "title": "Spanish double surname",
+      "value": "Ana García Márquez",
+      "tests": "Two family names.",
+      "breaks": "Only Márquez is treated as the surname; sorting and matching fail.",
+      "expected": "Full surname kept together."
+    },
+    {
+      "id": "fi-209",
+      "group": "gen",
+      "category": "name",
+      "title": "Titles in the name field",
+      "value": "Dr. Emily Chen, MD",
+      "tests": "Prefixes and credentials typed into name fields.",
+      "breaks": "Greetings read 'Dear Dr.' and the comma breaks CSV exports.",
+      "expected": "Stored as typed; separate title field offered."
+    },
+    {
+      "id": "fi-210",
+      "group": "gen",
+      "category": "addr",
+      "title": "Rural route",
+      "value": "RR 2 Box 152",
+      "tests": "Rural route addresses.",
+      "breaks": "Rejected by street-number validation.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-211",
+      "group": "gen",
+      "category": "addr",
+      "title": "Grid address",
+      "value": "100 W 100 N, Provo, UT 84601",
+      "tests": "Utah-style coordinate addresses.",
+      "breaks": "Parsers mistake the street for a house number.",
+      "expected": "Accepted and geocoded correctly."
+    },
+    {
+      "id": "fi-212",
+      "group": "gen",
+      "category": "addr",
+      "title": "Hyphenated house number",
+      "value": "35-15 84th St, Queens, NY 11372",
+      "tests": "Queens and Hawaii use hyphenated numbers.",
+      "breaks": "Read as a range or a subtraction; the hyphen is stripped.",
+      "expected": "Stored exactly as written."
+    },
+    {
+      "id": "fi-213",
+      "group": "gen",
+      "category": "addr",
+      "title": "Highway address",
+      "value": "12345 State Hwy 101",
+      "tests": "Addresses on numbered highways.",
+      "breaks": "The street name is numeric and fails validation.",
+      "expected": "Accepted."
+    },
+    {
+      "id": "fi-214",
+      "group": "gen",
+      "category": "addr",
+      "title": "Phone with leading 1",
+      "value": "1-212-555-0147",
+      "tests": "Eleven digits including the US country code.",
+      "breaks": "Rejected as too long, or stored as a different number.",
+      "expected": "Normalized to +12125550147."
+    },
+    {
+      "id": "fi-215",
+      "group": "gen",
+      "category": "email",
+      "title": "Country-code second level",
+      "value": "jane@example.co.uk",
+      "tests": "Multi-part public suffixes.",
+      "breaks": "Domain parsed as 'co.uk'; company grouping and allowlists fail.",
+      "expected": "Accepted; domain parsed with the public suffix list."
+    },
+    {
+      "id": "fi-216",
+      "group": "gen",
+      "category": "email",
+      "title": "Apostrophe in email",
+      "value": "d'angelo@example.com",
+      "tests": "Valid apostrophe in the local part.",
+      "breaks": "Rejected, or breaks SQL and HTML attributes.",
+      "expected": "Accepted and stored safely."
+    },
+    {
+      "id": "fi-217",
+      "group": "gen",
+      "category": "email",
+      "title": "64-character local part",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com",
+      "tests": "Maximum local-part length.",
+      "breaks": "Rejected at 64, or 65 accepted and bounced.",
+      "expected": "64 accepted; 65 rejected."
+    },
+    {
+      "id": "fi-218",
+      "group": "gen",
+      "category": "email",
+      "title": "Disposable address",
+      "value": "temp123@mailinator.com",
+      "tests": "Throwaway email providers.",
+      "breaks": "Trial abuse and fake accounts.",
+      "expected": "Handled per your sign-up policy."
+    },
+    {
+      "id": "fi-219",
+      "group": "gen",
+      "category": "email",
+      "title": "Lookalike domain",
+      "value": "jane@exаmple.com",
+      "tests": "Cyrillic а inside the domain.",
+      "breaks": "Passes as example.com to a human; used for phishing and duplicate accounts.",
+      "expected": "Mixed-script domains rejected or flagged."
+    },
+    {
+      "id": "fi-220",
+      "group": "gen",
+      "category": "num",
+      "title": "Hex-looking number",
+      "value": "0x1A",
+      "tests": "Prefixed numbers.",
+      "breaks": "JavaScript Number() returns 26, so the field accepts it.",
+      "expected": "Rejected in decimal fields."
+    },
+    {
+      "id": "fi-221",
+      "group": "gen",
+      "category": "num",
+      "title": "Comma as thousands",
+      "value": "1,234",
+      "tests": "US thousands separator.",
+      "breaks": "Read as 1.234 by European parsers and 1 by parseInt.",
+      "expected": "Parsed as 1234 for US users."
+    },
+    {
+      "id": "fi-222",
+      "group": "gen",
+      "category": "num",
+      "title": "Space as thousands",
+      "value": "1 234 567",
+      "tests": "French and Swiss formatting.",
+      "breaks": "Parses as 1.",
+      "expected": "Parsed per locale or rejected with a hint."
+    },
+    {
+      "id": "fi-223",
+      "group": "gen",
+      "category": "num",
+      "title": "Percent sign",
+      "value": "15%",
+      "tests": "Rates typed with a percent sign.",
+      "breaks": "Stored as 15 in one place and 0.15 in another; interest is off by 100x.",
+      "expected": "One documented convention used everywhere."
+    },
+    {
+      "id": "fi-224",
+      "group": "gen",
+      "category": "num",
+      "title": "Explicit plus sign",
+      "value": "+5",
+      "tests": "Positive sign on a number.",
+      "breaks": "Rejected, or stored as text and sorted wrong.",
+      "expected": "Parsed as 5."
+    },
+    {
+      "id": "fi-225",
+      "group": "gen",
+      "category": "date",
+      "title": "Month name",
+      "value": "Oct 6, 2026",
+      "tests": "Dates typed in words.",
+      "breaks": "Rejected, or parsed differently per browser.",
+      "expected": "Accepted, or the expected format shown."
+    },
+    {
+      "id": "fi-226",
+      "group": "gen",
+      "category": "date",
+      "title": "ISO week 53",
+      "value": "2026-W53",
+      "tests": "2026 has 53 ISO weeks.",
+      "breaks": "Week pickers and reports stop at week 52.",
+      "expected": "Week 53 supported."
+    },
+    {
+      "id": "fi-227",
+      "group": "gen",
+      "category": "date",
+      "title": "Midnight as 24:00",
+      "value": "2026-10-06T24:00",
+      "tests": "Valid ISO 8601 end of day.",
+      "breaks": "Rejected, or stored on the wrong day.",
+      "expected": "Treated as 2026-10-07T00:00."
+    },
+    {
+      "id": "fi-228",
+      "group": "gen",
+      "category": "date",
+      "title": "Leap second",
+      "value": "2016-12-31T23:59:60Z",
+      "tests": "A real UTC timestamp.",
+      "breaks": "Parsers reject it; log imports fail.",
+      "expected": "Accepted or clamped to :59."
+    },
+    {
+      "id": "fi-229",
+      "group": "gen",
+      "category": "date",
+      "title": "Sentinel date",
+      "value": "9999-12-31",
+      "tests": "'Never expires' placeholder.",
+      "breaks": "Shown to users as an expiry date, or overflows date math.",
+      "expected": "Displayed as 'No expiry'."
+    },
+    {
+      "id": "fi-230",
+      "group": "gen",
+      "category": "date",
+      "title": "Before 1970",
+      "value": "1969-12-31",
+      "tests": "Negative Unix timestamps.",
+      "breaks": "Older code stores 0 or fails; birthdays shift.",
+      "expected": "Stored and displayed correctly."
+    },
+    {
+      "id": "fi-231",
+      "group": "gen",
+      "category": "case",
+      "title": "Dutch IJ",
+      "value": "ijsselmeer",
+      "tests": "Title-casing a digraph.",
+      "breaks": "Becomes Ijsselmeer instead of IJsselmeer.",
+      "expected": "Case preserved as typed."
+    },
+    {
+      "id": "fi-232",
+      "group": "gen",
+      "category": "case",
+      "title": "Title case with apostrophe",
+      "value": "o'neil",
+      "tests": "Auto-capitalization after an apostrophe.",
+      "breaks": "Becomes O'neil.",
+      "expected": "Typed casing preserved or O'Neil produced."
+    },
+    {
+      "id": "fi-233",
+      "group": "gen",
+      "category": "case",
+      "title": "Capital sharp s",
+      "value": "ẞ",
+      "tests": "ẞ (U+1E9E) round trip.",
+      "breaks": "Lowercases to ß, which uppercases to SS; the value never returns.",
+      "expected": "Comparison uses case folding."
+    },
+    {
+      "id": "fi-234",
+      "group": "gen",
+      "category": "case",
+      "title": "Titlecase digraph",
+      "value": "ǅ",
+      "tests": "ǅ has upper, lower and title forms.",
+      "breaks": "Case-insensitive comparison misses one of the three.",
+      "expected": "All three forms match."
+    },
+    {
+      "id": "fi-235",
+      "group": "gen",
+      "category": "inv",
+      "title": "Narrow no-break space",
+      "value": "10:30 PM",
+      "tests": "macOS and newer ICU put U+202F before AM/PM.",
+      "breaks": "Time strings copied from these systems fail to parse.",
+      "expected": "Treated as a space.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-236",
+      "group": "gen",
+      "category": "inv",
+      "title": "Left-to-right mark",
+      "value": "‎555-0147",
+      "tests": "Direction mark copied from contacts apps.",
+      "breaks": "Phone and ID validation fails on a value that looks correct.",
+      "expected": "Stripped from identifiers.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-237",
+      "group": "gen",
+      "category": "inv",
+      "title": "Hidden tag characters",
+      "value": "hello󠁁󠁂󠁃",
+      "tests": "Invisible Unicode tag characters (U+E0000 block).",
+      "breaks": "Carry hidden text past moderation and into AI prompts; length checks surprise.",
+      "expected": "Stripped outside emoji flag sequences.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-238",
+      "group": "gen",
+      "category": "inv",
+      "title": "Stray variation selector",
+      "value": "a️",
+      "tests": "Variation selector after a plain letter.",
+      "breaks": "Looks like 'a' but fails equality and uniqueness checks.",
+      "expected": "Stripped outside emoji.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-239",
+      "group": "gen",
+      "category": "norm",
+      "title": "Smart apostrophe",
+      "value": "O’Brien",
+      "tests": "iPhone and Word insert ’ instead of '.",
+      "breaks": "Never matches O'Brien in search, login or deduplication.",
+      "expected": "Apostrophes normalized for matching."
+    },
+    {
+      "id": "fi-240",
+      "group": "gen",
+      "category": "norm",
+      "title": "Greek question mark",
+      "value": ";",
+      "tests": "U+037E looks exactly like a semicolon.",
+      "breaks": "Breaks code, CSV and config parsing while looking correct.",
+      "expected": "Flagged or normalized (NFC turns it into ;)."
+    },
+    {
+      "id": "fi-241",
+      "group": "gen",
+      "category": "norm",
+      "title": "Fullwidth letters",
+      "value": "ａｄｍｉｎ",
+      "tests": "ａｄｍｉｎ from CJK keyboards.",
+      "breaks": "Bypasses reserved-username checks.",
+      "expected": "NFKC normalized to admin and blocked."
+    },
+    {
+      "id": "fi-242",
+      "group": "gen",
+      "category": "norm",
+      "title": "Circled letters",
+      "value": "ⓐⓓⓜⓘⓝ",
+      "tests": "Decorative Unicode text.",
+      "breaks": "Bypasses filters; NFKC turns it into admin.",
+      "expected": "Normalized before checks."
+    },
+    {
+      "id": "fi-243",
+      "group": "gen",
+      "category": "norm",
+      "title": "En dash in a number",
+      "value": "555–0147",
+      "tests": "Dash lookalikes from word processors.",
+      "breaks": "Phone and ID validation fails on a value that looks normal.",
+      "expected": "Dash variants normalized to a hyphen."
+    },
+    {
+      "id": "fi-244",
+      "group": "gen",
+      "category": "emo",
+      "title": "Rainbow flag",
+      "value": "🏳️‍🌈",
+      "tests": "Flag built from a white flag, ZWJ and a rainbow.",
+      "breaks": "Split into two emoji when truncated.",
+      "expected": "Handled as one character."
+    },
+    {
+      "id": "fi-245",
+      "group": "gen",
+      "category": "emo",
+      "title": "Profession with skin tone",
+      "value": "👩🏽‍💻",
+      "tests": "Person + skin tone + ZWJ + object.",
+      "breaks": "Older fonts show three separate emoji; limits count 7 units.",
+      "expected": "Counted and cut as one character."
+    },
+    {
+      "id": "fi-246",
+      "group": "gen",
+      "category": "emo",
+      "title": "Half a flag",
+      "value": "🇺",
+      "tests": "A single regional indicator left by bad truncation.",
+      "breaks": "Shows as a boxed letter; pairs up with the next flag and changes it.",
+      "expected": "Never produced by your truncation."
+    },
+    {
+      "id": "fi-247",
+      "group": "gen",
+      "category": "emo",
+      "title": "England flag",
+      "value": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "tests": "Subdivision flag built from tag characters.",
+      "breaks": "One visible flag has a JS length of 14; tag stripping turns it into a black flag.",
+      "expected": "Handled as one character."
+    },
+    {
+      "id": "fi-248",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Persian with ZWNJ",
+      "value": "می‌خواهم",
+      "tests": "ZWNJ is required in Persian spelling.",
+      "breaks": "Stripping invisible characters changes the word.",
+      "expected": "ZWNJ preserved in Persian and similar scripts.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-249",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Korean IME input",
+      "value": "안녕하세요",
+      "tests": "Type it with a Korean keyboard, not paste.",
+      "breaks": "Search fires on half-built syllables; Enter during composition submits the form.",
+      "expected": "Waits for compositionend before acting."
+    },
+    {
+      "id": "fi-250",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Traditional vs Simplified",
+      "value": "臺灣",
+      "tests": "Search for the Simplified form 台湾.",
+      "breaks": "Same place, different characters; search misses.",
+      "expected": "Variants matched where search matters."
+    },
+    {
+      "id": "fi-251",
+      "group": "gen",
+      "category": "bidi",
+      "title": "Unclosed embedding",
+      "value": "‫name",
+      "tests": "Right-to-left embedding without a closing mark.",
+      "breaks": "Text after it on the same line (like 'commented') renders reversed.",
+      "expected": "Display isolated with dir=auto or bdi; controls stripped.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-252",
+      "group": "gen",
+      "category": "magic",
+      "title": "YAML off",
+      "value": "off",
+      "tests": "Words YAML 1.1 reads as booleans (yes, no, on, off).",
+      "breaks": "Stored as false.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-253",
+      "group": "gen",
+      "category": "magic",
+      "title": "Gene name",
+      "value": "SEPT1",
+      "tests": "Text that spreadsheets read as dates.",
+      "breaks": "Excel turns it into 1-Sep; famously corrupted gene research data.",
+      "expected": "Exported so spreadsheets keep it as text."
+    },
+    {
+      "id": "fi-254",
+      "group": "gen",
+      "category": "magic",
+      "title": "Scientific-looking ID",
+      "value": "1E10",
+      "tests": "Order and part numbers.",
+      "breaks": "Spreadsheets and JSON parsers turn it into 10000000000.",
+      "expected": "Kept as text."
+    },
+    {
+      "id": "fi-255",
+      "group": "gen",
+      "category": "magic",
+      "title": "Customer named Test",
+      "value": "Test",
+      "tests": "Real people named Test, Null or Admin.",
+      "breaks": "Analytics and billing exclude them as test data.",
+      "expected": "Test accounts flagged by a field, not by name."
+    },
+    {
+      "id": "fi-256",
+      "group": "gen",
+      "category": "magic",
+      "title": "Reserved username",
+      "value": "support",
+      "tests": "Names that imply authority (admin, root, support).",
+      "breaks": "Users impersonate staff in chat and comments.",
+      "expected": "Reserved names blocked."
+    },
+    {
+      "id": "fi-257",
+      "group": "gen",
+      "category": "file",
+      "title": "Decomposed accent in a file name",
+      "value": "Café.pdf",
+      "tests": "macOS stores names in decomposed form.",
+      "breaks": "File uploaded from a Mac cannot be found by name on Linux.",
+      "expected": "Names normalized to NFC on upload."
+    },
+    {
+      "id": "fi-258",
+      "group": "gen",
+      "category": "file",
+      "title": "Uppercase extension",
+      "value": "PHOTO.JPG",
+      "tests": "Case of the extension.",
+      "breaks": "Allowlist checks are case-sensitive and reject it.",
+      "expected": "Extensions compared case-insensitively."
+    },
+    {
+      "id": "fi-259",
+      "group": "gen",
+      "category": "file",
+      "title": "No extension",
+      "value": "README",
+      "tests": "Files without an extension.",
+      "breaks": "Upload rejected or opened with the wrong app.",
+      "expected": "Type detected from content."
+    },
+    {
+      "id": "fi-260",
+      "group": "gen",
+      "category": "file",
+      "title": "Emoji file name",
+      "value": "🎉 party plan.docx",
+      "tests": "Emoji in names.",
+      "breaks": "Download headers mangle it; ZIP archives show garbled names.",
+      "expected": "Name preserved with RFC 5987 encoding."
+    },
+    {
+      "id": "fi-261",
+      "group": "gen",
+      "category": "file",
+      "title": "Wrong extension for content",
+      "value": "invoice.pdf",
+      "tests": "Upload a PNG renamed to .pdf.",
+      "breaks": "Previewers crash; security checks trust the extension.",
+      "expected": "Type verified by content."
+    },
+    {
+      "id": "fi-262",
+      "group": "gen",
+      "category": "pass",
+      "title": "Only spaces",
+      "value": "        ",
+      "tests": "A password made of spaces.",
+      "breaks": "Trimmed to empty and saved as a blank password.",
+      "expected": "Rejected.",
+      "hasInvisible": true,
+      "spacesVisible": true
+    },
+    {
+      "id": "fi-263",
+      "group": "gen",
+      "category": "pass",
+      "title": "1,000-character password",
+      "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "tests": "Very long passwords.",
+      "breaks": "Slow hashing on huge input enables denial of service; or 500 errors.",
+      "expected": "A reasonable max (64+) enforced with a message."
+    },
+    {
+      "id": "fi-264",
+      "group": "gen",
+      "category": "pass",
+      "title": "Breached password",
+      "value": "Password123!",
+      "tests": "Meets complexity rules but is widely breached.",
+      "breaks": "Accepted because it has upper, lower, digit and symbol.",
+      "expected": "Rejected by a breached-password check (NIST SP 800-63B)."
+    },
+    {
+      "id": "fi-265",
+      "group": "gen",
+      "category": "pass",
+      "title": "Quotes and backslash",
+      "value": "p\"a\\ss'w0rd",
+      "tests": "Characters that need escaping.",
+      "breaks": "Breaks JSON, shell scripts or connection strings; user locked out.",
+      "expected": "Works on login, reset and API."
+    },
+    {
+      "id": "fi-266",
+      "group": "gen",
+      "category": "pass",
+      "title": "Password contains email",
+      "value": "jane.doe2026",
+      "tests": "Password built from the username jane.doe@example.com.",
+      "breaks": "Easily guessed.",
+      "expected": "Rejected or warned."
+    },
+    {
+      "id": "fi-267",
+      "group": "gen",
+      "category": "sec",
+      "title": "Log injection",
+      "value": "admin\n2026-10-06 INFO login success user=admin",
+      "tests": "Line breaks written into logs.",
+      "breaks": "Forges log entries that mislead investigations.",
+      "expected": "Line breaks escaped in logs.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-268",
+      "group": "gen",
+      "category": "sec",
+      "title": "LDAP injection",
+      "value": "*)(uid=*))(|(uid=*",
+      "tests": "Directory login and search.",
+      "breaks": "Filter matches every user.",
+      "expected": "Special characters escaped."
+    },
+    {
+      "id": "fi-269",
+      "group": "gen",
+      "category": "sec",
+      "title": "XML external entity",
+      "value": "<!DOCTYPE x [<!ENTITY e SYSTEM \"file:///etc/passwd\">]><x>&e;</x>",
+      "tests": "XML uploads and SOAP endpoints.",
+      "breaks": "Server reads local files into the response.",
+      "expected": "External entities disabled."
+    },
+    {
+      "id": "fi-270",
+      "group": "gen",
+      "category": "sec",
+      "title": "Cloud metadata URL",
+      "value": "http://169.254.169.254/latest/meta-data/",
+      "tests": "Features that fetch a URL (webhooks, image by URL, imports).",
+      "breaks": "Server fetches internal cloud credentials (SSRF).",
+      "expected": "Private and link-local addresses blocked."
+    },
+    {
+      "id": "fi-271",
+      "group": "gen",
+      "category": "sec",
+      "title": "Open redirect",
+      "value": "//evil.example",
+      "tests": "Value for a next= or returnUrl parameter.",
+      "breaks": "After login, users land on another site.",
+      "expected": "Only relative paths on your own domain allowed."
+    },
+    {
+      "id": "fi-272",
+      "group": "gen",
+      "category": "sec",
+      "title": "Prototype pollution",
+      "value": "{\"__proto__\":{\"isAdmin\":true}}",
+      "tests": "JSON merged into server-side objects.",
+      "breaks": "Every object gains isAdmin=true.",
+      "expected": "__proto__ and constructor keys rejected."
+    },
+    {
+      "id": "fi-273",
+      "group": "ind",
+      "category": "fin",
+      "title": "Card with dashes",
+      "value": "4242-4242-4242-4242",
+      "tests": "Formatting in card number fields.",
+      "breaks": "Rejected, or dashes sent to the processor.",
+      "expected": "Separators stripped."
+    },
+    {
+      "id": "fi-274",
+      "group": "ind",
+      "category": "fin",
+      "title": "15-digit Amex",
+      "value": "3782 822463 10005",
+      "tests": "Amex test number with 4-digit security code.",
+      "breaks": "16-digit masks reject it; 3-digit CVV validation blocks payment.",
+      "expected": "Length and CVV rules per card brand."
+    },
+    {
+      "id": "fi-275",
+      "group": "ind",
+      "category": "fin",
+      "title": "Wrong currency",
+      "value": "100 EUR",
+      "tests": "Foreign currency entered into a USD account.",
+      "breaks": "Charged as $100.",
+      "expected": "Converted with rate shown, or rejected."
+    },
+    {
+      "id": "fi-276",
+      "group": "ind",
+      "category": "fin",
+      "title": "Duplicate submission",
+      "value": "Pay $250.00 to ACCT-4417, twice within 5 seconds",
+      "tests": "Double click or network retry.",
+      "breaks": "Two payments go out.",
+      "expected": "Second request deduplicated by idempotency key."
+    },
+    {
+      "id": "fi-277",
+      "group": "ind",
+      "category": "fin",
+      "title": "Emoji in ACH memo",
+      "value": "Rent 🏠 October",
+      "tests": "Free-text memo in NACHA files.",
+      "breaks": "ACH files allow limited characters; the batch is rejected.",
+      "expected": "Memo sanitized to allowed characters."
+    },
+    {
+      "id": "fi-278",
+      "group": "ind",
+      "category": "fin",
+      "title": "All-zero account number",
+      "value": "000000000",
+      "tests": "Placeholder account numbers.",
+      "breaks": "Passes format checks; payment returns.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-279",
+      "group": "ind",
+      "category": "aml",
+      "title": "Diacritics removed",
+      "value": "Jose Munoz",
+      "tests": "Against list entry 'José Muñoz'.",
+      "breaks": "Accent-sensitive matching misses it.",
+      "expected": "Matched after accent folding."
+    },
+    {
+      "id": "fi-280",
+      "group": "ind",
+      "category": "aml",
+      "title": "One-letter difference",
+      "value": "Mohammad Al-Rashed",
+      "tests": "Typo or alternate spelling of 'Mohammed Al-Rashid'.",
+      "breaks": "Strict thresholds miss it.",
+      "expected": "Matched within the fuzzy threshold."
+    },
+    {
+      "id": "fi-281",
+      "group": "ind",
+      "category": "aml",
+      "title": "Chinese romanization",
+      "value": "Cheung Wai",
+      "tests": "Cantonese romanization of 張偉 vs Mandarin 'Zhang Wei'.",
+      "breaks": "Two romanizations of the same name never match.",
+      "expected": "Matched through script or romanization variants."
+    },
+    {
+      "id": "fi-282",
+      "group": "ind",
+      "category": "aml",
+      "title": "Sanctioned city in free text",
+      "value": "Pyongyang",
+      "tests": "Risky location written in an address line instead of the country field.",
+      "breaks": "Country rules only check the country code.",
+      "expected": "Address text screened too."
+    },
+    {
+      "id": "fi-283",
+      "group": "ind",
+      "category": "aml",
+      "title": "Split just below threshold",
+      "value": "4,999.00 + 4,999.00 + 4,999.00",
+      "tests": "Same customer, same day, three deposits.",
+      "breaks": "Each passes; the total ($14,997) is never reported.",
+      "expected": "Daily aggregate triggers review."
+    },
+    {
+      "id": "fi-284",
+      "group": "ind",
+      "category": "aml",
+      "title": "Leading article",
+      "value": "The Acme Trading Company",
+      "tests": "Against list entry 'Acme Trading Co'.",
+      "breaks": "'The' and 'Company' vs 'Co' lower the score.",
+      "expected": "Stop words and suffixes normalized."
+    },
+    {
+      "id": "fi-285",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Bet after kickoff",
+      "value": "2026-10-06T19:00:01Z",
+      "tests": "One second after the event starts (kickoff 19:00:00Z).",
+      "breaks": "Clock skew or caching accepts late bets.",
+      "expected": "Rejected using the server's clock."
+    },
+    {
+      "id": "fi-286",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Withdraw more than balance",
+      "value": "1000.01",
+      "tests": "Balance is exactly $1,000.00.",
+      "breaks": "Rounding or race conditions let it through.",
+      "expected": "Rejected; concurrent requests locked."
+    },
+    {
+      "id": "fi-287",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Odds changed on the slip",
+      "value": "2.10 → 1.95",
+      "tests": "Price moves between selection and confirmation.",
+      "breaks": "Bet placed at stale odds.",
+      "expected": "User asked to accept the new price."
+    },
+    {
+      "id": "fi-288",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Parlay above max payout",
+      "value": "20-leg parlay, $100 stake",
+      "tests": "Potential payout above the max win cap.",
+      "breaks": "Accepted with a payout the operator cannot honor.",
+      "expected": "Stake reduced or bet rejected with the cap shown."
+    },
+    {
+      "id": "fi-289",
+      "group": "ind",
+      "category": "gamb",
+      "title": "Same person, second account",
+      "value": "J. Doe, same DOB, same device",
+      "tests": "Multi-accounting for bonus abuse.",
+      "breaks": "Second welcome bonus paid.",
+      "expected": "Linked by identity and device signals."
+    },
+    {
+      "id": "fi-290",
+      "group": "ind",
+      "category": "health",
+      "title": "U for units",
+      "value": "10 u insulin",
+      "tests": "Abbreviation on the do-not-use list.",
+      "breaks": "'u' read as 0: 100 units given.",
+      "expected": "Rejected; 'units' spelled out."
+    },
+    {
+      "id": "fi-291",
+      "group": "ind",
+      "category": "health",
+      "title": "Ambiguous MS",
+      "value": "MS 4 mg",
+      "tests": "MS can mean morphine or magnesium sulfate.",
+      "breaks": "Wrong drug given.",
+      "expected": "Abbreviation rejected."
+    },
+    {
+      "id": "fi-292",
+      "group": "ind",
+      "category": "health",
+      "title": "Fahrenheit in a Celsius field",
+      "value": "101.5",
+      "tests": "Temperature units.",
+      "breaks": "101.5 °C flags a fatal fever, or 38.5 °F flags hypothermia.",
+      "expected": "Unit required; implausible values confirmed."
+    },
+    {
+      "id": "fi-293",
+      "group": "ind",
+      "category": "health",
+      "title": "Height in feet and inches",
+      "value": "5'11\"",
+      "tests": "Quotes as units.",
+      "breaks": "Parsed as 5 or breaks HTML and CSV.",
+      "expected": "Converted to centimeters."
+    },
+    {
+      "id": "fi-294",
+      "group": "ind",
+      "category": "health",
+      "title": "Service before birth",
+      "value": "DOB 2026-05-01, service 2026-04-30",
+      "tests": "Date order across fields.",
+      "breaks": "Claims or charts saved with impossible dates.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-295",
+      "group": "ind",
+      "category": "health",
+      "title": "Allergy abbreviation",
+      "value": "NKDA",
+      "tests": "'No known drug allergies' typed into a free-text allergy field.",
+      "breaks": "Stored as an allergen named NKDA; alerts fire on nothing.",
+      "expected": "Mapped to the coded 'no known allergies' value."
+    },
+    {
+      "id": "fi-296",
+      "group": "ind",
+      "category": "shop",
+      "title": "Three-decimal price",
+      "value": "19.999",
+      "tests": "Prices with sub-cent precision.",
+      "breaks": "Totals and refunds differ by a cent.",
+      "expected": "Rounded per documented rule."
+    },
+    {
+      "id": "fi-297",
+      "group": "ind",
+      "category": "shop",
+      "title": "Just below free shipping",
+      "value": "$49.99",
+      "tests": "Free shipping at $50.",
+      "breaks": "Coupons applied before or after the check change eligibility.",
+      "expected": "Threshold applied to the documented subtotal."
+    },
+    {
+      "id": "fi-298",
+      "group": "ind",
+      "category": "shop",
+      "title": "Gift card covers the total",
+      "value": "$50.00 order, $50.00 gift card",
+      "tests": "Zero balance due.",
+      "breaks": "Card form still required, or a $0 charge fails.",
+      "expected": "Order completes with no card."
+    },
+    {
+      "id": "fi-299",
+      "group": "ind",
+      "category": "shop",
+      "title": "Stock runs out at checkout",
+      "value": "Qty 2, stock 1",
+      "tests": "Inventory changes after adding to cart.",
+      "breaks": "Both units sold; one order cannot ship.",
+      "expected": "Quantity adjusted with a message."
+    },
+    {
+      "id": "fi-300",
+      "group": "ind",
+      "category": "shop",
+      "title": "Coupon expiry time zone",
+      "value": "Expires 2026-10-31 23:59 PT",
+      "tests": "Customer in New York uses it at 1:30 AM ET Nov 1.",
+      "breaks": "Rejected or accepted depending on server time zone.",
+      "expected": "Expiry evaluated in the documented time zone."
+    },
+    {
+      "id": "fi-301",
+      "group": "ind",
+      "category": "travel",
+      "title": "Same origin and destination",
+      "value": "JFK → JFK",
+      "tests": "Identical airports.",
+      "breaks": "Search runs and returns odd results or errors.",
+      "expected": "Rejected before search."
+    },
+    {
+      "id": "fi-302",
+      "group": "ind",
+      "category": "travel",
+      "title": "Middle name mismatch",
+      "value": "Anna Maria Smith (ID) / Anna Smith (booking)",
+      "tests": "Secure Flight name matching.",
+      "breaks": "Booking flagged or boarding pass issues.",
+      "expected": "Name rules explained at booking."
+    },
+    {
+      "id": "fi-303",
+      "group": "ind",
+      "category": "travel",
+      "title": "Flight number with zeros",
+      "value": "AA0100",
+      "tests": "AA100 vs AA0100.",
+      "breaks": "Status lookups fail.",
+      "expected": "Leading zeros normalized."
+    },
+    {
+      "id": "fi-304",
+      "group": "ind",
+      "category": "travel",
+      "title": "Similar airport codes",
+      "value": "SNA",
+      "tests": "Santa Ana (SNA) vs San Diego (SAN).",
+      "breaks": "Traveler books the wrong city.",
+      "expected": "City name shown next to codes."
+    },
+    {
+      "id": "fi-305",
+      "group": "ind",
+      "category": "hr",
+      "title": "Below federal minimum wage",
+      "value": "7.24",
+      "tests": "Hourly rate under $7.25.",
+      "breaks": "Saved without warning.",
+      "expected": "Rejected or flagged (state minimums may be higher)."
+    },
+    {
+      "id": "fi-306",
+      "group": "ind",
+      "category": "hr",
+      "title": "Terminated before hired",
+      "value": "Hire 2026-11-01, end 2026-10-31",
+      "tests": "Date order across fields.",
+      "breaks": "Negative tenure; final pay calculated wrong.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-307",
+      "group": "ind",
+      "category": "hr",
+      "title": "Negative PTO balance",
+      "value": "-8.0",
+      "tests": "Time off taken before accrual.",
+      "breaks": "Paid out at termination as a positive amount, or crashes reports.",
+      "expected": "Handled per policy."
+    },
+    {
+      "id": "fi-308",
+      "group": "ind",
+      "category": "hr",
+      "title": "27th pay period",
+      "value": "Pay period 27 of 26",
+      "tests": "Some years have 27 biweekly paydays.",
+      "breaks": "Per-period salary and deductions are wrong for the year.",
+      "expected": "Per-period amounts based on actual periods."
+    },
+    {
+      "id": "fi-309",
+      "group": "ind",
+      "category": "hr",
+      "title": "Lives and works in different states",
+      "value": "Lives NJ, works NY",
+      "tests": "Multi-state tax withholding.",
+      "breaks": "Only one state withheld.",
+      "expected": "Both states handled per reciprocity rules."
+    },
+    {
+      "id": "fi-310",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Abbreviated amount",
+      "value": "$1.5M",
+      "tests": "How screen readers announce shorthand numbers.",
+      "breaks": "Read as 'dollar one point five M'; the meaning is lost.",
+      "expected": "Where it matters, the accessible text says 'one point five million dollars'.",
+      "wcag": "Best practice"
+    },
+    {
+      "id": "fi-311",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Unformatted phone number",
+      "value": "2125550147",
+      "tests": "Long digit strings.",
+      "breaks": "Read as 'two billion, one hundred twenty-five million...'.",
+      "expected": "Displayed with grouping (212-555-0147) so it is read digit by digit.",
+      "wcag": "Best practice"
+    },
+    {
+      "id": "fi-312",
+      "group": "a11y",
+      "category": "sr",
+      "title": "All-caps text",
+      "value": "SUBMIT YOUR APPLICATION",
+      "tests": "Uppercase typed into content instead of styled with CSS.",
+      "breaks": "Some screen readers spell short words letter by letter, as if they were acronyms.",
+      "expected": "Normal case in the markup, text-transform for the look.",
+      "wcag": "Best practice"
+    },
+    {
+      "id": "fi-313",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Emoji-only button",
+      "value": "🗑️",
+      "tests": "A button whose only content is an emoji.",
+      "breaks": "Announced as 'wastebasket, button', which does not say what it deletes.",
+      "expected": "Accessible name such as 'Delete invoice INV-1001'.",
+      "wcag": "WCAG 4.1.2"
+    },
+    {
+      "id": "fi-314",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Icon font glyph",
+      "value": "",
+      "tests": "Private-use character from an icon font.",
+      "breaks": "Announced as nothing, a question mark or 'private use'.",
+      "expected": "Icon hidden with aria-hidden and a text label provided.",
+      "wcag": "WCAG 1.1.1"
+    },
+    {
+      "id": "fi-315",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Fancy Unicode name",
+      "value": "𝓙𝓪𝓷𝓮",
+      "tests": "Styled letters in display names and posts.",
+      "breaks": "Read as 'mathematical bold script capital J...' for every letter, or skipped.",
+      "expected": "Normalized for display, or the user warned.",
+      "wcag": "Best practice"
+    },
+    {
+      "id": "fi-316",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Repeated link text",
+      "value": "Read more",
+      "tests": "Many links with the same text on one page.",
+      "breaks": "A screen reader's links list shows ten identical 'Read more' entries.",
+      "expected": "Each link names its destination, visibly or with an accessible name.",
+      "wcag": "WCAG 2.4.4"
+    },
+    {
+      "id": "fi-317",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Label not in name",
+      "value": "Visible: Search · aria-label: Find products",
+      "tests": "Voice control users say what they see.",
+      "breaks": "Saying 'click Search' does nothing because the accessible name differs.",
+      "expected": "Accessible name starts with the visible label.",
+      "wcag": "WCAG 2.5.3"
+    },
+    {
+      "id": "fi-318",
+      "group": "a11y",
+      "category": "sr",
+      "title": "Ambiguous short date",
+      "value": "10/06/26",
+      "tests": "Numeric dates read aloud.",
+      "breaks": "Read as 'ten slash zero six slash twenty-six', with no clear day or month.",
+      "expected": "Dates shown as 'October 6, 2026' or with a time element.",
+      "wcag": "Best practice"
+    },
+    {
+      "id": "fi-319",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Text at 200%",
+      "value": "Ctrl/Cmd and + until 200%",
+      "tests": "Browser zoom to 200%.",
+      "breaks": "Text clips inside fixed-height buttons; content overlaps.",
+      "expected": "All content and functions still available.",
+      "wcag": "WCAG 1.4.4"
+    },
+    {
+      "id": "fi-320",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Reflow at 320 px",
+      "value": "Window 1280 px wide at 400% zoom (320 CSS px)",
+      "tests": "Content reflows to a single column.",
+      "breaks": "Horizontal scrolling is needed to read lines of text.",
+      "expected": "No two-dimensional scrolling except for tables, maps and diagrams.",
+      "wcag": "WCAG 1.4.10"
+    },
+    {
+      "id": "fi-321",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Text spacing override",
+      "value": "*{line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}",
+      "tests": "Paste into a user stylesheet or DevTools.",
+      "breaks": "Text is cut off in fixed-size boxes; labels overlap inputs.",
+      "expected": "No loss of content or function.",
+      "wcag": "WCAG 1.4.12"
+    },
+    {
+      "id": "fi-322",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Long word at 320 px",
+      "value": "Wolfeschlegelsteinhausenbergerdorff",
+      "tests": "Unbroken word in a narrow viewport.",
+      "breaks": "Pushes the layout wider and forces horizontal scrolling.",
+      "expected": "Word wraps (overflow-wrap) and layout stays inside the screen.",
+      "wcag": "WCAG 1.4.10"
+    },
+    {
+      "id": "fi-323",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Large default font",
+      "value": "Browser settings → Font size → Very large",
+      "tests": "User font-size preference, not zoom.",
+      "breaks": "Pixel-based font sizes ignore the setting.",
+      "expected": "Text grows; layout adapts (rem/em units).",
+      "wcag": "WCAG 1.4.4"
+    },
+    {
+      "id": "fi-324",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Focus hidden by sticky UI",
+      "value": "Zoom to 400%, then Tab through the page",
+      "tests": "Sticky headers, footers and cookie banners at high zoom.",
+      "breaks": "The focused control is completely covered.",
+      "expected": "Focused element stays at least partly visible.",
+      "wcag": "WCAG 2.4.11"
+    },
+    {
+      "id": "fi-325",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Small targets highlighter",
+      "value": "document.querySelectorAll('a,button,input,select,textarea,[role=button]').forEach(e=>{const r=e.getBoundingClientRect();if(r.width&&(r.width<24||r.height<24))e.style.outline='3px solid red'})",
+      "tests": "Run in the console to outline targets under 24 × 24 CSS px.",
+      "breaks": "Tiny icons and links are hard to hit for people with tremors.",
+      "expected": "Targets at least 24 × 24, or spaced so a 24 px circle fits (exceptions apply).",
+      "wcag": "WCAG 2.5.8"
+    },
+    {
+      "id": "fi-326",
+      "group": "a11y",
+      "category": "zoom",
+      "title": "Orientation lock",
+      "value": "Rotate the device to landscape",
+      "tests": "Mounted tablets and phones can't rotate.",
+      "breaks": "App shows 'please rotate your device'.",
+      "expected": "Works in both orientations unless essential.",
+      "wcag": "WCAG 1.3.4"
+    },
+    {
+      "id": "fi-327",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Keyboard only",
+      "value": "Tab, Shift+Tab, Enter, Space, arrow keys",
+      "tests": "Unplug the mouse and complete the main task.",
+      "breaks": "Clickable divs and custom widgets cannot be reached or used.",
+      "expected": "Every function works from the keyboard.",
+      "wcag": "WCAG 2.1.1"
+    },
+    {
+      "id": "fi-328",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Focus logger",
+      "value": "document.addEventListener('focusin',()=>console.log(document.activeElement))",
+      "tests": "Run in the console, then Tab through the page.",
+      "breaks": "Focus jumps out of reading order or lands on hidden elements.",
+      "expected": "Focus order follows the visual and logical order.",
+      "wcag": "WCAG 2.4.3"
+    },
+    {
+      "id": "fi-329",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Visible focus",
+      "value": "Tab through every control in light and dark mode",
+      "tests": "Focus indicator on each control.",
+      "breaks": "outline:none removes it; low-contrast rings vanish in dark mode.",
+      "expected": "Every focused control has a clearly visible indicator.",
+      "wcag": "WCAG 2.4.7"
+    },
+    {
+      "id": "fi-330",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Keyboard trap",
+      "value": "Tab into an embedded widget, then try to leave",
+      "tests": "Iframes, video players, rich text editors.",
+      "breaks": "Focus cannot leave without a mouse.",
+      "expected": "Tab or a documented key moves focus out.",
+      "wcag": "WCAG 2.1.2"
+    },
+    {
+      "id": "fi-331",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Dialog focus",
+      "value": "Open dialog → Tab past the last button → Esc",
+      "tests": "Focus handling in modals.",
+      "breaks": "Focus escapes behind the dialog; after closing, focus goes to the top of the page.",
+      "expected": "Focus moves into the dialog, stays there, and returns to the trigger on close.",
+      "wcag": "WCAG 2.4.3"
+    },
+    {
+      "id": "fi-332",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Custom dropdown keys",
+      "value": "↑ ↓ Home End Enter Esc, and type a letter",
+      "tests": "Select-like components built from divs.",
+      "breaks": "Arrow keys scroll the page; the selected value is not announced.",
+      "expected": "Keys behave like a native select; role and state exposed.",
+      "wcag": "WCAG 4.1.2"
+    },
+    {
+      "id": "fi-333",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Skip link",
+      "value": "Press Tab once after the page loads",
+      "tests": "Bypassing repeated navigation.",
+      "breaks": "No skip link, or it moves focus nowhere.",
+      "expected": "'Skip to main content' appears and moves focus to the main area.",
+      "wcag": "WCAG 2.4.1"
+    },
+    {
+      "id": "fi-334",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Single-key shortcuts",
+      "value": "s",
+      "tests": "Type a letter on a page with keyboard shortcuts while not in a text field.",
+      "breaks": "Speech input users trigger actions by accident.",
+      "expected": "Shortcuts can be turned off, remapped, or only work with focus.",
+      "wcag": "WCAG 2.1.4"
+    },
+    {
+      "id": "fi-335",
+      "group": "a11y",
+      "category": "kbd",
+      "title": "Drag-only action",
+      "value": "Reorder a list without dragging",
+      "tests": "Sortable lists, sliders, kanban boards.",
+      "breaks": "Only drag and drop is available.",
+      "expected": "A single-pointer alternative (buttons or menu) exists.",
+      "wcag": "WCAG 2.5.7"
+    },
+    {
+      "id": "fi-336",
+      "group": "a11y",
+      "category": "form",
+      "title": "Submit an empty form",
+      "value": "(submit with every field empty)",
+      "tests": "Error identification.",
+      "breaks": "Errors shown only in red; focus stays on the button; nothing is announced.",
+      "expected": "Errors described in text, linked to fields, focus moved to the first error or a summary.",
+      "wcag": "WCAG 3.3.1"
+    },
+    {
+      "id": "fi-337",
+      "group": "a11y",
+      "category": "form",
+      "title": "Incomplete email",
+      "value": "jane@",
+      "tests": "Error suggestion.",
+      "breaks": "Message only says 'Invalid input'.",
+      "expected": "Message explains the fix, such as 'Enter an email like name@example.com'.",
+      "wcag": "WCAG 3.3.3"
+    },
+    {
+      "id": "fi-338",
+      "group": "a11y",
+      "category": "form",
+      "title": "Placeholder as label",
+      "value": "Type into a field, then look for its label",
+      "tests": "Labels that disappear on input.",
+      "breaks": "Once text is entered, nothing says what the field is for.",
+      "expected": "Persistent visible label.",
+      "wcag": "WCAG 3.3.2"
+    },
+    {
+      "id": "fi-339",
+      "group": "a11y",
+      "category": "form",
+      "title": "Autocomplete purpose",
+      "value": "autocomplete=\"email\"",
+      "tests": "Personal data fields expose their purpose.",
+      "breaks": "Autofill does not work; users with motor or memory impairments retype everything.",
+      "expected": "Name, email, tel, address fields use the right autocomplete tokens.",
+      "wcag": "WCAG 1.3.5"
+    },
+    {
+      "id": "fi-340",
+      "group": "a11y",
+      "category": "form",
+      "title": "Status message",
+      "value": "Add to cart, or run a search",
+      "tests": "Results count and confirmation messages.",
+      "breaks": "Screen reader users get no feedback.",
+      "expected": "Announced through a live region without moving focus.",
+      "wcag": "WCAG 4.1.3"
+    },
+    {
+      "id": "fi-341",
+      "group": "a11y",
+      "category": "form",
+      "title": "Session timeout",
+      "value": "Leave the form idle for 20 minutes",
+      "tests": "Time limits.",
+      "breaks": "Session expires and entered data is lost without warning.",
+      "expected": "Warning with at least 20 seconds to extend.",
+      "wcag": "WCAG 2.2.1"
+    },
+    {
+      "id": "fi-342",
+      "group": "a11y",
+      "category": "form",
+      "title": "Paste a one-time code",
+      "value": "482913",
+      "tests": "Paste into password and OTP fields.",
+      "breaks": "Paste is blocked; split code boxes accept one digit only.",
+      "expected": "Paste and password managers work.",
+      "wcag": "WCAG 3.3.8"
+    },
+    {
+      "id": "fi-343",
+      "group": "a11y",
+      "category": "form",
+      "title": "Same info twice",
+      "value": "Shipping address = billing address",
+      "tests": "Redundant entry in multi-step flows.",
+      "breaks": "User must retype the same address.",
+      "expected": "Auto-filled or selectable.",
+      "wcag": "WCAG 3.3.7"
+    },
+    {
+      "id": "fi-344",
+      "group": "a11y",
+      "category": "form",
+      "title": "Change on select",
+      "value": "Move through a dropdown with arrow keys",
+      "tests": "Context changes on input.",
+      "breaks": "First arrow press navigates away or submits.",
+      "expected": "Nothing happens until the user confirms.",
+      "wcag": "WCAG 3.2.2"
+    },
+    {
+      "id": "fi-345",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Contrast that just passes",
+      "value": "#767676 on #FFFFFF",
+      "tests": "4.54:1, above the 4.5:1 minimum for body text.",
+      "breaks": "Design tokens drift a shade lighter and fail.",
+      "expected": "Body text at 4.5:1 or more.",
+      "wcag": "WCAG 1.4.3"
+    },
+    {
+      "id": "fi-346",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Contrast that just fails",
+      "value": "#777777 on #FFFFFF",
+      "tests": "4.48:1, below 4.5:1.",
+      "breaks": "Looks identical to #767676 but fails.",
+      "expected": "Flagged by your contrast checks.",
+      "wcag": "WCAG 1.4.3"
+    },
+    {
+      "id": "fi-347",
+      "group": "a11y",
+      "category": "vis",
+      "title": "UI component contrast",
+      "value": "#949494 border on #FFFFFF",
+      "tests": "3.03:1 for input borders, icons and focus rings (minimum 3:1).",
+      "breaks": "Light grey input borders disappear for low-vision users.",
+      "expected": "Boundaries and states at 3:1 or more.",
+      "wcag": "WCAG 1.4.11"
+    },
+    {
+      "id": "fi-348",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Grayscale check",
+      "value": "html{filter:grayscale(1)}",
+      "tests": "Paste into DevTools to remove color.",
+      "breaks": "Errors, required fields or chart series are only distinguished by color.",
+      "expected": "Every color cue has a text, icon or pattern alternative.",
+      "wcag": "WCAG 1.4.1"
+    },
+    {
+      "id": "fi-349",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Color vision deficiency",
+      "value": "DevTools → Rendering → Emulate vision deficiencies → Deuteranopia",
+      "tests": "Red-green color blindness.",
+      "breaks": "Red and green status pills look the same.",
+      "expected": "Status readable without hue.",
+      "wcag": "WCAG 1.4.1"
+    },
+    {
+      "id": "fi-350",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Forced colors",
+      "value": "DevTools → Rendering → forced-colors: active (or Windows contrast themes)",
+      "tests": "High-contrast modes override colors.",
+      "breaks": "Custom checkboxes, icons and focus rings disappear.",
+      "expected": "Controls and focus remain visible.",
+      "wcag": "WCAG 1.4.11"
+    },
+    {
+      "id": "fi-351",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Reduced motion",
+      "value": "DevTools → Rendering → prefers-reduced-motion: reduce",
+      "tests": "Users who get motion sickness from animation.",
+      "breaks": "Parallax and large transitions still run.",
+      "expected": "Non-essential motion removed or reduced (AAA; also widely expected).",
+      "wcag": "WCAG 2.3.3"
+    },
+    {
+      "id": "fi-352",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Auto-moving content",
+      "value": "Wait 5 seconds on a page with a carousel or ticker",
+      "tests": "Pause, stop or hide.",
+      "breaks": "Content moves with no pause control; focus moves with it.",
+      "expected": "Pause control, or motion stops after 5 seconds.",
+      "wcag": "WCAG 2.2.2"
+    },
+    {
+      "id": "fi-353",
+      "group": "a11y",
+      "category": "vis",
+      "title": "Hover content",
+      "value": "Hover, move the pointer onto the tooltip, then press Esc",
+      "tests": "Tooltips and hover menus.",
+      "breaks": "Tooltip vanishes when the pointer moves onto it, or Esc doesn't close it.",
+      "expected": "Hoverable, persistent and dismissible.",
+      "wcag": "WCAG 1.4.13"
+    },
+    {
+      "id": "fi-354",
+      "group": "a11y",
+      "category": "img",
+      "title": "File name as alt text",
+      "value": "IMG_2041.jpg",
+      "tests": "CMS uses the file name when alt is empty.",
+      "breaks": "Screen readers announce 'IMG underscore two zero four one dot jpg'.",
+      "expected": "Meaningful alt text, or alt=\"\" for decorative images.",
+      "wcag": "WCAG 1.1.1"
+    },
+    {
+      "id": "fi-355",
+      "group": "a11y",
+      "category": "img",
+      "title": "Redundant alt",
+      "value": "Image of a picture of our logo",
+      "tests": "Alt text that repeats the role.",
+      "breaks": "Heard as 'graphic, image of a picture of...'.",
+      "expected": "Alt says only what the image conveys, such as 'Acme'.",
+      "wcag": "WCAG 1.1.1"
+    },
+    {
+      "id": "fi-356",
+      "group": "a11y",
+      "category": "img",
+      "title": "Decorative image",
+      "value": "alt=\"\"",
+      "tests": "Empty vs missing alt.",
+      "breaks": "Missing alt makes screen readers read the file name.",
+      "expected": "Decorative images use alt=\"\"; informative ones have text.",
+      "wcag": "WCAG 1.1.1"
+    },
+    {
+      "id": "fi-357",
+      "group": "a11y",
+      "category": "img",
+      "title": "Text inside an image",
+      "value": "Banner JPG reading 'Sale 50% off'",
+      "tests": "Images of text.",
+      "breaks": "Cannot be resized, recolored or read by assistive tech unless alt repeats it.",
+      "expected": "Real text styled with CSS.",
+      "wcag": "WCAG 1.4.5"
+    },
+    {
+      "id": "fi-358",
+      "group": "a11y",
+      "category": "img",
+      "title": "Chart without text",
+      "value": "<canvas> revenue chart",
+      "tests": "Data visualizations.",
+      "breaks": "Screen readers hear nothing or 'canvas'.",
+      "expected": "Summary text or a data table provided.",
+      "wcag": "WCAG 1.1.1"
+    },
+    {
+      "id": "fi-359",
+      "group": "a11y",
+      "category": "img",
+      "title": "Page language",
+      "value": "document.documentElement.lang",
+      "tests": "Run in the console.",
+      "breaks": "Empty result: screen readers read English pages with the wrong voice.",
+      "expected": "Returns the page language, such as 'en'.",
+      "wcag": "WCAG 3.1.1"
+    },
+    {
+      "id": "fi-360",
+      "group": "a11y",
+      "category": "img",
+      "title": "Phrase in another language",
+      "value": "Bienvenidos a nuestra tienda",
+      "tests": "Foreign-language passages inside an English page.",
+      "breaks": "Read with English pronunciation and is unintelligible.",
+      "expected": "Wrapped in an element with lang=\"es\".",
+      "wcag": "WCAG 3.1.2"
+    },
+    {
+      "id": "fi-361",
+      "group": "a11y",
+      "category": "img",
+      "title": "Link to a file",
+      "value": "Annual report",
+      "tests": "Links that open PDFs or downloads.",
+      "breaks": "No warning that a large PDF opens.",
+      "expected": "Link text names the file type and size, like 'Annual report (PDF, 2 MB)'.",
+      "wcag": "WCAG 2.4.4"
+    },
+    {
+      "id": "fi-362",
+      "group": "a11y",
+      "category": "img",
+      "title": "Image CAPTCHA",
+      "value": "Type the letters in the image",
+      "tests": "Cognitive function tests for login.",
+      "breaks": "Blind and low-vision users cannot sign in.",
+      "expected": "An alternative method that needs no transcription or puzzle.",
+      "wcag": "WCAG 3.3.8"
+    },
+    {
+      "id": "fi-363",
+      "group": "ind",
+      "category": "travel",
+      "title": "Umlaut in a ticket name",
+      "value": "MÜLLER/JOHN MR",
+      "tests": "Airline name format SURNAME/GIVEN TITLE with a non-ASCII letter.",
+      "breaks": "Reservation systems accept only A to Z; Ü becomes U or UE and disagrees with the passport.",
+      "expected": "Transliterated consistently with the passport's machine-readable zone."
+    },
+    {
+      "id": "fi-364",
+      "group": "ind",
+      "category": "travel",
+      "title": "ICAO vs IATA airport code",
+      "value": "KJFK",
+      "tests": "Four-letter ICAO code where three-letter IATA is expected.",
+      "breaks": "Lookup fails, or KJF is matched by prefix.",
+      "expected": "Both code types recognized, or a clear message."
+    },
+    {
+      "id": "fi-365",
+      "group": "ind",
+      "category": "travel",
+      "title": "Arrival next day",
+      "value": "23:55 → 06:10+1",
+      "tests": "Overnight flight times with a +1 day marker.",
+      "breaks": "The +1 is dropped and the flight appears to last a negative time.",
+      "expected": "Arrival date stored separately; duration correct."
+    },
+    {
+      "id": "fi-366",
+      "group": "ind",
+      "category": "travel",
+      "title": "Codeshare flight",
+      "value": "AA 6789 operated by BA 117",
+      "tests": "One flight sold under two numbers.",
+      "breaks": "Status, check-in and baggage rules looked up for the wrong carrier.",
+      "expected": "Marketing and operating carrier both stored."
+    },
+    {
+      "id": "fi-367",
+      "group": "ind",
+      "category": "travel",
+      "title": "Missing row 13",
+      "value": "13A",
+      "tests": "Many airlines skip row 13.",
+      "breaks": "Seat maps assuming continuous rows shift every seat after row 12.",
+      "expected": "Seat map built from the aircraft configuration."
+    },
+    {
+      "id": "fi-368",
+      "group": "ind",
+      "category": "travel",
+      "title": "Midnight in 12-hour time",
+      "value": "12:00 AM",
+      "tests": "Which day 12 AM belongs to.",
+      "breaks": "Read as noon, or as the end of the day instead of the start.",
+      "expected": "24-hour times stored; 12 AM shown as midnight at the start of the date."
+    },
+    {
+      "id": "fi-369",
+      "group": "ind",
+      "category": "travel",
+      "title": "Baggage weight units",
+      "value": "23 kg / 50 lb",
+      "tests": "Allowances in different units.",
+      "breaks": "Rounded conversion (23 kg is 50.7 lb) flags a legal bag as overweight.",
+      "expected": "Limits compared in the unit the airline publishes."
+    },
+    {
+      "id": "fi-370",
+      "group": "ind",
+      "category": "auto",
+      "title": "VIN with I, O or Q",
+      "value": "1HGCM82633A00O352",
+      "tests": "Letters I, O and Q never appear in a VIN.",
+      "breaks": "Accepted, then decoders and registries return no vehicle.",
+      "expected": "Rejected, or O suggested as 0."
+    },
+    {
+      "id": "fi-371",
+      "group": "ind",
+      "category": "auto",
+      "title": "Wrong VIN check digit",
+      "value": "1HGCM82643A004352",
+      "tests": "Position 9 is a check digit for North American vehicles.",
+      "breaks": "Typos are saved; title and insurance lookups fail later.",
+      "expected": "Rejected. The valid form is 1HGCM82633A004352."
+    },
+    {
+      "id": "fi-372",
+      "group": "ind",
+      "category": "auto",
+      "title": "European VIN with fillers",
+      "value": "WVWZZZ1JZXW000001",
+      "tests": "European VINs often skip the check digit and use Z fillers.",
+      "breaks": "North American check-digit validation rejects a valid imported car.",
+      "expected": "Check digit enforced only where it applies."
+    },
+    {
+      "id": "fi-373",
+      "group": "ind",
+      "category": "auto",
+      "title": "VIN with spaces and lowercase",
+      "value": "1hgcm8 2633a0 04352",
+      "tests": "VIN typed from a photo.",
+      "breaks": "Rejected for length or case.",
+      "expected": "Spaces removed and uppercased before validation."
+    },
+    {
+      "id": "fi-374",
+      "group": "ind",
+      "category": "auto",
+      "title": "Plate formatting variants",
+      "value": "ABC-123",
+      "tests": "Same plate as ABC-123, ABC 123 and ABC123.",
+      "breaks": "Three records for one car; tolls and fines don't match.",
+      "expected": "Spaces and dashes removed for matching."
+    },
+    {
+      "id": "fi-375",
+      "group": "ind",
+      "category": "auto",
+      "title": "Lookalike characters on a plate",
+      "value": "N0 L1M1T",
+      "tests": "Vanity plates using 0 for O and 1 for I.",
+      "breaks": "Camera reads and typed entries disagree; citations go to the wrong car.",
+      "expected": "Matching rules documented for the issuing state's format."
+    },
+    {
+      "id": "fi-376",
+      "group": "ind",
+      "category": "auto",
+      "title": "Odometer lower than before",
+      "value": "45,210 mi (last service 62,800 mi)",
+      "tests": "Mileage below a previous record.",
+      "breaks": "Saved without warning; rollback goes undetected.",
+      "expected": "Flagged for review."
+    },
+    {
+      "id": "fi-377",
+      "group": "ind",
+      "category": "auto",
+      "title": "Kilometers in a miles field",
+      "value": "120000 km",
+      "tests": "Imported vehicles and unit mix-ups.",
+      "breaks": "Mileage overstated by 60%.",
+      "expected": "Unit captured and converted."
+    },
+    {
+      "id": "fi-378",
+      "group": "ind",
+      "category": "auto",
+      "title": "Plus sign in a model name",
+      "value": "Model S Plaid+",
+      "tests": "Model names in URLs and query strings.",
+      "breaks": "In a query string + becomes a space; search finds 'Model S Plaid '.",
+      "expected": "Encoded as %2B and matched exactly."
+    },
+    {
+      "id": "fi-379",
+      "group": "ind",
+      "category": "auto",
+      "title": "Power vs energy unit",
+      "value": "75 kW",
+      "tests": "kW entered where kWh is expected on EV data.",
+      "breaks": "Charging power stored as battery capacity; range estimates break.",
+      "expected": "Unit validated per field."
+    },
+    {
+      "id": "fi-380",
+      "group": "ind",
+      "category": "tel",
+      "title": "Local number without country code",
+      "value": "091 234 5678",
+      "tests": "A national-format number with a leading 0.",
+      "breaks": "Stored without the country code; international dialing fails.",
+      "expected": "Normalized to E.164 using the user's region."
+    },
+    {
+      "id": "fi-381",
+      "group": "ind",
+      "category": "tel",
+      "title": "Leading-zero trunk code",
+      "value": "+385 091 234 5678",
+      "tests": "Country code plus the national trunk 0.",
+      "breaks": "The 0 is kept after +385 and the number becomes undialable.",
+      "expected": "Trunk 0 dropped when the country code is present."
+    },
+    {
+      "id": "fi-382",
+      "group": "ind",
+      "category": "tel",
+      "title": "Number stored as an integer",
+      "value": "0044123456789",
+      "tests": "Phone numbers put in numeric columns.",
+      "breaks": "Leading zeros vanish; + cannot be stored at all.",
+      "expected": "Stored as text in E.164 form."
+    },
+    {
+      "id": "fi-383",
+      "group": "ind",
+      "category": "tel",
+      "title": "Extension and pause",
+      "value": "+1 212 555 0147,,123",
+      "tests": "Dial strings with commas for pauses.",
+      "breaks": "Commas rejected, or the extension dialed as part of the number.",
+      "expected": "Extension stored separately."
+    },
+    {
+      "id": "fi-384",
+      "group": "ind",
+      "category": "tel",
+      "title": "Short code",
+      "value": "62266",
+      "tests": "5 to 6 digit SMS short codes.",
+      "breaks": "Minimum-length phone validation rejects them.",
+      "expected": "Short codes allowed where expected."
+    },
+    {
+      "id": "fi-385",
+      "group": "ind",
+      "category": "tel",
+      "title": "IMEI check digit",
+      "value": "490154203237518",
+      "tests": "15-digit device ID with a Luhn check.",
+      "breaks": "Invalid IMEIs are saved; blocklists and warranty checks fail.",
+      "expected": "Validated; 490154203237517 is rejected."
+    },
+    {
+      "id": "fi-386",
+      "group": "ind",
+      "category": "tel",
+      "title": "SIM ICCID length",
+      "value": "89012601234567890121",
+      "tests": "ICCIDs run 19 to 20 digits with a check digit.",
+      "breaks": "Fixed-length fields truncate it; the leading 89 is parsed away as a number.",
+      "expected": "Stored as text and length-checked."
+    },
+    {
+      "id": "fi-387",
+      "group": "ind",
+      "category": "tel",
+      "title": "GSM 7-bit vs Unicode SMS",
+      "value": "Café — 20€ 🙂",
+      "tests": "One emoji or curly punctuation in an SMS.",
+      "breaks": "A single non-GSM character switches the whole message to UCS-2, cutting the limit from 160 to 70 and multiplying the cost.",
+      "expected": "Encoding and segment count shown before sending."
+    },
+    {
+      "id": "fi-388",
+      "group": "ind",
+      "category": "tel",
+      "title": "Emergency number as input",
+      "value": "112",
+      "tests": "Emergency numbers typed into a contact field.",
+      "breaks": "Routed or dialed by an auto-dialer by mistake.",
+      "expected": "Blocked from automated dialing."
+    },
+    {
+      "id": "fi-389",
+      "group": "ind",
+      "category": "log",
+      "title": "Container number check digit",
+      "value": "CSQU3054383",
+      "tests": "ISO 6346 container ID with a check digit.",
+      "breaks": "Mistyped containers (CSQU3054384) are accepted and lost in transit.",
+      "expected": "Owner code, category and check digit validated."
+    },
+    {
+      "id": "fi-390",
+      "group": "ind",
+      "category": "log",
+      "title": "Tracking number with spaces",
+      "value": "1Z 999 AA1 01234 5675",
+      "tests": "Carrier tracking copied with spaces.",
+      "breaks": "Lookup fails on the formatted value.",
+      "expected": "Spaces removed before lookup."
+    },
+    {
+      "id": "fi-391",
+      "group": "ind",
+      "category": "log",
+      "title": "Postal S10 code",
+      "value": "RB123456785GB",
+      "tests": "UPU S10 international item with a check digit.",
+      "breaks": "The two-letter country suffix is dropped or the check digit skipped.",
+      "expected": "Full code validated."
+    },
+    {
+      "id": "fi-392",
+      "group": "ind",
+      "category": "log",
+      "title": "Air waybill check",
+      "value": "125-12345675",
+      "tests": "AWB: 3-digit airline prefix, 7-digit serial, mod-7 check.",
+      "breaks": "The dash breaks parsing; the mod-7 digit is never checked.",
+      "expected": "Prefix, serial and check digit validated."
+    },
+    {
+      "id": "fi-393",
+      "group": "ind",
+      "category": "log",
+      "title": "Oversized dimensions",
+      "value": "1200 x 800 x 2500 cm",
+      "tests": "A pallet taller than any truck (likely mm entered as cm).",
+      "breaks": "Freight quoted on impossible dimensions.",
+      "expected": "Plausibility checked; unit confirmed."
+    },
+    {
+      "id": "fi-394",
+      "group": "ind",
+      "category": "log",
+      "title": "Weight with comma decimal",
+      "value": "1,5 kg",
+      "tests": "European decimal on a shipment weight.",
+      "breaks": "Read as 15 kg; postage overcharged tenfold.",
+      "expected": "Parsed per locale."
+    },
+    {
+      "id": "fi-395",
+      "group": "ind",
+      "category": "log",
+      "title": "Delivery window crosses midnight",
+      "value": "22:00 – 02:00",
+      "tests": "A time window spanning two days.",
+      "breaks": "End earlier than start is rejected, or the window collapses.",
+      "expected": "Treated as overnight."
+    },
+    {
+      "id": "fi-396",
+      "group": "ind",
+      "category": "log",
+      "title": "HS tariff code",
+      "value": "0101.21.00",
+      "tests": "Harmonized System customs codes with dots.",
+      "breaks": "Dots stripped and digits merged; duties calculated on the wrong code.",
+      "expected": "Stored with its structure; length validated."
+    },
+    {
+      "id": "fi-397",
+      "group": "ind",
+      "category": "ins",
+      "title": "Policy number with slashes",
+      "value": "POL-2026/US-000123",
+      "tests": "Structured policy IDs with slashes and dashes.",
+      "breaks": "Slash treated as a path separator in URLs; lookups 404.",
+      "expected": "Stored exactly and URL-encoded in links."
+    },
+    {
+      "id": "fi-398",
+      "group": "ind",
+      "category": "ins",
+      "title": "Claim at the coverage limit",
+      "value": "50000.00",
+      "tests": "A claim exactly equal to a $50,000 limit.",
+      "breaks": "Greater-than vs greater-or-equal decides payout; off-by-one denies a valid claim.",
+      "expected": "Boundary handled per the policy wording."
+    },
+    {
+      "id": "fi-399",
+      "group": "ind",
+      "category": "ins",
+      "title": "Zero-dollar claim",
+      "value": "0.00",
+      "tests": "Record-only or informational claims.",
+      "breaks": "Rejected as invalid, or it triggers a payment run.",
+      "expected": "Accepted as a zero-value claim."
+    },
+    {
+      "id": "fi-400",
+      "group": "ind",
+      "category": "ins",
+      "title": "Backdated effective date",
+      "value": "effective 2026-01-01, filed 2026-10-06",
+      "tests": "Coverage start before the application date.",
+      "breaks": "Lets a loss that already happened be covered.",
+      "expected": "Allowed only where the product permits, with a rule."
+    },
+    {
+      "id": "fi-401",
+      "group": "ind",
+      "category": "ins",
+      "title": "Age 0 insured",
+      "value": "DOB today",
+      "tests": "Newborn added to a policy.",
+      "breaks": "Age-based premium divides by zero or rejects age 0.",
+      "expected": "Infants rated correctly."
+    },
+    {
+      "id": "fi-402",
+      "group": "ind",
+      "category": "ins",
+      "title": "Beneficiary split not 100%",
+      "value": "60% + 30%",
+      "tests": "Percentages that don't total 100.",
+      "breaks": "Saved; payout is ambiguous at claim time.",
+      "expected": "Must total exactly 100%."
+    },
+    {
+      "id": "fi-403",
+      "group": "ind",
+      "category": "ins",
+      "title": "VIN as a lookup key",
+      "value": "1HGCM82633A004352",
+      "tests": "Auto policies keyed on VIN.",
+      "breaks": "A mistyped VIN binds a policy to the wrong vehicle.",
+      "expected": "VIN validated before binding."
+    },
+    {
+      "id": "fi-404",
+      "group": "ind",
+      "category": "ins",
+      "title": "Future date of birth",
+      "value": "2030-01-01",
+      "tests": "Typos in the year.",
+      "breaks": "Negative age; premium math breaks.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-405",
+      "group": "ind",
+      "category": "gov",
+      "title": "National ID check digit",
+      "value": "69082343178",
+      "tests": "An 11-digit national ID with an ISO 7064 check digit (Croatian OIB format).",
+      "breaks": "A mistyped ID passes a length-only check and binds records to the wrong citizen.",
+      "expected": "Check digit validated; 69082343179 is the valid form."
+    },
+    {
+      "id": "fi-406",
+      "group": "ind",
+      "category": "gov",
+      "title": "Non-ASCII legal name",
+      "value": "Đurđica Čičić",
+      "tests": "Diacritics that appear in official names (Č, ć, Đ).",
+      "breaks": "Transliterated to Djurdjica, so the record no longer matches the ID document.",
+      "expected": "Preserved exactly and matched with accent folding."
+    },
+    {
+      "id": "fi-407",
+      "group": "ind",
+      "category": "gov",
+      "title": "Person with no fixed address",
+      "value": "No fixed abode",
+      "tests": "Homeless or in-transit applicants.",
+      "breaks": "A required street address locks them out of services.",
+      "expected": "A documented path for people without an address."
+    },
+    {
+      "id": "fi-408",
+      "group": "ind",
+      "category": "gov",
+      "title": "Placeholder ID",
+      "value": "000-00-0000",
+      "tests": "All-zero identity numbers used as placeholders.",
+      "breaks": "Passes format checks and creates duplicate 'unknown' citizens.",
+      "expected": "Rejected."
+    },
+    {
+      "id": "fi-409",
+      "group": "ind",
+      "category": "gov",
+      "title": "Date in another calendar",
+      "value": "1446-04-01 AH",
+      "tests": "Hijri or other non-Gregorian dates on documents.",
+      "breaks": "Parsed as a Gregorian year 1446; age and eligibility are wrong.",
+      "expected": "Calendar identified and converted."
+    },
+    {
+      "id": "fi-410",
+      "group": "ind",
+      "category": "gov",
+      "title": "Only a year of birth known",
+      "value": "1980-00-00",
+      "tests": "Refugee and legacy records with partial dates.",
+      "breaks": "Month 00 and day 00 crash date parsing.",
+      "expected": "Partial dates stored and handled."
+    },
+    {
+      "id": "fi-411",
+      "group": "ind",
+      "category": "gov",
+      "title": "Very long official name",
+      "value": "Maria Isabel Fernanda de la Santisima Trinidad y Guzman",
+      "tests": "Full legal names on IDs.",
+      "breaks": "Truncated on cards and in the ID chip; the printed and stored names differ.",
+      "expected": "Full name stored; truncation documented."
+    },
+    {
+      "id": "fi-412",
+      "group": "ind",
+      "category": "gov",
+      "title": "Transliterated vs native name",
+      "value": "Анна (Anna)",
+      "tests": "Documents that carry both scripts.",
+      "breaks": "Only one script is stored; searches in the other fail.",
+      "expected": "Both forms stored and searchable."
+    },
+    {
+      "id": "fi-413",
+      "group": "ind",
+      "category": "util",
+      "title": "Meter rollover",
+      "value": "00012 (previous 99987)",
+      "tests": "A mechanical meter passing its maximum and wrapping to zero.",
+      "breaks": "Usage computed as negative (a huge credit) instead of a small positive amount.",
+      "expected": "Rollover detected; consumption computed correctly."
+    },
+    {
+      "id": "fi-414",
+      "group": "ind",
+      "category": "util",
+      "title": "Net metering export",
+      "value": "-45 kWh",
+      "tests": "Solar customers who send power back.",
+      "breaks": "Negative usage rejected, or billed as consumption.",
+      "expected": "Net export handled and credited."
+    },
+    {
+      "id": "fi-415",
+      "group": "ind",
+      "category": "util",
+      "title": "Reading lower than last",
+      "value": "4210 (previous 4890)",
+      "tests": "A read below the prior one without a rollover.",
+      "breaks": "Negative bill, or a silent estimate.",
+      "expected": "Flagged for a re-read."
+    },
+    {
+      "id": "fi-416",
+      "group": "ind",
+      "category": "util",
+      "title": "Leading zeros on account",
+      "value": "0048213",
+      "tests": "Account numbers that are codes, not quantities.",
+      "breaks": "Stored as a number; lookups miss.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-417",
+      "group": "ind",
+      "category": "util",
+      "title": "Estimated vs actual read",
+      "value": "E 4500",
+      "tests": "An 'E' prefix meaning estimated.",
+      "breaks": "The letter breaks numeric parsing, or the estimate is treated as actual.",
+      "expected": "Read type captured in its own field."
+    },
+    {
+      "id": "fi-418",
+      "group": "ind",
+      "category": "util",
+      "title": "Billing period over DST",
+      "value": "2026-03-01 to 2026-04-01",
+      "tests": "A month containing a daylight-saving change.",
+      "breaks": "Hourly interval data has a missing or doubled hour; daily totals are off.",
+      "expected": "Intervals reconciled against wall-clock time."
+    },
+    {
+      "id": "fi-419",
+      "group": "ind",
+      "category": "util",
+      "title": "Decimal gas reading",
+      "value": "1234.567 m³",
+      "tests": "High-precision meter values.",
+      "breaks": "Rounded differently on screen and on the bill.",
+      "expected": "One documented rounding rule."
+    },
+    {
+      "id": "fi-420",
+      "group": "ind",
+      "category": "util",
+      "title": "Tariff change mid-period",
+      "value": "Rate A until 2026-10-15, Rate B after",
+      "tests": "A price change inside one billing cycle.",
+      "breaks": "The whole period is billed at one rate.",
+      "expected": "Usage split at the change date."
+    },
+    {
+      "id": "fi-421",
+      "group": "ind",
+      "category": "re",
+      "title": "Parcel / cadastral number",
+      "value": "Lot 1234/5, Block 12",
+      "tests": "Structured land identifiers with slashes.",
+      "breaks": "The slash is read as a path; the sub-parcel is lost.",
+      "expected": "Stored exactly, with its parts."
+    },
+    {
+      "id": "fi-422",
+      "group": "ind",
+      "category": "re",
+      "title": "Unit number with a letter",
+      "value": "4B",
+      "tests": "Apartment identifiers that aren't numeric.",
+      "breaks": "A numeric unit field rejects it.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-423",
+      "group": "ind",
+      "category": "re",
+      "title": "Floor 0 vs 1",
+      "value": "Ground floor (0)",
+      "tests": "Ground floor numbering differs by country.",
+      "breaks": "Off-by-one between floor 0 and floor 1 across systems.",
+      "expected": "Floor stored as a label, not only a number."
+    },
+    {
+      "id": "fi-424",
+      "group": "ind",
+      "category": "re",
+      "title": "Area unit mismatch",
+      "value": "120 (sq ft or sq m?)",
+      "tests": "Area without a unit.",
+      "breaks": "120 sq ft listed as 120 sq m, a tenfold error.",
+      "expected": "Unit required and shown."
+    },
+    {
+      "id": "fi-425",
+      "group": "ind",
+      "category": "re",
+      "title": "Price with abbreviation",
+      "value": "$1.2M",
+      "tests": "Shorthand listing prices.",
+      "breaks": "Parsed as 1.2; sorting and filtering break.",
+      "expected": "Expanded to 1200000 on entry."
+    },
+    {
+      "id": "fi-426",
+      "group": "ind",
+      "category": "re",
+      "title": "Lot with no street",
+      "value": "Vacant land, no street number",
+      "tests": "Undeveloped parcels.",
+      "breaks": "Address validation rejects the listing.",
+      "expected": "Parcel-only addresses allowed."
+    },
+    {
+      "id": "fi-427",
+      "group": "ind",
+      "category": "re",
+      "title": "Negative or zero bedrooms",
+      "value": "0",
+      "tests": "Studios and commercial units.",
+      "breaks": "A 'minimum 1 bedroom' rule rejects a studio.",
+      "expected": "0 allowed for studios and non-residential."
+    },
+    {
+      "id": "fi-428",
+      "group": "ind",
+      "category": "re",
+      "title": "Coordinates as text",
+      "value": "45.8150, 15.9819",
+      "tests": "Lat/long pasted into one field.",
+      "breaks": "The comma splits a CSV column; the pair is torn apart.",
+      "expected": "Parsed into two numeric fields."
+    },
+    {
+      "id": "fi-429",
+      "group": "ind",
+      "category": "legal",
+      "title": "Statute citation",
+      "value": "§ 123(4)(a)",
+      "tests": "The section sign and nested parentheses.",
+      "breaks": "§ is dropped in ASCII-only systems; the reference loses meaning.",
+      "expected": "Preserved exactly, including §."
+    },
+    {
+      "id": "fi-430",
+      "group": "ind",
+      "category": "legal",
+      "title": "Docket number with slashes",
+      "value": "Case 12-cv-3456/2026",
+      "tests": "Court reference numbers.",
+      "breaks": "Slash breaks URLs; the reference is split.",
+      "expected": "Stored and encoded safely."
+    },
+    {
+      "id": "fi-431",
+      "group": "ind",
+      "category": "legal",
+      "title": "Deadline on a weekend",
+      "value": "due 2026-10-10 (Saturday)",
+      "tests": "Filing deadlines that land on a non-business day.",
+      "breaks": "Computed naively; the real deadline rolls to the next business day.",
+      "expected": "Business-day and holiday rules applied."
+    },
+    {
+      "id": "fi-432",
+      "group": "ind",
+      "category": "legal",
+      "title": "Paragraph and section marks",
+      "value": "¶ 12, §§ 3–5",
+      "tests": "Pilcrow and double-section marks.",
+      "breaks": "Lost in plain-text export; cross-references break.",
+      "expected": "Preserved in storage and export."
+    },
+    {
+      "id": "fi-433",
+      "group": "ind",
+      "category": "legal",
+      "title": "Redaction left in text",
+      "value": "SSN: 078-05-1120 [REDACT]",
+      "tests": "Sensitive data pasted into a field meant to be redacted.",
+      "breaks": "The data is stored and indexed before redaction runs.",
+      "expected": "Detected and masked on entry."
+    },
+    {
+      "id": "fi-434",
+      "group": "ind",
+      "category": "legal",
+      "title": "Em dash vs hyphen in a cite",
+      "value": "pp. 10–15",
+      "tests": "Page ranges with an en dash.",
+      "breaks": "Range parsing that expects a hyphen fails.",
+      "expected": "Dash variants normalized."
+    },
+    {
+      "id": "fi-435",
+      "group": "ind",
+      "category": "legal",
+      "title": "Retention date far in the future",
+      "value": "retain until 2099-12-31",
+      "tests": "Long legal hold periods.",
+      "breaks": "Date math overflows, or the hold is ignored.",
+      "expected": "Far-future dates stored and honored."
+    },
+    {
+      "id": "fi-436",
+      "group": "ind",
+      "category": "legal",
+      "title": "Signature typed as text",
+      "value": "/s/ Jane Doe",
+      "tests": "The /s/ electronic-signature convention.",
+      "breaks": "The slashes break parsing, or it's treated as a real signature.",
+      "expected": "Recognized as a typed signature marker."
+    },
+    {
+      "id": "fi-437",
+      "group": "ind",
+      "category": "edu",
+      "title": "Course code with section",
+      "value": "CS-101/A",
+      "tests": "Course IDs with a section suffix.",
+      "breaks": "The slash splits the code; section A is lost.",
+      "expected": "Code and section stored together."
+    },
+    {
+      "id": "fi-438",
+      "group": "ind",
+      "category": "edu",
+      "title": "Grade that isn't a number",
+      "value": "A-",
+      "tests": "Letter grades with modifiers.",
+      "breaks": "A numeric grade field rejects it; GPA math fails.",
+      "expected": "Letter grades mapped to grade points."
+    },
+    {
+      "id": "fi-439",
+      "group": "ind",
+      "category": "edu",
+      "title": "Pass/fail grade",
+      "value": "P",
+      "tests": "Non-GPA grades mixed with graded courses.",
+      "breaks": "Counted as 0 in GPA, dragging it down.",
+      "expected": "Excluded from GPA per policy."
+    },
+    {
+      "id": "fi-440",
+      "group": "ind",
+      "category": "edu",
+      "title": "GPA rounding boundary",
+      "value": "3.995",
+      "tests": "A GPA that rounds to 4.0.",
+      "breaks": "Honors cutoffs depend on when rounding happens.",
+      "expected": "Rounding rule documented and applied once."
+    },
+    {
+      "id": "fi-441",
+      "group": "ind",
+      "category": "edu",
+      "title": "Incomplete or withdrawal",
+      "value": "I",
+      "tests": "Codes like I (incomplete) or W (withdrawn).",
+      "breaks": "Treated as a failing grade.",
+      "expected": "Handled per the grading policy."
+    },
+    {
+      "id": "fi-442",
+      "group": "ind",
+      "category": "edu",
+      "title": "Non-ASCII student name",
+      "value": "João Štěpán",
+      "tests": "Diacritics in names on transcripts.",
+      "breaks": "Mangled on the diploma and in the records system.",
+      "expected": "Preserved end to end."
+    },
+    {
+      "id": "fi-443",
+      "group": "ind",
+      "category": "edu",
+      "title": "Student ID with leading zeros",
+      "value": "00042",
+      "tests": "Zero-padded enrollment numbers.",
+      "breaks": "Stored as 42; ID lookups miss.",
+      "expected": "Stored as text."
+    },
+    {
+      "id": "fi-444",
+      "group": "ind",
+      "category": "edu",
+      "title": "Credit hours as a fraction",
+      "value": "0.5",
+      "tests": "Half-credit courses.",
+      "breaks": "Integer-only fields reject them; totals are wrong.",
+      "expected": "Fractional credits supported."
+    },
+    {
+      "id": "fi-445",
+      "group": "ind",
+      "category": "pharma",
+      "title": "Dose with a trailing zero",
+      "value": "5.0 mg",
+      "tests": "A trailing zero on a dose.",
+      "breaks": "The decimal is missed and it reads as 50 mg, a tenfold overdose.",
+      "expected": "Displayed as 5 mg."
+    },
+    {
+      "id": "fi-446",
+      "group": "ind",
+      "category": "pharma",
+      "title": "Scientific notation result",
+      "value": "1.2e-9 mol/L",
+      "tests": "Lab values in scientific notation.",
+      "breaks": "Parsed as 1.2 or rejected; the exponent is lost.",
+      "expected": "Parsed and stored with the exponent."
+    },
+    {
+      "id": "fi-447",
+      "group": "ind",
+      "category": "pharma",
+      "title": "pH value",
+      "value": "pH 7.4",
+      "tests": "Measurements with a text prefix.",
+      "breaks": "The 'pH' breaks numeric parsing.",
+      "expected": "Value and label captured separately."
+    },
+    {
+      "id": "fi-448",
+      "group": "ind",
+      "category": "pharma",
+      "title": "Lot number that looks like a date",
+      "value": "AB-2026-09-001",
+      "tests": "Batch codes containing a date.",
+      "breaks": "A date picker reformats it; the lot code is corrupted.",
+      "expected": "Stored as an opaque string."
+    },
+    {
+      "id": "fi-449",
+      "group": "ind",
+      "category": "pharma",
+      "title": "Microgram abbreviation",
+      "value": "µg",
+      "tests": "The micro sign (µ) versus the letter u.",
+      "breaks": "'ug' or 'mcg' entered instead; µ is lost in ASCII systems and doses are misread.",
+      "expected": "µg normalized and displayed consistently."
+    },
+    {
+      "id": "fi-450",
+      "group": "ind",
+      "category": "pharma",
+      "title": "NDC drug code format",
+      "value": "0002-7510-01",
+      "tests": "US National Drug Code segments.",
+      "breaks": "Dashes stripped and segments merged; the drug can't be identified.",
+      "expected": "Segment structure preserved."
+    },
+    {
+      "id": "fi-451",
+      "group": "ind",
+      "category": "pharma",
+      "title": "Expiry as month and year only",
+      "value": "09/2026",
+      "tests": "Drug expiry with no day.",
+      "breaks": "Assumed to be the 1st; the drug is discarded a month early.",
+      "expected": "Treated as the last day of the month."
+    },
+    {
+      "id": "fi-452",
+      "group": "ind",
+      "category": "pharma",
+      "title": "Chemical formula subscript",
+      "value": "H₂O",
+      "tests": "Formulas with subscript characters.",
+      "breaks": "Subscripts lost or NFKC-folded to H2O inconsistently.",
+      "expected": "Rendered and searchable both ways."
+    },
+    {
+      "id": "fi-453",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Part number with revision",
+      "value": "PN-001/REV.C",
+      "tests": "Part IDs that include a revision.",
+      "breaks": "The slash splits the value; revisions collide.",
+      "expected": "Part and revision stored together."
+    },
+    {
+      "id": "fi-454",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Serial with a prefix",
+      "value": "SN: A12-0045",
+      "tests": "Serial numbers with a label and dash.",
+      "breaks": "The 'SN:' prefix is stored as part of the serial.",
+      "expected": "Prefix stripped; serial stored clean."
+    },
+    {
+      "id": "fi-455",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Leading-zero lot code",
+      "value": "000123",
+      "tests": "Zero-padded lot numbers.",
+      "breaks": "Stored as 123; traceability breaks.",
+      "expected": "Stored as text with padding."
+    },
+    {
+      "id": "fi-456",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Tolerance notation",
+      "value": "12.5±0.2",
+      "tests": "A measurement with a plus-minus tolerance.",
+      "breaks": "The ± breaks numeric parsing; the tolerance is lost.",
+      "expected": "Nominal and tolerance captured separately."
+    },
+    {
+      "id": "fi-457",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Diameter symbol",
+      "value": "Ø12",
+      "tests": "The diameter sign on a dimension.",
+      "breaks": "Ø dropped or shown as a box; the dimension is ambiguous.",
+      "expected": "Preserved and rendered."
+    },
+    {
+      "id": "fi-458",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Thread spec",
+      "value": "M12×1.5",
+      "tests": "Metric thread with a multiplication sign.",
+      "breaks": "× becomes x or is lost; the spec changes meaning.",
+      "expected": "Stored exactly."
+    },
+    {
+      "id": "fi-459",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Date code vs serial",
+      "value": "2609",
+      "tests": "A YYWW date code that looks like a serial.",
+      "breaks": "Read as a count instead of year 26, week 09.",
+      "expected": "Interpreted per the documented format."
+    },
+    {
+      "id": "fi-460",
+      "group": "ind",
+      "category": "mfg",
+      "title": "Mixed units on a spec",
+      "value": "3/8 in (9.525 mm)",
+      "tests": "Imperial fractions with metric equivalents.",
+      "breaks": "The fraction is parsed as division; only one unit is kept.",
+      "expected": "Both units stored."
+    },
+    {
+      "id": "fi-461",
+      "group": "ind",
+      "category": "cons",
+      "title": "Feet and inches",
+      "value": "5' 11\"",
+      "tests": "Prime and double-prime marks for units.",
+      "breaks": "The quotes break HTML and CSV; parsed as 5.",
+      "expected": "Converted to a single unit and stored."
+    },
+    {
+      "id": "fi-462",
+      "group": "ind",
+      "category": "cons",
+      "title": "Fractional dimension",
+      "value": "2 3/4 in",
+      "tests": "Mixed-number imperial measurements.",
+      "breaks": "The space and slash break parsing; read as 2 or as a date.",
+      "expected": "Parsed to 2.75 in."
+    },
+    {
+      "id": "fi-463",
+      "group": "ind",
+      "category": "cons",
+      "title": "Diameter and rebar size",
+      "value": "Ø16 / #5",
+      "tests": "Metric and US rebar notations together.",
+      "breaks": "Symbols lost; the wrong bar size is ordered.",
+      "expected": "Both notations preserved."
+    },
+    {
+      "id": "fi-464",
+      "group": "ind",
+      "category": "cons",
+      "title": "Degrees-minutes-seconds",
+      "value": "45°48'54\"N",
+      "tests": "Survey coordinates with ° ′ ″.",
+      "breaks": "The symbols break parsing; the location is wrong.",
+      "expected": "Parsed into decimal degrees."
+    },
+    {
+      "id": "fi-465",
+      "group": "ind",
+      "category": "cons",
+      "title": "Scale ratio",
+      "value": "1:100",
+      "tests": "Drawing scales with a colon.",
+      "breaks": "Read as a time, or the colon splits a field.",
+      "expected": "Stored as a ratio."
+    },
+    {
+      "id": "fi-466",
+      "group": "ind",
+      "category": "cons",
+      "title": "Drawing number with revision",
+      "value": "A-101 Rev 2",
+      "tests": "Sheet numbers plus revision.",
+      "breaks": "Revisions overwrite one another when the revision is dropped.",
+      "expected": "Sheet and revision stored separately."
+    },
+    {
+      "id": "fi-467",
+      "group": "ind",
+      "category": "cons",
+      "title": "Elevation below zero",
+      "value": "-3.50 m",
+      "tests": "Levels below a datum (basements, excavation).",
+      "breaks": "Negative values rejected.",
+      "expected": "Signed elevations allowed."
+    },
+    {
+      "id": "fi-468",
+      "group": "ind",
+      "category": "cons",
+      "title": "Plus-minus grade",
+      "value": "±0.00",
+      "tests": "The reference datum on a drawing.",
+      "breaks": "± breaks parsing; the datum reads as 0 with no meaning.",
+      "expected": "Preserved as the datum marker."
+    },
+    {
+      "id": "fi-469",
+      "group": "ind",
+      "category": "media",
+      "title": "Episode and title",
+      "value": "S01E02 — \"Život\"",
+      "tests": "Season/episode codes with an em dash, quotes and a non-ASCII title.",
+      "breaks": "The quotes break JSON, the em dash breaks CSV, and the accent is mangled.",
+      "expected": "Stored exactly and escaped per format."
+    },
+    {
+      "id": "fi-470",
+      "group": "ind",
+      "category": "media",
+      "title": "Timecode",
+      "value": "01:23:45;12",
+      "tests": "Drop-frame timecode (semicolon before frames).",
+      "breaks": "Parsed as a time; the frame count and drop-frame flag are lost.",
+      "expected": "Parsed as HH:MM:SS;FF with the drop-frame flag."
+    },
+    {
+      "id": "fi-471",
+      "group": "ind",
+      "category": "media",
+      "title": "Subtitle with line break",
+      "value": "Line one\nLine two",
+      "tests": "Two-line subtitle cues.",
+      "breaks": "The newline is collapsed, joining the lines; or it breaks the SRT file.",
+      "expected": "Line breaks preserved within the cue.",
+      "hasInvisible": true
+    },
+    {
+      "id": "fi-472",
+      "group": "ind",
+      "category": "media",
+      "title": "Band name as a symbol",
+      "value": "❤",
+      "tests": "Artist or title made of a single symbol or emoji.",
+      "breaks": "Empty after sanitizing; the catalog entry has no searchable name.",
+      "expected": "Stored with a searchable alias."
+    },
+    {
+      "id": "fi-473",
+      "group": "ind",
+      "category": "media",
+      "title": "RTL title in an LTR list",
+      "value": "فيلم",
+      "tests": "Arabic or Hebrew titles in a mixed catalog.",
+      "breaks": "Punctuation and numbering jump to the wrong side of the row.",
+      "expected": "Rendered with dir=auto; stored value unchanged."
+    },
+    {
+      "id": "fi-474",
+      "group": "ind",
+      "category": "media",
+      "title": "Very long title",
+      "value": "The Assassination of Jesse James by the Coward Robert Ford",
+      "tests": "Titles that overflow fixed fields.",
+      "breaks": "Truncated differently across screens and metadata exports.",
+      "expected": "Full title stored; truncation is display-only."
+    },
+    {
+      "id": "fi-475",
+      "group": "ind",
+      "category": "media",
+      "title": "Year range",
+      "value": "2004–2010",
+      "tests": "Run years with an en dash.",
+      "breaks": "Parsed as a single number or a subtraction.",
+      "expected": "Start and end years captured."
+    },
+    {
+      "id": "fi-476",
+      "group": "ind",
+      "category": "media",
+      "title": "ISRC recording code",
+      "value": "US-ABC-26-00001",
+      "tests": "International Standard Recording Code with dashes.",
+      "breaks": "Dashes stripped and segments merged; rights lookups fail.",
+      "expected": "Segment structure preserved."
+    },
+    {
+      "id": "fi-477",
+      "group": "ind",
+      "category": "cyber",
+      "title": "IPv6 address",
+      "value": "2001:db8::1",
+      "tests": "Compressed IPv6 in a field expecting IPv4.",
+      "breaks": "IPv4-only validation rejects it; or the :: is misparsed.",
+      "expected": "Both IPv4 and IPv6 accepted where addresses are allowed."
+    },
+    {
+      "id": "fi-478",
+      "group": "ind",
+      "category": "cyber",
+      "title": "IPv4-mapped IPv6",
+      "value": "::ffff:192.168.0.1",
+      "tests": "An address that is both forms at once.",
+      "breaks": "Allowlists and blocklists see a different string than the resolver.",
+      "expected": "Normalized to one canonical form before comparison."
+    },
+    {
+      "id": "fi-479",
+      "group": "ind",
+      "category": "cyber",
+      "title": "Leading-zero IP octet",
+      "value": "127.0.0.1 vs 127.0.0.01",
+      "tests": "Octets with leading zeros.",
+      "breaks": "Some libraries read 010 as octal (8); allow/deny rules disagree.",
+      "expected": "Rejected or normalized consistently."
+    },
+    {
+      "id": "fi-480",
+      "group": "ind",
+      "category": "cyber",
+      "title": "Internationalized domain",
+      "value": "bücher.de",
+      "tests": "Unicode domain names (IDN).",
+      "breaks": "Compared as Unicode in one place and punycode (xn--bcher-kva.de) in another.",
+      "expected": "Normalized to one form before comparison."
+    },
+    {
+      "id": "fi-481",
+      "group": "ind",
+      "category": "cyber",
+      "title": "Trailing-dot hostname",
+      "value": "example.com.",
+      "tests": "A fully qualified domain with a root dot.",
+      "breaks": "Treated as a different host from example.com; certificate and allowlist checks disagree.",
+      "expected": "Normalized before comparison."
+    },
+    {
+      "id": "fi-482",
+      "group": "ind",
+      "category": "cyber",
+      "title": "SHA-1 hash",
+      "value": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3",
+      "tests": "A 40-hex-character digest in a text field.",
+      "breaks": "Case-sensitive comparison fails when one side is uppercase.",
+      "expected": "Compared case-insensitively and length-checked."
+    },
+    {
+      "id": "fi-483",
+      "group": "ind",
+      "category": "cyber",
+      "title": "Uppercase vs lowercase hash",
+      "value": "A94A8FE5CCB19BA61C4C0873D391E987982FBBD3",
+      "tests": "The same hash in a different case.",
+      "breaks": "Stored twice; integrity checks mismatch.",
+      "expected": "Normalized to one case."
+    },
+    {
+      "id": "fi-484",
+      "group": "ind",
+      "category": "cyber",
+      "title": "UUID case and braces",
+      "value": "{550E8400-E29B-41D4-A716-446655440000}",
+      "tests": "UUIDs with braces and uppercase.",
+      "breaks": "Does not match the lowercase, unbraced form in the database.",
+      "expected": "Normalized to canonical lowercase without braces."
+    },
+    {
+      "id": "fi-485",
+      "group": "ind",
+      "category": "cyber",
+      "title": "Port out of range",
+      "value": "70000",
+      "tests": "A TCP port above 65535.",
+      "breaks": "Wraps (70000 mod 65536 = 4464) and connects to the wrong service.",
+      "expected": "Rejected; valid range is 0 to 65535."
+    },
+    {
+      "id": "fi-486",
+      "group": "ind",
+      "category": "cyber",
+      "title": "MAC address formats",
+      "value": "00:1B:44:11:3A:B7",
+      "tests": "Colon, dash and dot MAC notations.",
+      "breaks": "The same device stored three ways; lookups miss.",
+      "expected": "Normalized to one format."
+    }
+  ]
+}

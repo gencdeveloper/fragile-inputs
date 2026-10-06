@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fragile-inputs"
+version = "1.0.0"
+description = "Edge-case input strings for QA/SDET testing — 486 annotated values that break forms, search, databases, exports and assistive tech, across 21 industries plus accessibility."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [{ name = "Yunus Emre Ozudogru" }]
+keywords = ["qa", "sdet", "testing", "test-data", "edge-cases", "fuzzing", "unicode", "boundary-testing", "accessibility", "a11y", "pytest", "localization"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Testing",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.urls]
+Homepage = "https://github.com/gencdeveloper/fragile-inputs"
+Issues = "https://github.com/gencdeveloper/fragile-inputs/issues"
+Funding = "https://buymeacoffee.com/yunusemreozudogru"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fragile_inputs"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/fragile_inputs/data.json" = "fragile_inputs/data.json"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/fragile_inputs", "README.md"]

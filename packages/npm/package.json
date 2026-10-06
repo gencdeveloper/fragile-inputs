@@ -1,0 +1,34 @@
+{
+  "name": "fragile-inputs",
+  "version": "1.0.0",
+  "description": "Edge-case input strings for QA/SDET testing — 486 annotated values that break forms, search, databases, exports and assistive tech, across 21 industries plus accessibility.",
+  "keywords": ["qa", "sdet", "testing", "test-data", "edge-cases", "fuzzing", "unicode", "boundary-testing", "accessibility", "a11y", "naughty-strings", "playwright", "cypress", "localization"],
+  "homepage": "https://github.com/gencdeveloper/fragile-inputs#readme",
+  "bugs": "https://github.com/gencdeveloper/fragile-inputs/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gencdeveloper/fragile-inputs.git",
+    "directory": "packages/npm"
+  },
+  "license": "MIT",
+  "author": "Yunus Emre Ozudogru",
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/yunusemreozudogru"
+  },
+  "type": "commonjs",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./data.json": "./data.json"
+  },
+  "files": ["index.js", "index.d.ts", "data.json", "README.md"],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=14"
+  }
+}
