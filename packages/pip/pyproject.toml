@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "fragile-inputs"
@@ -24,11 +24,8 @@ Homepage = "https://github.com/gencdeveloper/fragile-inputs"
 Issues = "https://github.com/gencdeveloper/fragile-inputs/issues"
 Funding = "https://buymeacoffee.com/yunusemreozudogru"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/fragile_inputs"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
-[tool.hatch.build.targets.wheel.force-include]
-"src/fragile_inputs/data.json" = "fragile_inputs/data.json"
-
-[tool.hatch.build.targets.sdist]
-include = ["src/fragile_inputs", "README.md"]
+[tool.setuptools.package-data]
+fragile_inputs = ["data.json"]
