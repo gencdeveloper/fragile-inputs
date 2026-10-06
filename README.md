@@ -9,11 +9,13 @@ value says what it tests, what it breaks, and what correct handling looks like.
 
 [**Browse the interactive guide »**](https://gencdeveloper.github.io/fragile-inputs/) &nbsp;·&nbsp;
 [npm](https://www.npmjs.com/package/fragile-inputs) &nbsp;·&nbsp;
-[PyPI](https://pypi.org/project/fragile-inputs/) &nbsp;·&nbsp;
 [Java (JitPack)](https://jitpack.io/#gencdeveloper/fragile-inputs) &nbsp;·&nbsp;
 [☕ Buy me a coffee](https://buymeacoffee.com/yunusemreozudogru)
 
-![inputs](https://img.shields.io/badge/inputs-486-2648C7) ![categories](https://img.shields.io/badge/categories-42-5A6878) ![license](https://img.shields.io/badge/license-MIT-1F7A4D)
+[![npm](https://img.shields.io/npm/v/fragile-inputs?color=2648C7&label=npm)](https://www.npmjs.com/package/fragile-inputs)
+[![JitPack](https://jitpack.io/v/gencdeveloper/fragile-inputs.svg)](https://jitpack.io/#gencdeveloper/fragile-inputs)
+![inputs](https://img.shields.io/badge/inputs-486-5A6878)
+![license](https://img.shields.io/badge/license-MIT-1F7A4D)
 
 </div>
 
@@ -39,13 +41,16 @@ value you get three things a raw list never gives you:
 I built it for people who do my job — **SDETs and QA engineers** — so that
 "test the edge cases" stops meaning "remember the edge cases."
 
-## Four ways to use it
+## How to use it
+
+Pick your language, install it once, and feed the values straight into your
+tests — one loop covers a whole category of edge cases.
 
 | You want to… | Use |
 |---|---|
-| Explore, search and copy values by hand, with WCAG tags and byte metrics | the **web guide** (`web/index.html`) |
+| Explore, search and copy values by hand, with WCAG tags and byte metrics | the **[web guide](https://gencdeveloper.github.io/fragile-inputs/)** |
 | Drive automated tests in JS/TS (Playwright, Cypress, Jest, Vitest) | the **npm package** |
-| Drive automated tests in Python (pytest, unittest) | the **pip package** |
+| Drive automated tests in Python (pytest, unittest) | the **Python package** (install from GitHub) |
 | Drive automated tests in Java (Selenium, JUnit 5, TestNG) | the **Java package** (via JitPack) |
 | Pull the data into your own tooling | **`data/fragile-inputs.json`** |
 
@@ -69,10 +74,12 @@ for (const value of getValues({ category: 'fin' })) {   // fintech amounts, card
 }
 ```
 
-### pip
+### Python
+
+Not on PyPI yet — install straight from GitHub (pip handles the rest):
 
 ```bash
-pip install fragile-inputs
+pip install "git+https://github.com/gencdeveloper/fragile-inputs.git#subdirectory=packages/pip"
 ```
 
 ```python

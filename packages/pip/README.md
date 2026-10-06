@@ -5,8 +5,10 @@ forms, search, databases, exports and assistive tech, across 21 industries plus
 accessibility. Each value comes with what it tests, what it breaks, and the
 correct behavior.
 
+Not on PyPI yet — install straight from GitHub:
+
 ```bash
-pip install fragile-inputs
+pip install "git+https://github.com/gencdeveloper/fragile-inputs.git#subdirectory=packages/pip"
 ```
 
 ## Use it in pytest
