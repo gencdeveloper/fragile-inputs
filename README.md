@@ -7,7 +7,7 @@
 486 annotated edge-case values across 21 industries plus accessibility. Every
 value says what it tests, what it breaks, and what correct handling looks like.
 
-[Browse the interactive guide »](https://github.com/gencdeveloper/fragile-inputs) &nbsp;·&nbsp;
+[**Browse the interactive guide »**](https://gencdeveloper.github.io/fragile-inputs/) &nbsp;·&nbsp;
 [npm](https://www.npmjs.com/package/fragile-inputs) &nbsp;·&nbsp;
 [PyPI](https://pypi.org/project/fragile-inputs/) &nbsp;·&nbsp;
 [☕ Buy me a coffee](https://buymeacoffee.com/yunusemreozudogru)
