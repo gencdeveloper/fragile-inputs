@@ -8,7 +8,6 @@ version = "1.0.1"
 description = "Edge-case input strings for QA/SDET testing — 486 annotated values that break forms, search, databases, exports and assistive tech, across 21 industries plus accessibility."
 readme = "README.md"
 requires-python = ">=3.8"
-license = "MIT"
 authors = [{ name = "Yunus Emre Ozudogru" }]
 keywords = ["qa", "sdet", "testing", "test-data", "edge-cases", "fuzzing", "unicode", "boundary-testing", "accessibility", "a11y", "pytest", "localization"]
 classifiers = [
