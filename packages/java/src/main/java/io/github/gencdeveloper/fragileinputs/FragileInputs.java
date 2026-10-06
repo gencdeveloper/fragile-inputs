@@ -165,6 +165,16 @@ public final class FragileInputs {
         return INPUTS.stream().filter(filter::matches).collect(Collectors.toList());
     }
 
+    /** Inputs in a single category, type-safe. */
+    public static List<Input> getInputs(Cat category) {
+        return getInputsByCategory(category.id());
+    }
+
+    /** Values in a single category, type-safe, resolved to today. */
+    public static List<String> getValues(Cat category) {
+        return resolveAll(getInputsByCategory(category.id()), null);
+    }
+
     /** Inputs in a single category, e.g. {@code getInputsByCategory("aml")}. */
     public static List<Input> getInputsByCategory(String category) {
         return getInputs(Filter.of().category(category));

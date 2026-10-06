@@ -1,6 +1,6 @@
 package io.github.gencdeveloper.fragileinputs;
 
-/** A category definition. */
+/** A category definition (from the dataset). */
 public final class Category {
     public String id;
     public String group;

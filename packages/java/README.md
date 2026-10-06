@@ -22,7 +22,7 @@ No Sonatype account needed — JitPack builds the package straight from GitHub.
 <dependency>
   <groupId>com.github.gencdeveloper</groupId>
   <artifactId>fragile-inputs</artifactId>
-  <version>v1.0.1</version>
+  <version>v1.0.2</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ No Sonatype account needed — JitPack builds the package straight from GitHub.
 
 ```groovy
 repositories { maven { url 'https://jitpack.io' } }
-dependencies { testImplementation 'com.github.gencdeveloper:fragile-inputs:v1.0.1' }
+dependencies { testImplementation 'com.github.gencdeveloper:fragile-inputs:v1.0.2' }
 ```
 
 ## Use it (JUnit 5 + Selenium)
@@ -65,7 +65,8 @@ class CheckoutTest {
 import io.github.gencdeveloper.fragileinputs.FragileInputs;
 import io.github.gencdeveloper.fragileinputs.Filter;
 
-FragileInputs.getInputsByCategory("aml");              // List<Input> for one category
+FragileInputs.getInputsByCategory("aml");              // by string id
+FragileInputs.getValues(Cat.AML);                      // or type-safe enum (autocompletes)
 FragileInputs.getInputs(Filter.of().group("a11y").wcag());   // a11y inputs citing a WCAG criterion
 FragileInputs.getInputs(Filter.of().hasInvisible());   // values with invisible characters
 FragileInputs.getValues("fin");                        // List<String>, ready for @MethodSource

@@ -103,7 +103,7 @@ Add the JitPack repository, then the dependency (no Sonatype account needed):
 <dependency>
   <groupId>com.github.gencdeveloper</groupId>
   <artifactId>fragile-inputs</artifactId>
-  <version>v1.0.1</version>
+  <version>v1.0.2</version>
 </dependency>
 ```
 
@@ -126,6 +126,9 @@ static List<String> fintechAmounts() {
 The Java package has **no runtime dependencies** (it ships a tiny JSON reader),
 so it won't collide with the Jackson/Gson versions already on your test
 classpath. Requires Java 8+. See [packages/java](packages/java).
+
+Category ids are also available as a type-safe enum, so you get autocompletion:
+`FragileInputs.getValues(Cat.AML)`.
 
 ### Just the data
 
