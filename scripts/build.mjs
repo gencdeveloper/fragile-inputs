@@ -53,6 +53,7 @@ writeFileSync(join(root, 'web', 'index.html'), html);
 copyFileSync(dataPath, join(root, 'packages', 'npm', 'data.json'));
 copyFileSync(dataPath, join(root, 'packages', 'pip', 'src', 'fragile_inputs', 'data.json'));
 copyFileSync(dataPath, join(root, 'web', 'fragile-inputs.json'));
+copyFileSync(dataPath, join(root, 'packages', 'java', 'src', 'main', 'resources', 'fragile-inputs.json'));
 
-console.log(`built web/index.html (${(html.length/1024).toFixed(0)} KB), synced data.json to npm + pip + web`);
+console.log(`built web/index.html (${(html.length/1024).toFixed(0)} KB), synced data.json to npm + pip + java + web`);
 console.log(`dataset: ${data.inputs.length} inputs, ${data.categories.length} categories`);

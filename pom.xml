@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Aggregator POM so JitPack (which builds from the repo root) can produce the
+     Java package in packages/java. The dataset, web guide and the npm/pip
+     packages are independent of Maven. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.github.gencdeveloper</groupId>
+  <artifactId>fragile-inputs-parent</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>packages/java</module>
+  </modules>
+</project>

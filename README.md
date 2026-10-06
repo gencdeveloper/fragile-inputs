@@ -10,6 +10,7 @@ value says what it tests, what it breaks, and what correct handling looks like.
 [**Browse the interactive guide »**](https://gencdeveloper.github.io/fragile-inputs/) &nbsp;·&nbsp;
 [npm](https://www.npmjs.com/package/fragile-inputs) &nbsp;·&nbsp;
 [PyPI](https://pypi.org/project/fragile-inputs/) &nbsp;·&nbsp;
+[Java (JitPack)](https://jitpack.io/#gencdeveloper/fragile-inputs) &nbsp;·&nbsp;
 [☕ Buy me a coffee](https://buymeacoffee.com/yunusemreozudogru)
 
 ![inputs](https://img.shields.io/badge/inputs-486-2648C7) ![categories](https://img.shields.io/badge/categories-42-5A6878) ![license](https://img.shields.io/badge/license-MIT-1F7A4D)
@@ -38,13 +39,14 @@ value you get three things a raw list never gives you:
 I built it for people who do my job — **SDETs and QA engineers** — so that
 "test the edge cases" stops meaning "remember the edge cases."
 
-## Three ways to use it
+## Four ways to use it
 
 | You want to… | Use |
 |---|---|
 | Explore, search and copy values by hand, with WCAG tags and byte metrics | the **web guide** (`web/index.html`) |
 | Drive automated tests in JS/TS (Playwright, Cypress, Jest, Vitest) | the **npm package** |
 | Drive automated tests in Python (pytest, unittest) | the **pip package** |
+| Drive automated tests in Java (Selenium, JUnit 5, TestNG) | the **Java package** (via JitPack) |
 | Pull the data into your own tooling | **`data/fragile-inputs.json`** |
 
 ### npm
@@ -82,6 +84,41 @@ def test_name_field(value, client):
     r = client.post("/signup", {"full_name": value})
     assert r.status_code in (201, 422)   # saved, or cleanly rejected — never 500
 ```
+
+### Java (Selenium + JUnit 5)
+
+Add the JitPack repository, then the dependency (no Sonatype account needed):
+
+```xml
+<repositories>
+  <repository><id>jitpack.io</id><url>https://jitpack.io</url></repository>
+</repositories>
+<dependency>
+  <groupId>com.github.gencdeveloper</groupId>
+  <artifactId>fragile-inputs</artifactId>
+  <version>v1.0.0</version>
+</dependency>
+```
+
+```java
+import io.github.gencdeveloper.fragileinputs.FragileInputs;
+
+@ParameterizedTest
+@MethodSource("fintechAmounts")
+void amountFieldIsRobust(String value) {
+    driver.findElement(By.id("amount")).sendKeys(value);
+    driver.findElement(By.id("pay")).click();
+    assertTrue(driver.findElements(By.cssSelector(".server-error")).isEmpty());
+}
+
+static List<String> fintechAmounts() {
+    return FragileInputs.getValues("fin");
+}
+```
+
+The Java package has **no runtime dependencies** (it ships a tiny JSON reader),
+so it won't collide with the Jackson/Gson versions already on your test
+classpath. Requires Java 8+. See [packages/java](packages/java).
 
 ### Just the data
 
@@ -187,7 +224,7 @@ real. Add a row to [`data/fragile-inputs.json`](data/fragile-inputs.json), run
 ## Build
 
 `data/fragile-inputs.json` is the single source of truth. The build inlines it
-into the web page and copies it into both packages:
+into the web page and copies it into all three packages:
 
 ```bash
 node scripts/build.mjs
